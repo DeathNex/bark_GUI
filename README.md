@@ -4,13 +4,7 @@
 ---------------
 
 - [ ] Check/fix dirty files.
-- [ ] Add user custom types. (like decimal_positive)
-- [ ] Check XmlNode.FirstChild careless use.
 - [ ] To add layers μόνο στα layers και το add materials μόνο στα materials.
-- [ ] Element view: Τα optional labels να φαίνονται με διαφορετικό χρώμα.
-- [x] Το checkbox το κρατάμε. Μπορούμε να το πούμε «Show all optional items » με 2 mode.
-	Mode (1) Δείχνει μόνο τα υποχρεωτικά element και τα optional που έχουν δηλωμένη τιμή διαφορετική από το default.
-	Mode (2) Όλα τα element (υποχρεωτικά και optional)
 
 
 ##PRIMARY TODO##
@@ -47,13 +41,21 @@
 - [ ] Handle Functions (wallsun.brk)
 - [ ] Simulate.
 - [ ] Perfect UML Diagrams.
+- [ ] Add user custom types. (like decimal_positive)
 
-
+##POLISHING##
+- [ ] Element view: Τα optional labels να φαίνονται με διαφορετικό χρώμα.
+- [ ] Check XmlNode.FirstChild careless use.
 
 
 
 #bark_GUI CHANGELOG#
 --------------------
+
+v0.13
+-----
++	Added to GitHub.
++	Fixed Recent List not being saved properly.
 
 v0.12
 -----
@@ -67,7 +69,6 @@ v0.12
 +	Changed in XSDValidator.xsd
 		the maxOccurs attribute moved from the <choice> to the appropriate <element>.
 +	Updated polysterine.brk to the 0.5.2 bark version.
-+	Added to GitHub.
 
 v0.11
 -----

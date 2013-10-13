@@ -1,5 +1,6 @@
-<?xml version="1.0" standalone="yes"?>
-<case>
+<?xml version="1.0"?>
+<case xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="XSDValidator.xsd">
 <simulation>
 	<start_time unit="s"><constant>0</constant></start_time>
 	<end_time   unit="s"><constant>3600</constant></end_time>

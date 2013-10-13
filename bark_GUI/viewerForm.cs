@@ -118,6 +118,7 @@ namespace bark_GUI
         private void clearRecentListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Pref.Recent.Clear();
+            Pref.Save();
             _UpdateRecent();
         }
         //Options Preferences
@@ -245,6 +246,7 @@ namespace bark_GUI
 
                 //Add to the recent files list
                 _AddToRecent(filepath);
+                Pref.Save();
 
                 //Update Status label at the bottom of the window
                 Text = _getFileNameOf(Pref.Path.CurrentFile) + " - " + title;

@@ -202,7 +202,15 @@ namespace bark_GUI
         private string _getXsdPathOf(XmlDocument xml, string XMLpath)
         {
             string pathXSD = _getDirectoryOf(XMLpath);
-            return pathXSD += '\\' + xml.DocumentElement.Attributes.GetNamedItem("xsi:noNamespaceSchemaLocation").Value;
+            try
+            {
+                pathXSD += '\\' + xml.DocumentElement.Attributes.GetNamedItem("xsi:noNamespaceSchemaLocation").Value;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + "\n\nMake sure the XML file includes the XSD Validator.");
+            }
+                return pathXSD;
         }
         private string _getDirectoryOf(string filepath) { return filepath.Remove(filepath.LastIndexOf('\\')); }
         private string _getFileNameOf(string filePath) { return filePath.Substring(filePath.LastIndexOf('\\') + 1); }

@@ -1,0 +1,5 @@
+$PATHS
+Samples="C:\Users\user\Desktop\bark_GUI\bark_GUI\bin\DebugSamples/"
+Materials="C:\Users\user\Desktop\bark_GUI\bark_GUI\bin\DebugMaterials/"
+ErrorLog="C:\Users\user\Desktop\bark_GUI\bark_GUI\bin\Debug"
+$RECENT LIST

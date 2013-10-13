@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{157D12C7-0A70-4F7B-83D4-34E528B2A9E2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>bark_GUI</RootNamespace>
+    <AssemblyName>bark_GUI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.1.2.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph">
+      <HintPath>..\ZedGraph\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_group.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_group.Designer.cs">
+      <DependentUpon>control_group.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_keyword.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_keyword.Designer.cs">
+      <DependentUpon>control_keyword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\General_Control.cs" />
+    <Compile Include="Preferences\ControlPrefPath.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Preferences\ControlPrefPath.Designer.cs">
+      <DependentUpon>ControlPrefPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Structure\ElementType\ElementKeyword.cs" />
+    <Compile Include="Structure\ElementType\ElementReference.cs" />
+    <Compile Include="Structure\ItemType\ComplexType.cs" />
+    <Compile Include="Custom_Controls\control_function.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_function.Designer.cs">
+      <DependentUpon>control_function.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_reference.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_reference.Designer.cs">
+      <DependentUpon>control_reference.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_constant.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_constant.Designer.cs">
+      <DependentUpon>control_constant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_variable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_variable.Designer.cs">
+      <DependentUpon>control_variable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\control_variable_table.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Custom_Controls\control_variable_table.Designer.cs">
+      <DependentUpon>control_variable_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_Controls\custom_control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Structure\ElementType\ElementFunction.cs" />
+    <Compile Include="Structure\ElementType\ElementType.cs" />
+    <Compile Include="Structure\ElementType\ElementVariable.cs" />
+    <Compile Include="Structure\Item\GroupItem.cs" />
+    <Compile Include="Structure\Item\Item.cs" />
+    <Compile Include="Structure\ItemType\ItemType.cs" />
+    <Compile Include="Preferences\Pref.cs" />
+    <Compile Include="FormDiagram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDiagram.Designer.cs">
+      <DependentUpon>FormDiagram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\preferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Preferences\preferencesForm.Designer.cs">
+      <DependentUpon>preferencesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="saveOnExitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="saveOnExitForm.Designer.cs">
+      <DependentUpon>saveOnExitForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="Structure\ItemType\SimpleType.cs" />
+    <Compile Include="Structure\Structure.cs" />
+    <Compile Include="Structure\Unit.cs" />
+    <Compile Include="Structure\ElementType\ElementConstant.cs" />
+    <Compile Include="viewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewerForm.Designer.cs">
+      <DependentUpon>viewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Structure\Item\ElementItem.cs" />
+    <Compile Include="XML\XML_Handler.cs" />
+    <Compile Include="XML\XML_Parser.cs" />
+    <Compile Include="XML\XSD_Handler.cs" />
+    <Compile Include="XML\XSD_Parser.cs" />
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_constant.resx">
+      <DependentUpon>control_constant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_function.resx">
+      <DependentUpon>control_function.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_group.resx">
+      <DependentUpon>control_group.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_keyword.resx">
+      <DependentUpon>control_keyword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_reference.resx">
+      <DependentUpon>control_reference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_variable.resx">
+      <DependentUpon>control_variable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_Controls\control_variable_table.resx">
+      <DependentUpon>control_variable_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiagram.resx">
+      <DependentUpon>FormDiagram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\ControlPrefPath.resx">
+      <DependentUpon>ControlPrefPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences\preferencesForm.resx">
+      <DependentUpon>preferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="saveOnExitForm.resx">
+      <DependentUpon>saveOnExitForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewerForm.resx">
+      <DependentUpon>viewerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Samples\polystyrene.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\transparent.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\wall3l.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\wall3l_tr.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\wall_sun.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\XSDValidator.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\XSDValidatorComplexTypes.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\XSDValidatorFunctions.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\XSDValidatorUnits.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\XSDValidatorUtility.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Materials\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory.png" />
+    <None Include="Resources\aboutImage.jpg" />
+    <Content Include="Samples\XSD Guide.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="ZedGraph">
+</Property><Property Name="Solution File" Value="C:\Users\user\Desktop\zedgraph_source_v509_459\zedgraph_v5.0.9\ZedGraph.sln">
+</Property><Property Name="Date" Value="Παρασκευή, 28 Δεκεμβρίου 2012">
+</Property><Property Name="Time" Value="20:36 μμ">
+</Property></Properties><Event ErrorLevel="0" Project="ZedGraph" Source="source\ZedGraph.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="ZedGraph" Source="source\ZedGraph.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ZedGraph.Web" Source="web\ZedGraph.Web.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="ZedGraph.Web" Source="web\ZedGraph.Web.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="ZedGraph.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="ZedGraph.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ZedGraph" Source="source\ZedGraph.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="ZedGraph.Web" Source="web\ZedGraph.Web.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

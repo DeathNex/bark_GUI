@@ -1,6 +1,6 @@
 ﻿namespace bark_GUI
 {
-    partial class aboutBox
+    sealed partial class AboutBox
     {
         /// <summary>
         /// Required designer variable.
@@ -156,7 +156,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "aboutBox";
+            this.Name = "AboutBox";
             this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

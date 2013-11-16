@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI
+namespace bark_GUI.Structure.ElementType
 {
     class ElementReference : ElementType
     {
@@ -13,22 +10,18 @@ namespace bark_GUI
             get { return _value; }
             set { _value = value; }
         }
-        public SimpleType SimpleType { get { return _simpleType; } }
 
+        public SimpleType SimpleType { get; private set; }
 
 
         /* PRIVATE VARIABLES */
-        SimpleType _simpleType; // xs:decimal
-
-
-
 
 
         //Constructor
         public ElementReference(SimpleType simpleType)
         {
-            this._type = e_type.constant;
-            this._simpleType = simpleType;
+            this._type = EType.Constant;
+            this.SimpleType = simpleType;
         }
     }
 }

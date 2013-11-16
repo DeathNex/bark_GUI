@@ -1,6 +1,6 @@
 ﻿namespace bark_GUI
 {
-    partial class saveOnExitForm
+    partial class SaveOnExitForm
     {
         /// <summary>
         /// Required designer variable.

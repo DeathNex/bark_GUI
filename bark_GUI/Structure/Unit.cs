@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace bark_GUI
+namespace bark_GUI.Structure
 {
     class Unit
     {
         /* PUBLIC VARIABLES */
-        public string name;
+        public string Name;
 
         /* PRIVATE VARIABLES */
-        List<string> _options;
+        readonly List<string> _options;
         string _selected;
 
         //Constructor
-        public Unit(string _name, List<string> _options)
+        public Unit(string name, List<string> options)
         {
-            name = _name;
-            this._options = _options;
+            Name = name;
+            _options = options;
         }
 
 

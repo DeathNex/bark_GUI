@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace bark_GUI
+﻿namespace bark_GUI.Structure.ElementType
 {
-    public enum e_type { constant, variable, function, reference, keyword }
+    public enum EType { Constant, Variable, Function, Reference, Keyword }
 
     public class ElementType
     {
         public virtual string Value { get { return _value; } set { _value = value; } }
-        public e_type Type { get { return _type; } }
+        public EType Type { get { return _type; } }
         
-        protected e_type _type;
+        protected EType _type;
         protected string _value;
     }
 }

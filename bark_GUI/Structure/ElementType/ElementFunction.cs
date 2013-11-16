@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace bark_GUI
+namespace bark_GUI.Structure.ElementType
 {
     class ElementFunction : ElementType
     {
@@ -13,10 +10,10 @@ namespace bark_GUI
             get { return _value; }
             set { _value = value; }
         }
-        public List<string> FunctionNames { get { return functionNames; } }
+        public List<string> FunctionNames { get { return _functionNames; } }
 
         /* PRIVATE VARIABLES */
-        List<string> functionNames;
+        readonly List<string> _functionNames;
 
 
 
@@ -24,8 +21,8 @@ namespace bark_GUI
         //Constructor
         public ElementFunction(List<string> functionNames)
         {
-            this._type = e_type.function;
-            this.functionNames = functionNames;
+            this._type = EType.Function;
+            this._functionNames = functionNames;
         }
 
 

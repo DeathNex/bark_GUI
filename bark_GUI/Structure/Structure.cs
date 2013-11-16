@@ -1,35 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml;
-using System.Windows.Forms;
+using bark_GUI.Structure.ItemTypes;
+using bark_GUI.Structure.Items;
 
-namespace bark_GUI
+namespace bark_GUI.Structure
 {
     static class Structure
     {
         /* PUBLIC VARIABLES */
-        public static GroupItem Root { get { return root; } }
-        public static List<Item> Items { get { return items; } }
-        public static List<ElementItem> ElementItems { get { return elementItems; } }
-        public static List<GroupItem> GroupItems { get { return groupItems; } }
+        public static GroupItem Root { get; private set; }
+        public static List<Item> Items { get; private set; }
+        public static List<ElementItem> ElementItems { get; private set; }
+        public static List<GroupItem> GroupItems { get; private set; }
 
 
         /* PRIVATE VARIABLES */
-        private static GroupItem root;
-        private static List<Unit> units;
-        private static List<ItemType> types;
-        private static List<SimpleType> simpleTypes;
-        private static List<ComplexType> complexTypes;
-        private static List<GroupItem> functions;
-        private static List<Item> items;
-        private static List<ElementItem> elementItems;
-        private static List<GroupItem> groupItems;
-
-
-
-
-
-
+        private static List<Unit> _units;
+        private static List<ItemType> _types;
+        private static List<SimpleType> _simpleTypes;
+        private static List<ComplexType> _complexTypes;
+        private static List<GroupItem> _functions;
 
 
         /* PUBLIC INITIALIZATION METHODS */
@@ -44,28 +34,28 @@ namespace bark_GUI
 
         public static void InitializeTypes()
         {
-            units = new List<Unit>();
-            types = new List<ItemType>();
-            simpleTypes = new List<SimpleType>();
-            complexTypes = new List<ComplexType>();
-            functions = new List<GroupItem>();
-            items = new List<Item>();
-            elementItems = new List<ElementItem>();
-            groupItems = new List<GroupItem>();
+            _units = new List<Unit>();
+            _types = new List<ItemType>();
+            _simpleTypes = new List<SimpleType>();
+            _complexTypes = new List<ComplexType>();
+            _functions = new List<GroupItem>();
+            Items = new List<Item>();
+            ElementItems = new List<ElementItem>();
+            GroupItems = new List<GroupItem>();
 
             //These types pre-exist in the XSD
-            Add(new SimpleType("xs:string", BasicType._string));
-            Add(new SimpleType("xs:integer", BasicType._integer));
-            Add(new SimpleType("xs:PositiveInteger", BasicType._integer, 1, double.MaxValue));
-            Add(new SimpleType("xs:nonPositiveInteger", BasicType._integer, double.MinValue, 0));
-            Add(new SimpleType("xs:nonNegativeInteger", BasicType._integer, 0, double.MaxValue));
-            Add(new SimpleType("xs:negativeInteger", BasicType._integer, double.MinValue, -1));
-            Add(new SimpleType("xs:decimal", BasicType._decimal));
-            Add(new SimpleType("decimal_positive", BasicType._decimal, 0, double.MaxValue));
+            Add(new SimpleType("xs:string", BasicType.String));
+            Add(new SimpleType("xs:integer", BasicType.Integer));
+            Add(new SimpleType("xs:PositiveInteger", BasicType.Integer, 1, double.MaxValue));
+            Add(new SimpleType("xs:nonPositiveInteger", BasicType.Integer, double.MinValue, 0));
+            Add(new SimpleType("xs:nonNegativeInteger", BasicType.Integer, 0, double.MaxValue));
+            Add(new SimpleType("xs:negativeInteger", BasicType.Integer, double.MinValue, -1));
+            Add(new SimpleType("xs:decimal", BasicType.Decimal));
+            Add(new SimpleType("decimal_positive", BasicType.Decimal, 0, double.MaxValue));
         }
 
 
-        public static void SetRoot(GroupItem newRoot) { root = newRoot; }
+        public static void SetRoot(GroupItem newRoot) { Root = newRoot; }
 
         
 
@@ -86,22 +76,22 @@ namespace bark_GUI
 
 
 
-        public static void Add(Unit unit) { units.Add(unit); }
-        public static void Add(SimpleType type) { types.Add(type); simpleTypes.Add(type); }
-        public static void Add(ComplexType type) { types.Add(type); complexTypes.Add(type); }
-        public static void Add(ElementItem e_Item) { elementItems.Add(e_Item); items.Add(e_Item); }
-        public static void Add(GroupItem g_Item) { if (g_Item.IsFunction) functions.Add(g_Item); else { groupItems.Add(g_Item); items.Add(g_Item); } }
-        public static Unit FindUnit(string unitName) { foreach (Unit u in units) if (u.name == unitName)return u; return null; }
-        public static ItemType FindType(string typeName) { foreach (ItemType t in types) if (t.name == typeName)return t; return null; }
-        public static SimpleType FindSimpleType(string typeName) { foreach (SimpleType t in simpleTypes) if (t.name == typeName)return t; return null; }
-        public static ComplexType FindComplexType(string typeName) { foreach (ComplexType t in complexTypes) if (t.name == typeName)return t; return null; }
+        public static void Add(Unit unit) { _units.Add(unit); }
+        public static void Add(SimpleType type) { _types.Add(type); _simpleTypes.Add(type); }
+        public static void Add(ComplexType type) { _types.Add(type); _complexTypes.Add(type); }
+        public static void Add(ElementItem e_Item) { ElementItems.Add(e_Item); Items.Add(e_Item); }
+        public static void Add(GroupItem g_Item) { if (g_Item.IsFunction) _functions.Add(g_Item); else { GroupItems.Add(g_Item); Items.Add(g_Item); } }
+        public static Unit FindUnit(string unitName) { foreach (Unit u in _units) if (u.Name == unitName)return u; return null; }
+        public static ItemType FindType(string typeName) { foreach (ItemType t in _types) if (t.Name == typeName)return t; return null; }
+        public static SimpleType FindSimpleType(string typeName) { foreach (SimpleType t in _simpleTypes) if (t.Name == typeName)return t; return null; }
+        public static ComplexType FindComplexType(string typeName) { foreach (ComplexType t in _complexTypes) if (t.Name == typeName)return t; return null; }
 
         //ElementItems require special treatment because duplicates exist.
         public static Item FindItem(XmlNode xmlItem)
         {
             List<Item> results = new List<Item>();
 
-            foreach (Item i in items)
+            foreach (Item i in Items)
                 if (i.Name == xmlItem.Name)
                     results.Add(i);
 

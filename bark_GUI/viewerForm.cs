@@ -1,38 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
+using bark_GUI.CustomControls;
+using bark_GUI.Preferences;
+using bark_GUI.Structure.Items;
+using bark_GUI.XmlHandling;
 
 namespace bark_GUI
 {
-    public partial class viewerForm : Form
+    public partial class ViewerForm : Form
     {
         /* PRIVATE VARIABLES */
-        XML_Handler _XML_Handler;
-        string title = "Viewer";
+        readonly XmlHandler _xmlHandler;
+        private const string Title = "Viewer";
 
         //Constructor
-        public viewerForm()
+        public ViewerForm()
         {
             InitializeComponent();
 
-            _XML_Handler = new XML_Handler();
+            _xmlHandler = new XmlHandler();
             //Set the 'Open File' Directory to the Samples folder
-            this.openFileDialog.InitialDirectory = @Pref.Path.MainDirectory + '\\' + @Pref.Path.Samples;
+            openFileDialog.InitialDirectory = @Pref.Path.MainDirectory + '\\' + @Pref.Path.Samples;
 
             statusMain.Text = "Ready";
         }
-        public viewerForm(string argument)
+        public ViewerForm(string argument)
         {
             InitializeComponent();
 
-            _XML_Handler = new XML_Handler();
+            _xmlHandler = new XmlHandler();
             //Set the 'Open File' Directory to the Samples folder
-            this.openFileDialog.InitialDirectory = @Pref.Path.MainDirectory + '\\' + @Pref.Path.Samples;
+            openFileDialog.InitialDirectory = @Pref.Path.MainDirectory + '\\' + @Pref.Path.Samples;
             _loadFile(argument);
         }
 
@@ -71,8 +73,7 @@ namespace bark_GUI
                 Size = Properties.Settings.Default.windowSize;
             }
 
-            bool success;
-            success = Pref.Load();
+            var success = Pref.Load();
             if (!success)
                 MessageBox.Show("Error loading preferences file.\n-File does not exist.");
             _UpdateRecent();
@@ -104,7 +105,7 @@ namespace bark_GUI
         //File Exit
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /* Simulation */
@@ -130,7 +131,7 @@ namespace bark_GUI
         //Help About
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            aboutBox about = new aboutBox();
+            AboutBox about = new AboutBox();
             about.Show();
         }
         #endregion
@@ -199,7 +200,7 @@ namespace bark_GUI
         }
         private void viewerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.Dispose();
+            Dispose();
         }
 
 
@@ -224,7 +225,7 @@ namespace bark_GUI
         private void _saveFile() { _saveAsFile(Pref.Path.CurrentFile); }
         private void _saveAsFile(string filepath)
         {
-            _XML_Handler.Save(filepath);
+            _xmlHandler.Save(filepath);
         }
 
         private void _loadFile(string filepath)
@@ -238,7 +239,7 @@ namespace bark_GUI
             Pref.Path.CurrentFile = filepath;
 
             //Load the XML file
-            if (_XML_Handler.Load())
+            if (_xmlHandler.Load())
             {
                 //Load the viewers
                 _InitializeTreeViewer();
@@ -249,7 +250,7 @@ namespace bark_GUI
                 Pref.Save();
 
                 //Update Status label at the bottom of the window
-                Text = _getFileNameOf(Pref.Path.CurrentFile) + " - " + title;
+                Text = _getFileNameOf(Pref.Path.CurrentFile) + " - " + Title;
                 statusMain.Text = "Ready";
             }
             else
@@ -262,11 +263,11 @@ namespace bark_GUI
         private bool _closeFile()
         {
             //Handle any dirty files
-            if (_XML_Handler.HasDirtyFiles())
+            if (_xmlHandler.HasDirtyFiles())
             {
                 //Save File? Yes/No/Cancel
-                saveOnExitForm formSaveOnExit = new saveOnExitForm();
-                DialogResult result = formSaveOnExit.ShowDialog();
+                var formSaveOnExit = new SaveOnExitForm();
+                var result = formSaveOnExit.ShowDialog();
 
                 switch (result)
                 {
@@ -284,8 +285,8 @@ namespace bark_GUI
             //Close
             treeViewer.Nodes.Clear();
             elementViewer.Controls.Clear();
-            _XML_Handler.Clear();
-            Text = title;
+            _xmlHandler.Clear();
+            Text = Title;
             labelSelected.Text = "";
             statusMain.Text = "Ready";
             return true;
@@ -299,8 +300,8 @@ namespace bark_GUI
             {
                 _saveFile();
                 System.Diagnostics.Process.Start(Pref.Path.BarkExe + "\\bark.exe", '\"' + Pref.Path.CurrentFile + '\"');
-                Program.formDiagram = new FormDiagram();
-                Program.formDiagram.Show();
+                Program.FormDiagram1 = new FormDiagram();
+                Program.FormDiagram1.Show();
             }
             else
                 MessageBox.Show("No file loaded to simulate. Please first open a file.");
@@ -312,8 +313,8 @@ namespace bark_GUI
         {
             statusMain.Text = "Opening Preferences...";
 
-            Program.formPref = new preferencesForm();
-            Program.formPref.Show();
+            Program.FormPref = new preferencesForm();
+            Program.FormPref.Show();
 
             statusMain.Text = "Ready";
         }
@@ -332,7 +333,7 @@ namespace bark_GUI
         /// <returns> The name of the file. </returns>
         private string _getFileNameOf(string filePath)
         {
-            int i = filePath.LastIndexOf('\\');
+            var i = filePath.LastIndexOf('\\');
             return filePath.Substring(i + 1);
         }
 
@@ -340,12 +341,11 @@ namespace bark_GUI
         /// <summary> Updates the Recent List of the menu strip, using the recent list of the preferences. </summary>
         private void _UpdateRecent()
         {
-            ToolStripItem item;
             recentToolStripMenuItem.DropDownItems.Clear();
 
-            foreach (string s in Pref.Recent)
+            foreach (var s in Pref.Recent)
             {
-                item = recentToolStripMenuItem.DropDownItems.Add(_getFileNameOf(s));
+                var item = recentToolStripMenuItem.DropDownItems.Add(_getFileNameOf(s));
                 item.ToolTipText = s;
             }
         }
@@ -359,34 +359,34 @@ namespace bark_GUI
         /* VIEWERS */
 
 
-
-
-
         /// <summary> Show/Hide the appropriate elements in the elementViewer acording to the input XmlNode. </summary>
-        /// <param name="xNode"> Root XmlNode used to Show/Hide elements. To show all use 'XmlDocument.DocumentElement'. </param>
         private void _UpdateElementViewer()
         {
-            TreeNode tNode = treeViewer.SelectedNode;
+            var tNode = treeViewer.SelectedNode;
             GroupItem r = null;
-            bool showAll = checkBoxTreeShowHidden.Checked;
+            var showAll = checkBoxTreeShowHidden.Checked;
 
             //Convert selected TreeNode to GroupItem
-            foreach (GroupItem g in Structure.GroupItems)
-                if (g.TNode == tNode)
+            foreach (var g in Structure.Structure.GroupItems)
+                if (g.Tnode == tNode)
                     r = g;
 
             //Avoid useless time consuming by taking the worst case scenarios
-            if (r == Structure.Root || r == null)
+            if (r == Structure.Structure.Root || r == null)
             {
                 if (showAll)
                     foreach (Control c in elementViewer.Controls)
                         c.Show();
                 else
                     foreach (Control c in elementViewer.Controls)
-                        if ((c as bark_GUI.Custom_Controls.custom_control).IsRequired)
+                    {
+                        var customControl = c as CustomControl;
+                        Debug.Assert(customControl != null, "customControl != null");
+                        if (customControl.IsRequired)
                             c.Show();
                         else
                             c.Hide();
+                    }
                 return;
             }
             if (r.Children == null)
@@ -398,31 +398,31 @@ namespace bark_GUI
 
             //Show every element that is a child of the selected group, else hide
             if (showAll)
-                foreach (ElementItem i in Structure.ElementItems)
+                foreach (var i in Structure.Structure.ElementItems)
                 {
-                    if (i.Control == null || i.Control.currentControl == null)
+                    if (i.Control == null || i.Control.CurrentControl == null)
                         continue;   //Unfinished, handle reference controls
                     if (r.InnerChildren.Contains(i))
-                        i.Control.currentControl.Show();
+                        i.Control.CurrentControl.Show();
                     else
-                        i.Control.currentControl.Hide();
+                        i.Control.CurrentControl.Hide();
                 }
             else
-                foreach (ElementItem i in Structure.ElementItems)
+                foreach (var i in Structure.Structure.ElementItems)
                 {
-                    if (i.Control == null || i.Control.currentControl == null)
+                    if (i.Control == null || i.Control.CurrentControl == null)
                         continue;   //Unfinished, handle reference controls
-                    if (r.InnerChildren.Contains(i) && i.Control.isRequired)
-                        i.Control.currentControl.Show();
+                    if (r.InnerChildren.Contains(i) && i.Control.IsRequired)
+                        i.Control.CurrentControl.Show();
                     else
-                        i.Control.currentControl.Hide();
+                        i.Control.CurrentControl.Hide();
                 }
         }
         /// <summary> Uses the existing structure loaded by XSD to create the TreeViewer nodes. </summary>
         private void _InitializeTreeViewer()
         {
             treeViewer.Nodes.Clear();
-            treeViewer.Nodes.Add(Structure.Root.TNode);
+            treeViewer.Nodes.Add(Structure.Structure.Root.Tnode);
             treeViewer.ExpandAll();
             treeViewer.SelectedNode = treeViewer.Nodes[0];
         }
@@ -430,22 +430,20 @@ namespace bark_GUI
         private void _InitializeElementViewer()
         {
             elementViewer.Controls.Clear();
-            string tmp = "case";
-            foreach (ElementItem item in Structure.ElementItems)
+            var tmp = "case";
+            foreach (var item in Structure.Structure.ElementItems)
             {
-                if (item.Control != null && item.Control.currentControl != null)
+                if (item.Control == null || item.Control.CurrentControl == null) continue;
+                if (item.Parent != null && item.Parent.Name != tmp)
                 {
-                    if (item.Parent != null && item.Parent.Name != tmp)
-                    {
-                        tmp = item.Parent.Name;
-                        List<custom_control_type> list = new List<custom_control_type>();
-                        list.Add(custom_control_type.group);
-                        elementViewer.Controls.Add((new General_Control(tmp, true)).currentControl);
-                    }
-                    elementViewer.Controls.Add(item.Control.currentControl);
-                    if (!item.Control.isRequired)
-                        item.Control.currentControl.Hide();
+                    tmp = item.Parent.Name;
+                    //List<CustomControlType> list = new List<CustomControlType>();
+                    //list.Add(CustomControlType.Group);
+                    elementViewer.Controls.Add((new GeneralControl(tmp, true, "help text")).CurrentControl);
                 }
+                elementViewer.Controls.Add(item.Control.CurrentControl);
+                if (!item.Control.IsRequired)
+                    item.Control.CurrentControl.Hide();
             }
         }
     }

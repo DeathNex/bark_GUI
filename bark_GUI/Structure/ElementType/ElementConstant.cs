@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI
+namespace bark_GUI.Structure.ElementType
 {
     class ElementConstant : ElementType
     {
@@ -13,14 +10,12 @@ namespace bark_GUI
             get { return _value; }
             set { _value = value; }
         }
-        public Unit Unit { get { return _unit; } }
-        public string DefaultUnit { get { return _defaultUnit; } }
 
+        public Unit Unit { get; private set; }
+        public string DefaultUnit { get; private set; }
 
 
         /* PRIVATE VARIABLES */
-        private Unit _unit;
-        private string _defaultUnit;
         SimpleType _simpleType; // xs:decimal
         string _defaultValue;
 
@@ -31,7 +26,7 @@ namespace bark_GUI
         //Constructor
         public ElementConstant(SimpleType simpleType, string defaultValue)
         {
-            this._type = e_type.constant;
+            this._type = EType.Constant;
             this._simpleType = simpleType;
             this._defaultValue = defaultValue;
         }
@@ -43,6 +38,6 @@ namespace bark_GUI
 
 
         /* PUBLIC METHODS */
-        public void SetUnit(Unit unit, string defaultUnit) { this._unit = unit; this._defaultUnit = defaultUnit; _unit.Select(_defaultUnit); }
+        public void SetUnit(Unit unit, string defaultUnit) { this.Unit = unit; this.DefaultUnit = defaultUnit; Unit.Select(DefaultUnit); }
     }
 }

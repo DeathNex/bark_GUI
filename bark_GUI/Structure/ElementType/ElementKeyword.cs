@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI
+namespace bark_GUI.Structure.ElementType
 {
     class ElementKeyword : ElementType
     {
@@ -18,7 +15,7 @@ namespace bark_GUI
 
 
         /* PRIVATE VARIABLES */
-        SimpleType _simpleType; // xs:decimal
+        readonly SimpleType _simpleType; // xs:decimal
         string _defaultValue;
 
 
@@ -28,7 +25,7 @@ namespace bark_GUI
         //Constructor
         public ElementKeyword(SimpleType simpleType, string defaultValue)
         {
-            this._type = e_type.constant;
+            this._type = EType.Constant;
             this._simpleType = simpleType;
             this._defaultValue = defaultValue;
         }

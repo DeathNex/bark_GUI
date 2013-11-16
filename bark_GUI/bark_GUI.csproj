@@ -74,19 +74,21 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_group.cs">
+    <Compile Include="CustomControls\ControlGroup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_group.Designer.cs">
-      <DependentUpon>control_group.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlGroup.Designer.cs">
+      <DependentUpon>ControlGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_keyword.cs">
+    <Compile Include="CustomControls\ControlKeyword.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_keyword.Designer.cs">
-      <DependentUpon>control_keyword.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlKeyword.Designer.cs">
+      <DependentUpon>ControlKeyword.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\General_Control.cs" />
+    <Compile Include="CustomControls\GeneralControl.cs" />
+    <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Structure\ElementType\ElementConstant.cs" />
     <Compile Include="Preferences\ControlPrefPath.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -95,46 +97,46 @@
     </Compile>
     <Compile Include="Structure\ElementType\ElementKeyword.cs" />
     <Compile Include="Structure\ElementType\ElementReference.cs" />
-    <Compile Include="Structure\ItemType\ComplexType.cs" />
-    <Compile Include="Custom_Controls\control_function.cs">
+    <Compile Include="Structure\ItemTypes\ComplexType.cs" />
+    <Compile Include="CustomControls\ControlFunction.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_function.Designer.cs">
-      <DependentUpon>control_function.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlFunction.Designer.cs">
+      <DependentUpon>ControlFunction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_reference.cs">
+    <Compile Include="CustomControls\ControlReference.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_reference.Designer.cs">
-      <DependentUpon>control_reference.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlReference.Designer.cs">
+      <DependentUpon>ControlReference.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_constant.cs">
+    <Compile Include="CustomControls\ControlConstant.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_constant.Designer.cs">
-      <DependentUpon>control_constant.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlConstant.Designer.cs">
+      <DependentUpon>ControlConstant.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_variable.cs">
+    <Compile Include="CustomControls\ControlVariable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_variable.Designer.cs">
-      <DependentUpon>control_variable.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlVariable.Designer.cs">
+      <DependentUpon>ControlVariable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\control_variable_table.cs">
+    <Compile Include="CustomControls\ControlVariableTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Custom_Controls\control_variable_table.Designer.cs">
-      <DependentUpon>control_variable_table.cs</DependentUpon>
+    <Compile Include="CustomControls\ControlVariableTable.Designer.cs">
+      <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_Controls\custom_control.cs">
+    <Compile Include="CustomControls\CustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Structure\ElementType\ElementFunction.cs" />
     <Compile Include="Structure\ElementType\ElementType.cs" />
     <Compile Include="Structure\ElementType\ElementVariable.cs" />
-    <Compile Include="Structure\Item\GroupItem.cs" />
-    <Compile Include="Structure\Item\Item.cs" />
-    <Compile Include="Structure\ItemType\ItemType.cs" />
+    <Compile Include="Structure\Items\GroupItem.cs" />
+    <Compile Include="Structure\Items\Item.cs" />
+    <Compile Include="Structure\ItemTypes\ItemType.cs" />
     <Compile Include="Preferences\Pref.cs" />
     <Compile Include="FormDiagram.cs">
       <SubType>Form</SubType>
@@ -150,51 +152,49 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="saveOnExitForm.cs">
+    <Compile Include="SaveOnExitForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="saveOnExitForm.Designer.cs">
-      <DependentUpon>saveOnExitForm.cs</DependentUpon>
+    <Compile Include="SaveOnExitForm.Designer.cs">
+      <DependentUpon>SaveOnExitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="Structure\ItemType\SimpleType.cs" />
+    <Compile Include="Structure\ItemTypes\SimpleType.cs" />
     <Compile Include="Structure\Structure.cs" />
     <Compile Include="Structure\Unit.cs" />
-    <Compile Include="Structure\ElementType\ElementConstant.cs" />
-    <Compile Include="viewerForm.cs">
+    <Compile Include="ViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="viewerForm.Designer.cs">
-      <DependentUpon>viewerForm.cs</DependentUpon>
+    <Compile Include="ViewerForm.Designer.cs">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Structure\Item\ElementItem.cs" />
-    <Compile Include="XML\XML_Handler.cs" />
-    <Compile Include="XML\XML_Parser.cs" />
-    <Compile Include="XML\XSD_Handler.cs" />
-    <Compile Include="XML\XSD_Parser.cs" />
+    <Compile Include="Structure\Items\ElementItem.cs" />
+    <Compile Include="XmlHandling\XML_Handler.cs" />
+    <Compile Include="XmlHandling\XML_Parser.cs" />
+    <Compile Include="XmlHandling\XSD_Handler.cs" />
+    <Compile Include="XmlHandling\XSD_Parser.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_constant.resx">
-      <DependentUpon>control_constant.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlConstant.resx">
+      <DependentUpon>ControlConstant.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_function.resx">
-      <DependentUpon>control_function.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlFunction.resx">
+      <DependentUpon>ControlFunction.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_group.resx">
-      <DependentUpon>control_group.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlGroup.resx">
+      <DependentUpon>ControlGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_keyword.resx">
-      <DependentUpon>control_keyword.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlKeyword.resx">
+      <DependentUpon>ControlKeyword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_reference.resx">
-      <DependentUpon>control_reference.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlReference.resx">
+      <DependentUpon>ControlReference.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_variable.resx">
-      <DependentUpon>control_variable.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlVariable.resx">
+      <DependentUpon>ControlVariable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_Controls\control_variable_table.resx">
-      <DependentUpon>control_variable_table.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\ControlVariableTable.resx">
+      <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDiagram.resx">
       <DependentUpon>FormDiagram.cs</DependentUpon>
@@ -215,11 +215,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="saveOnExitForm.resx">
-      <DependentUpon>saveOnExitForm.cs</DependentUpon>
+    <EmbeddedResource Include="SaveOnExitForm.resx">
+      <DependentUpon>SaveOnExitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="viewerForm.resx">
-      <DependentUpon>viewerForm.cs</DependentUpon>
+    <EmbeddedResource Include="ViewerForm.resx">
+      <DependentUpon>ViewerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />

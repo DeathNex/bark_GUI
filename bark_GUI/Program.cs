@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,9 +7,9 @@ namespace bark_GUI
     static class Program
     {
         //forms
-        static public viewerForm formMain;
-        static public FormDiagram formDiagram;
-        static public preferencesForm formPref;
+        static public ViewerForm FormMain;
+        static public FormDiagram FormDiagram1;
+        static public preferencesForm FormPref;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,10 +19,10 @@ namespace bark_GUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Count() == 1)
-                formMain = new viewerForm(args[0]);
+                FormMain = new ViewerForm(args[0]);
             else
-                formMain = new viewerForm();
-            Application.Run(formMain);
+                FormMain = new ViewerForm();
+            Application.Run(FormMain);
         }
 
         static void Initialization()

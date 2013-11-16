@@ -2,7 +2,7 @@
 using System.IO;
 using System;
 
-namespace bark_GUI
+namespace bark_GUI.Preferences
 {
     static class Pref
     {
@@ -21,13 +21,13 @@ namespace bark_GUI
 
             internal static List<string> _ToSave()
             {
-                List<string> save = new List<string>();
-                save.Add("Samples=\"" + Samples + "\"");
-                save.Add("Materials=\"" + Materials + "\"");
-                save.Add("ErrorLog=\"" + ErrorLog + "\"");
-                save.Add("BarkExe=\"" + BarkExe + "\"");
-
-                return save;
+                return new List<string>
+                    {
+                        "Samples=\"" + Samples + "\"",
+                        "Materials=\"" + Materials + "\"",
+                        "ErrorLog=\"" + ErrorLog + "\"",
+                        "BarkExe=\"" + BarkExe + "\""
+                    };
             }
         }
 
@@ -36,7 +36,7 @@ namespace bark_GUI
 
 
         //Private variable assissting in load function
-        private enum nowReading { None, Path, Recent };
+        private enum NowReading { None, Path, Recent };
 
 
 
@@ -62,18 +62,17 @@ namespace bark_GUI
         /// </summary>
         public static void Save()
         {
-            List<string> paths = Path._ToSave();
+            var paths = Path._ToSave();
 
-            using (FileStream fs = new FileStream(Pref.Path.SavePref, FileMode.Create))
+            using (FileStream fsWriter = new FileStream(Path.SavePref, FileMode.Create))
             {
-                StreamWriter sw = new StreamWriter(fs);
+                StreamWriter sw = new StreamWriter(fsWriter);
                 sw.WriteLine("$PATHS");
-                foreach (string s in paths)
+                foreach (var s in paths)
                     sw.WriteLine(s);
                 sw.WriteLine("$RECENT LIST");
-                foreach (string s in Recent)
+                foreach (var s in Recent)
                     sw.WriteLine("Recent=\"" + s + "\"");
-                sw.Close();
             }
         }
 
@@ -83,15 +82,14 @@ namespace bark_GUI
         /// </summary>
         public static bool Load()
         {
-            string line = "";
-            nowReading _nowReading = nowReading.None;
+            var nowReading = NowReading.None;
 
             try
             {
-                using (FileStream fs = new FileStream(Pref.Path.SavePref, FileMode.Open))
+                using (FileStream fsLoader = new FileStream(Path.SavePref, FileMode.Open))
                 {
-                    StreamReader sr = new StreamReader(fs);
-                    line = sr.ReadLine();
+                    var sr = new StreamReader(fsLoader);
+                    var line = sr.ReadLine();
                     while (line != null)
                     {
                         //Check if the line is a ListName and find out which one
@@ -99,18 +97,16 @@ namespace bark_GUI
                             switch (line)
                             {
                                 case "$PATHS":
-                                    _nowReading = nowReading.Path;
+                                    nowReading = NowReading.Path;
                                     break;
                                 case "$RECENT LIST":
-                                    _nowReading = nowReading.Recent;
-                                    break;
-                                default:
+                                    nowReading = NowReading.Recent;
                                     break;
                             }
                         //Check Which variable name is this lane and input the correct value
                         else
                         {
-                            if (_nowReading == nowReading.Path)
+                            if (nowReading == NowReading.Path)
                             {
                                 if (line.StartsWith("Samples"))
                                     Path.Samples = _GetValue(line);
@@ -121,7 +117,7 @@ namespace bark_GUI
                                 else if (line.StartsWith("BarkExe"))
                                     Path.BarkExe = _GetValue(line);
                             }
-                            else if (_nowReading == nowReading.Recent)
+                            else if (nowReading == NowReading.Recent)
                             {
                                 if (line.StartsWith("Recent"))
                                     Recent.Add(_GetValue(line));
@@ -129,16 +125,15 @@ namespace bark_GUI
                         }
                         line = sr.ReadLine();
                     }
-                    sr.Close();
                 }
             }
             catch (FileNotFoundException)
             {
                 return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return true;
         }

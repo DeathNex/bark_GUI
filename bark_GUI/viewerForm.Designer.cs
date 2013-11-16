@@ -1,6 +1,6 @@
 ﻿namespace bark_GUI
 {
-    partial class viewerForm
+    partial class ViewerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             System.Windows.Forms.Panel panel1;
             System.Windows.Forms.Panel panel2;
             System.Windows.Forms.Panel panel3;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(viewerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewerForm));
             this.elementViewer = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxTreeShowHidden = new System.Windows.Forms.CheckBox();
             this.treeViewer = new System.Windows.Forms.TreeView();
@@ -445,7 +445,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMain;
             this.MinimumSize = new System.Drawing.Size(580, 320);
-            this.Name = "viewerForm";
+            this.Name = "ViewerForm";
             this.Text = "Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.viewerForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.viewerForm_FormClosed);

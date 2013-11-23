@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -40,7 +42,7 @@ namespace bark_GUI.CustomControls
 
             for (var i = 0; i < MinArrayRows; i++)
                 for (var j = 0; j < ArrayColumns; j++)
-                    _add();
+                    _addEmpty();
         }
 
 
@@ -108,7 +110,7 @@ namespace bark_GUI.CustomControls
             //Expand for edit
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             for (var j = 0; j < ArrayColumns; j++)
-                _add();
+                _addEmpty();
 
             _filling = false;
         }
@@ -136,7 +138,16 @@ namespace bark_GUI.CustomControls
         /// <summary> Adds a text box with value. </summary>
         private void _add(string value)
         {
-            if (LastJ >= ArrayColumns - 1)
+            // TODO use SuspendLayout & ResumeLayout for speed. (avoids reloading controls)
+            // TODO Fix RowStyle breaking at row 13+... Try something with the RowCount?
+            if (value == string.Empty)
+                return;
+
+            value = Regex.Replace(value, @"[\n\r\t\s]", "");
+
+            if (value == string.Empty)
+                return;
+            if (LastJ > ArrayColumns - 1)
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             _textBoxArray[_lastIndex, LastJ] = new TextBox();
             table.Controls.Add(_textBoxArray[_lastIndex, LastJ]);
@@ -155,7 +166,25 @@ namespace bark_GUI.CustomControls
             }
         }
         /// <summary> Adds an empty text box. </summary>
-        private void _add() { _add(""); }
+        private void _addEmpty() {
+            if (LastJ > ArrayColumns - 1)
+                table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            _textBoxArray[_lastIndex, LastJ] = new TextBox();
+            table.Controls.Add(_textBoxArray[_lastIndex, LastJ]);
+            _textBoxArray[_lastIndex, LastJ].Text = "";
+            _textBoxArray[_lastIndex, LastJ].Dock = DockStyle.Fill;
+            _textBoxArray[_lastIndex, LastJ].TextChanged += new EventHandler(this.textBox_TextChanged);
+            _textBoxArray[_lastIndex, LastJ].KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
+
+
+            if (LastJ < ArrayColumns - 1)
+                LastJ++;
+            else
+            {
+                _lastIndex++;
+                LastJ = 0;
+            }
+        }
 
         /// <summary> Increases the number of text box rows by 1 when the last textbox is filled. </summary>
         private void _expand()
@@ -164,7 +193,7 @@ namespace bark_GUI.CustomControls
             {
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
                 for (int j = 0; j < ArrayColumns; j++)
-                    _add();
+                    _addEmpty();
             }
         }
 
@@ -338,10 +367,6 @@ namespace bark_GUI.CustomControls
 
             //Initialize tables text boxes
             _textBoxArray = new TextBox[ArrayRows, ArrayColumns];
-
-            for (int i = 0; i < MinArrayRows; i++)
-                for (int j = 0; j < ArrayColumns; j++)
-                    _add();
         }
 
         private string _trimVariableTable(string data)

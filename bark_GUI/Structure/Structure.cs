@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 using bark_GUI.Structure.ItemTypes;
 using bark_GUI.Structure.Items;
@@ -57,9 +58,9 @@ namespace bark_GUI.Structure
 
         public static void SetRoot(GroupItem newRoot) { Root = newRoot; }
 
-        
 
-        
+
+
 
 
 
@@ -99,8 +100,8 @@ namespace bark_GUI.Structure
                 return null;
             else if (results.Count == 1)
             {
-                if (results[0].Name == "boundary")
-                    results = results;
+                if (results[0].Name == "boundary")      // TODO Multiple items handling.
+                    Debug.Print("### Element boundary hit! Results:\n{0}", results);
                 return results[0];
             }
             else

@@ -15,10 +15,10 @@ namespace bark_GUI.Structure.ItemTypes
         readonly List<string> _options;
 
         //BasicType
-        BasicType _basicType;
+        BasicType _basicType;      // TODO Unimplemented something.
 
         //XSD Restriction
-        Restriction _restriction;
+        Restriction _restriction;   // TODO Unimplemented something.
 
 
 

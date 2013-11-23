@@ -1,282 +1,283 @@
-﻿using System.Collections.Generic;
+﻿#region using
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml;
 using bark_GUI.Structure;
 using bark_GUI.Structure.ElementType;
 using bark_GUI.Structure.ItemTypes;
 using bark_GUI.Structure.Items;
+#endregion
 
 namespace bark_GUI.XmlHandling
 {
     class XsdHandler
     {
-        /* VARIABLES */
         public XmlDocument XsdMain;
+
         private XmlDocument _xsdComplexTypes;
+
         private XmlDocument _xsdFunctions;
+
         private XmlDocument _xsdUnits;
+
         private XmlDocument _xsdUtility;
 
+        readonly XmlReaderSettings _settings;
+
+        // Constructor
+        public XsdHandler()
+        {
+            _settings = new XmlReaderSettings { IgnoreComments = true };
+        }
 
 
-
-
-
-
-
-
-
-
-
-        /* PUBLIC METHODS */
-
-
-
-
-
-
-
-
-
+        #region Public Methods
         /// <summary> Using utility methods loads a full structure using the Main XSD Validator. </summary>
         /// <param name="pathXsd"> The Main XSD Validator's path. </param>
         /// <returns> If there were no errors, all the files were loaded successfuly. </returns>
         public bool Load(string pathXsd)
         {
+            XsdMain = new XmlDocument();
+
+            List<string> partsFilepath;
+
             Structure.Structure.InitializeTypes();
 
             try
             {
-                //Load the main XSDValidator
-                XsdMain = new XmlDocument();
-                XsdMain.Load(pathXsd);
+                // Load the main XSDValidator to get it's dependencies (parts).
+                using (var reader = XmlReader.Create(pathXsd, _settings))
+                {
+                    XsdMain.Load(reader);
+                }
 
-                //Load the XSDValidator parts in order
-                var parts = _getXsdPartPathsOf(XsdMain, pathXsd);
-                //Load Utility
-                foreach (var path in parts)
-                    if (_getFileNameOf(path).Contains("Utility"))
-                    {
-                        if (!_LoadXsdUtility(path)) return false;
-                    }
-                //Load Units
-                foreach (var path in parts)
-                    if (_getFileNameOf(path).Contains("Units"))
-                    {
-                        if (!_LoadXsdUnits(path)) return false;
-                    }
-                //Load ComplexTypes
-                foreach (var path in parts)
-                    if (_getFileNameOf(path).Contains("ComplexTypes"))
-                    {
-                        if (!_LoadXsdComplexTypes(path)) return false;
-                    }
-                //Load Functions
-                foreach (var path in parts)
-                    if (_getFileNameOf(path).Contains("Functions"))
-                    {
-                        if (!_LoadXsdFunctions(path)) return false;
-                    }
-                //Load Main
-                if (!_LoadXsdMain()) return false;
+                // Load filepaths of xsd parts.
+                partsFilepath = GetXsdPartPathsOf(XsdMain, pathXsd);
+
+                // Load dynamically the xsd part files that contains the appropriate word.
+                // The order is important due to dependencies.
+                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("Utility")).Any(_LoadXsdUtility))
+                    return false;
+                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("Units")).Any(_LoadXsdUnits))
+                    return false;
+                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("ComplexTypes")).Any(_LoadXsdComplexTypes))
+                    return false;
+                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("Functions")).Any(_LoadXsdFunctions))
+                    return false;
+                
+                // Load Main.
+                if (!LoadXsdMain()) return false;
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
+        #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-        /* PRIVATE METHODS */
-
-
-
-
-
-
-
-
-
+        #region Private Loading XSD Methods
 
         /// <summary> Utility method that creates the structure of the Main XSD Validator. </summary>
         /// <returns> If there were no errors, success. </returns>
-        private bool _LoadXsdMain()
+        private bool LoadXsdMain()
         {
+            Debug.Assert(XsdMain.DocumentElement != null, "XsdMain.DocumentElement != null");
+
             try
             {
-                Debug.Assert(XsdMain.DocumentElement != null, "XsdMain.DocumentElement != null");
+                // Find the root node (first element of the document).
                 foreach (XmlNode xNode in XsdMain.DocumentElement.ChildNodes)
-                    if (xNode.LocalName == "element")
-                    {
-                        Structure.Structure.SetRoot(new GroupItem(xNode));
-                        break;
-                    }
+                {
+                    if (xNode.LocalName != "element")
+                        continue;
+
+                    Structure.Structure.SetRoot(new GroupItem(xNode));
+                    break;
+                }
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
+
         /// <summary> Utility method that creates the structure of Functions. </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdFunctions(string filepath)
         {
+            _xsdFunctions = new XmlDocument();
+
             try
             {
-                _xsdFunctions = new XmlDocument();
-                _xsdFunctions.Load(filepath);
-                Debug.Assert(_xsdFunctions.DocumentElement != null, "_xsdFunctions.DocumentElement != null");
-                foreach (XmlNode xNode in _xsdFunctions.DocumentElement.ChildNodes)
-                    if (xNode.LocalName == "element")
-                        Structure.Structure.Add(new GroupItem(xNode, true));
+                using (var reader = XmlReader.Create(filepath, _settings))
+                {
+                    // Load document.
+                    _xsdFunctions.Load(reader);
+                    Debug.Assert(_xsdFunctions.DocumentElement != null, "_xsdFunctions.DocumentElement != null");
+
+                    // Load elements.
+                    foreach (XmlNode xNode in _xsdFunctions.DocumentElement.ChildNodes)
+                        if (xNode.LocalName == "element")
+                            Structure.Structure.Add(new GroupItem(xNode, true));
+                }
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
+
         /// <summary> Utility method that creates the structure of ComplexTypes. </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdComplexTypes(string filepath)
         {
+            _xsdComplexTypes = new XmlDocument();
+
             try
             {
-                _xsdComplexTypes = new XmlDocument();
-                _xsdComplexTypes.Load(filepath);
-                Debug.Assert(_xsdComplexTypes.DocumentElement != null, "_xsdComplexTypes.DocumentElement != null");
-                foreach (XmlNode xNode in _xsdComplexTypes.DocumentElement.ChildNodes)
-                    if (xNode.LocalName == "complexType")
-                        _createComplexType(xNode);
+                using (var reader = XmlReader.Create(filepath, _settings))
+                {
+                    // Load document.
+                    _xsdComplexTypes.Load(reader);
+                    Debug.Assert(_xsdComplexTypes.DocumentElement != null, "_xsdComplexTypes.DocumentElement != null");
+
+                    // Load elements.
+                    foreach (XmlNode xNode in _xsdComplexTypes.DocumentElement.ChildNodes)
+                        if (xNode.LocalName == "complexType")
+                            _createComplexType(xNode);
+                }
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
+
         /// <summary> Utility method that creates the structure of Units. </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdUnits(string filepath)
         {
+            _xsdUnits = new XmlDocument();
+
             try
             {
-                _xsdUnits = new XmlDocument();
-                _xsdUnits.Load(filepath);
-                Debug.Assert(_xsdUnits.DocumentElement != null, "_xsdUnits.DocumentElement != null");
-                foreach (XmlNode xNode in _xsdUnits.DocumentElement.ChildNodes)
-                    if (xNode.LocalName == "simpleType")
-                        _createUnit(xNode);
+                using (var reader = XmlReader.Create(filepath, _settings))
+                {
+                    // Load document.
+                    _xsdUnits.Load(reader);
+                    Debug.Assert(_xsdUnits.DocumentElement != null, "_xsdUnits.DocumentElement != null");
+
+                    // Load elements.
+                    foreach (XmlNode xNode in _xsdUnits.DocumentElement.ChildNodes)
+                        if (xNode.LocalName == "simpleType")
+                            _createUnit(xNode);
+                }
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
+
         /// <summary> Utility method that creates the structure of SimpleTypes. </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdUtility(string filepath)
         {
+            _xsdUtility = new XmlDocument();
+
             try
             {
-                _xsdUtility = new XmlDocument();
-                _xsdUtility.Load(filepath);
-                Debug.Assert(_xsdUtility.DocumentElement != null, "_xsdUtility.DocumentElement != null");
-                foreach (XmlNode xNode in _xsdUtility.DocumentElement.ChildNodes)
-                    if (xNode.LocalName == "simpleType")
-                    {
-                        _createSimpleType(xNode);
-                    }
+                using (var reader = XmlReader.Create(filepath, _settings))
+                {
+                    // Load document.
+                    _xsdUtility.Load(reader);
+                    Debug.Assert(_xsdUtility.DocumentElement != null, "_xsdUtility.DocumentElement != null");
+
+                    // Load elements.
+                    foreach (XmlNode xNode in _xsdUtility.DocumentElement.ChildNodes)
+                        if (xNode.LocalName == "simpleType")
+                        {
+                            _createSimpleType(xNode);
+                        }
+                }
             }
-            catch
+            catch (XmlException e)
             {
-                return false;
+                Debug.Fail(e.Message, e.StackTrace);
             }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.StackTrace);
+            }
+
             return true;
         }
 
+        #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /* UTILITY METHODS */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /// <summary> Using the Main XSD draws the smaller XSD paths that are included. </summary>
+        #region Utility File Methods
+        /// <summary> Using the Main XSD draws the included smaller XSD paths. </summary>
         /// <param name="xsd"> The XmlDocument Main XSD that contains all the other xsd parts. </param>
         /// <param name="xsdPath"> The path of the Main XSD. </param>
         /// <returns> List of smaller XSD paths that are included in the Main XSD. </returns>
-        private List<string> _getXsdPartPathsOf(XmlDocument xsd, string xsdPath)
+        private List<string> GetXsdPartPathsOf(XmlDocument xsd, string xsdPath)
         {
             List<string> paths = new List<string>();
-            string currentDirectory = _getDirectoryOf(xsdPath);
+            string currentDirectory = GetDirectoryOf(xsdPath);
+
             Debug.Assert(xsd.DocumentElement != null, "xsd.DocumentElement != null");
+
             foreach (XmlNode xNode in xsd.DocumentElement.ChildNodes)
                 if (xNode.LocalName == "include")
                 {
                     Debug.Assert(xNode.Attributes != null, "xNode.Attributes != null");
                     paths.Add(currentDirectory + '\\' + xNode.Attributes.GetNamedItem("schemaLocation").Value);
                 }
+
             return paths;
         }
         /// <summary> Utility method that returns the directory of a given path. </summary>
-        private string _getDirectoryOf(string filepath) { return filepath.Remove(filepath.LastIndexOf('\\')); }
+        private string GetDirectoryOf(string filepath) { return filepath.Remove(filepath.LastIndexOf('\\')); }
         /// <summary> Utility method that returns the filename of a given path. </summary>
-        private string _getFileNameOf(string filePath) { return filePath.Substring(filePath.LastIndexOf('\\') + 1); }
+        private string GetFileNameOf(string filePath) { return filePath.Substring(filePath.LastIndexOf('\\') + 1); }
+        #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #region XSD Parser Methods
         /// <summary> Using an XmlNode creates a Unit using the appropriate info. </summary>
         /// <param name="xNode"> The XmlNode that was spotted to be a Unit. </param>
         private static void _createUnit(XmlNode xNode)
@@ -291,7 +292,7 @@ namespace bark_GUI.XmlHandling
             var name = XsdParser.GetName(xNode);
             //Enumeration
             var options = XsdParser.DrawUnits(xNode);
-            
+
 
             //Finish
             Structure.Structure.Add(new Unit(name, options));
@@ -466,6 +467,12 @@ namespace bark_GUI.XmlHandling
             foreach (XmlNode x in xNode.ChildNodes)
             {
                 SimpleType sType;
+
+                // Ignore comments.
+                if (x.NodeType == XmlNodeType.Comment)
+                    continue;
+
+                // Crete elements.
                 if (x.LocalName == "choice")
                 {
                     foreach (XmlNode xc in x.ChildNodes)
@@ -524,7 +531,7 @@ namespace bark_GUI.XmlHandling
                         var defaultXUnit = x.Attributes.GetNamedItem("default").Value.Trim();
                         variable.SetX_Unit(xUnit, defaultXUnit);
                     }
-                        //Handle References
+                    //Handle References
                     else if (x.LocalName == "attribute" && x.Attributes.GetNamedItem("name").Value.Trim() == "reference")
                     {
                         sType = Structure.Structure.FindSimpleType(x.Attributes.GetNamedItem("type").Value.Trim());
@@ -536,5 +543,6 @@ namespace bark_GUI.XmlHandling
             //Finish
             Structure.Structure.Add(new ComplexType(name, unit, defaultUnit, constant, variable, function, keyword, reference));
         }
+        #endregion
     }
 }

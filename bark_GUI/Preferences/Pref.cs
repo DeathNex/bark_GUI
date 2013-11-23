@@ -133,7 +133,7 @@ namespace bark_GUI.Preferences
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
             return true;
         }

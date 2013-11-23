@@ -33,8 +33,8 @@ namespace bark_GUI.XmlHandling
                     {
                         case "constant":
                             elementItem = item as ElementItem;
-                            if (item.Name == "temperature")
-                                item = item;
+                            if (item.Name == "temperature")      // TODO Multiple items handling.
+                                Debug.Print("### Element with multiple items hit!\n{0}", item);
                             Debug.Assert(elementItem != null, "elementItem != null");
                             elementItem.SelectType(EType.Constant);
                             ElementConstant eConstant = elementItem.SelectedType as ElementConstant;
@@ -48,8 +48,8 @@ namespace bark_GUI.XmlHandling
                             break;
                         case "variable":
                             elementItem = item as ElementItem;
-                            if (item.Name == "temperature")
-                                item = item;
+                            if (item.Name == "temperature")      // TODO Multiple items handling.
+                                Debug.Print("### Element with multiple items hit!\n{0}", item);
                             Debug.Assert(elementItem != null, "elementItem != null");
                             elementItem.SelectType(EType.Variable);
                             ElementVariable eVariable = elementItem.SelectedType as ElementVariable;

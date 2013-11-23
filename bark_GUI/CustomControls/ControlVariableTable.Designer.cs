@@ -53,7 +53,7 @@
             this.table.Size = new System.Drawing.Size(144, 184);
             this.table.TabIndex = 9;
             // 
-            // control_variable_table
+            // ControlVariableTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

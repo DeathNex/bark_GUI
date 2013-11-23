@@ -13,7 +13,7 @@ namespace bark_GUI.Structure.Items
         public TreeNode Tnode { get; private set; }
 
         /* PRIVATE VARIABLES */
-        private bool _multiple;
+        private bool _multiple;      // TODO Multiple items handling.
         private static int _multiplesCount;
         private int _mID;
 

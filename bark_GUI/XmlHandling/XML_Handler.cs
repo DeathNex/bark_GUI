@@ -136,12 +136,10 @@ namespace bark_GUI.XmlHandling
         {
             Debug.WriteLine("Method HasDirtyFiles not Implemented!");
 
-            if (_xmlDocument == null)
-                return false;
+            return false;
 
             //Compare the data from tree with the _XmlDocument & if any action was made on any element
-            
-            return true;
+
         }
         #endregion
 
@@ -268,7 +266,7 @@ namespace bark_GUI.XmlHandling
             try
             {
                 using (var reader = XmlReader.Create(filePath, settings))
-                    while (reader.Read()){}
+                    while (reader.Read()) { }
             }
             catch (Exception e)
             {

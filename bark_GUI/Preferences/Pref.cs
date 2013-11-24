@@ -16,7 +16,7 @@ namespace bark_GUI.Preferences
             public static string Materials = @"Materials";
             public static string ErrorLog = @"";
             public static string SavePref = @"prefs.txt";
-            public static string BarkExe = @"C:\Program Files (x86)\bark\0.4\bin";
+            public static string BarkExe = @"C:\Program Files (x86)\bark\0.5\bin";
             public static string CurrentFile = @"";
 
             internal static List<string> _ToSave()

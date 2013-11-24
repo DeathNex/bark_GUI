@@ -1,25 +1,32 @@
-﻿using System;
+﻿#region using
+using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+#endregion
 
 namespace bark_GUI.CustomControls
 {
     public partial class ControlVariableTable : CustomControl
     {
-        //textBox_TextChanged() Method works only for arrayColumns = 2 at 'Insert new value' part
+        // Constraint: textBox_TextChanged() Method works only for arrayColumns = 2 at 'Insert new value' part
 
+        private const int ArrayRowsMax = 300;
 
-        /* PRIVATE VARIABLES & PROPERTIES */
-        bool _filling;
-        private const int ArrayRows = 300;
+        private const int ArrayRowsMin = 1;
+
         private const int ArrayColumns = 2;
-        private const int MinArrayRows = 1;
 
-        int _lastIndex;
-        int _lastJValue;
-        int LastJ
+        TextBox[,] _textBoxArray;
+
+        private bool _filling;
+
+        private int _lastIndex;
+
+        private int _lastJValue;
+
+        private int LastJ
         {
             set
             {
@@ -30,34 +37,22 @@ namespace bark_GUI.CustomControls
             get { return _lastJValue; }
         }
 
-        TextBox[,] _textBoxArray;
 
-        //Constructor
+        #region Constructor
         public ControlVariableTable()
         {
             InitializeComponent();
 
             //Initialize tables text boxes
-            _textBoxArray = new TextBox[ArrayRows, ArrayColumns];
+            _textBoxArray = new TextBox[ArrayRowsMax, ArrayColumns];
 
-            for (var i = 0; i < MinArrayRows; i++)
+            for (var i = 0; i < ArrayRowsMin; i++)
                 for (var j = 0; j < ArrayColumns; j++)
                     _addEmpty();
         }
+        #endregion
 
-
-
-
-
-
-        /* PUBLIC UTILITY METHODS */
-
-
-
-
-
-
-
+        #region Public Methods
         /// <summary> Fills the table with the correct values using '\n' & ' ' as seperators. </summary>
         /// <param name="data">Raw data string. The string will be automatically trimmed before use.</param>
         public void Fill(string data)
@@ -76,7 +71,7 @@ namespace bark_GUI.CustomControls
             sizeOfData = _countBreakers(data);
 
             //Fill the first (premade) text boxes
-            for (var i = 0; i < MinArrayRows; i++)
+            for (var i = 0; i < ArrayRowsMin; i++)
                 for (var j = 0; j < ArrayColumns; j++)
                 {
                     while (reader < data.Length && !_isABreaker(data[reader]))
@@ -114,27 +109,9 @@ namespace bark_GUI.CustomControls
 
             _filling = false;
         }
+        #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-        /* PRIVATE UTILITY METHODS */
-
-
-
-
-
-
-
-
+        #region Private Methods
         /// <summary> Adds a text box with value. </summary>
         private void _add(string value)
         {
@@ -206,8 +183,6 @@ namespace bark_GUI.CustomControls
             return true;
         }
 
-
-
         private bool _isABreaker(char c)
         {
             switch (c)
@@ -240,7 +215,6 @@ namespace bark_GUI.CustomControls
                 }
             return counter;
         }
-
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
@@ -366,7 +340,7 @@ namespace bark_GUI.CustomControls
             _lastJValue = 0;
 
             //Initialize tables text boxes
-            _textBoxArray = new TextBox[ArrayRows, ArrayColumns];
+            _textBoxArray = new TextBox[ArrayRowsMax, ArrayColumns];
         }
 
         private string _trimVariableTable(string data)
@@ -392,11 +366,9 @@ namespace bark_GUI.CustomControls
             }
             return data;
         }
+        #endregion
 
-
-
-
-
+        #region Unused Methods
         /*
         /// <summary> Decrease the number of text box rows until there is only 1 empty row. </summary>
         private void _supress()
@@ -420,5 +392,6 @@ namespace bark_GUI.CustomControls
             last_i--;
             last_j = 0;
         }*/
+        #endregion
     }
 }

@@ -1,10 +1,13 @@
-﻿using System;
+#region using
+using System;
 using System.Windows.Forms;
+#endregion
 
 namespace bark_GUI
 {
     public partial class ControlPrefPath : UserControl
     {
+        #region Constructor
         public ControlPrefPath(string name, string path,
             Environment.SpecialFolder root = Environment.SpecialFolder.MyComputer)
         {
@@ -16,6 +19,8 @@ namespace bark_GUI
             folderBrowserDialog.SelectedPath = path;
             folderBrowserDialog.Description = "Please select the desired folder.";
         }
+        #endregion
+
         public string GetPath() { return textBoxPath.Text.Trim(); }
 
         private void buttonDirectory_Click(object sender, EventArgs e)

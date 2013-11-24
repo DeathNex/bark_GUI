@@ -1,6 +1,6 @@
-﻿namespace bark_GUI
+namespace bark_GUI
 {
-    partial class preferencesForm
+    partial class PreferencesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             System.Windows.Forms.Panel panelPaths;
             System.Windows.Forms.Panel panel3;
             System.Windows.Forms.Panel panel4;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(preferencesForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesForm));
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonConfirm = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -144,7 +144,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(475, 375);
-            this.Name = "preferencesForm";
+            this.Name = "PreferencesForm";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

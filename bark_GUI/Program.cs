@@ -9,7 +9,7 @@ namespace bark_GUI
         //forms
         static public ViewerForm FormMain;
         static public FormDiagram FormDiagram1;
-        static public preferencesForm FormPref;
+        static public PreferencesForm FormPref;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

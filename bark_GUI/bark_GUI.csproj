@@ -74,6 +74,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlPrefPath.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlPrefPath.Designer.cs">
+      <DependentUpon>ControlPrefPath.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\ControlGroup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -87,14 +93,14 @@
       <DependentUpon>ControlKeyword.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\GeneralControl.cs" />
+    <Compile Include="PreferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="Structure\ElementType\ElementConstant.cs" />
-    <Compile Include="Preferences\ControlPrefPath.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Preferences\ControlPrefPath.Designer.cs">
-      <DependentUpon>ControlPrefPath.cs</DependentUpon>
-    </Compile>
     <Compile Include="Structure\ElementType\ElementKeyword.cs" />
     <Compile Include="Structure\ElementType\ElementReference.cs" />
     <Compile Include="Structure\ItemTypes\ComplexType.cs" />
@@ -137,18 +143,11 @@
     <Compile Include="Structure\Items\GroupItem.cs" />
     <Compile Include="Structure\Items\Item.cs" />
     <Compile Include="Structure\ItemTypes\ItemType.cs" />
-    <Compile Include="Preferences\Pref.cs" />
     <Compile Include="FormDiagram.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormDiagram.Designer.cs">
       <DependentUpon>FormDiagram.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Preferences\preferencesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Preferences\preferencesForm.Designer.cs">
-      <DependentUpon>preferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,6 +174,10 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ControlPrefPath.resx">
+      <DependentUpon>ControlPrefPath.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\ControlConstant.resx">
       <DependentUpon>ControlConstant.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,11 +202,9 @@
     <EmbeddedResource Include="FormDiagram.resx">
       <DependentUpon>FormDiagram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Preferences\ControlPrefPath.resx">
-      <DependentUpon>ControlPrefPath.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Preferences\preferencesForm.resx">
-      <DependentUpon>preferencesForm.cs</DependentUpon>
+    <EmbeddedResource Include="PreferencesForm.resx">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

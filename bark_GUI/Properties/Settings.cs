@@ -1,3 +1,6 @@
+using System.Collections;
+using System.IO;
+
 namespace bark_GUI.Properties {
     
     
@@ -9,6 +12,13 @@ namespace bark_GUI.Properties {
     internal sealed partial class Settings {
         
         public Settings() {
+            if(MenuRecentFiles == null) MenuRecentFiles = new ArrayList();
+            if (PathMainDirectory == null) PathMainDirectory = @Directory.GetCurrentDirectory();
+            if (PathSamples == null) PathSamples = PathMainDirectory + @"\Samples";
+            if (PathMaterials == null) PathMaterials = PathMainDirectory + @"\Materials";
+            if (PathErrorLog == null) PathErrorLog = PathMainDirectory + @"\";
+            if (PathBarkExe == null) PathBarkExe = @"C:\Program Files (x86)\bark\0.5\bin";
+            PathCurrentFile = @"";
             // // To add event handlers for saving and changing settings, uncomment the lines below:
             //
             // this.SettingChanging += this.SettingChangingEventHandler;

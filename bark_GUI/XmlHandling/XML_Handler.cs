@@ -1,48 +1,40 @@
-﻿using System;
+﻿#region using
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using System.Xml.Schema;
 using System.Windows.Forms;
 using System.IO;
-using bark_GUI.Preferences;
+using bark_GUI.Properties;
+
+#endregion
 
 namespace bark_GUI.XmlHandling
 {
     public class XmlHandler
     {
-        /* PRIVATE VARIABLES */
         private List<string> _errors;
+
         private XmlDocument _xmlDocument;
+
         private XmlDocument _lastSavedXmlDocument;
+
         private readonly XsdHandler _xsdHandler;
 
 
-
-        //Constructor
+        #region Constructor
         public XmlHandler()
         {
             _xsdHandler = new XsdHandler();
         }
+        #endregion
 
 
+        #region Public Methods
+        #region Load Files
+        public bool Load() { return Load(Settings.Default.PathCurrentFile); }
 
-
-
-
-        /* PUBLIC METHODS */
-
-
-
-
-
-
-
-
-
-
-
-        public bool Load() { return Load(Pref.Path.CurrentFile); }
         /// <summary> Loads the XML file in the treeView. </summary>
         public bool Load(string pathXml)
         {
@@ -50,8 +42,8 @@ namespace bark_GUI.XmlHandling
             if (!File.Exists(pathXml))
             {
                 MessageBox.Show("Error!!!\nFile not found.");
-                Pref.Path.CurrentFile = null;
-                Pref.Recent.Remove(pathXml);
+                Settings.Default.PathCurrentFile = null;
+                Settings.Default.MenuRecentFiles.Remove(pathXml);
                 return false;
             }
 
@@ -84,33 +76,7 @@ namespace bark_GUI.XmlHandling
             }
             return true;
         }
-
-        private bool _LoadXml(string filepath)
-        {
-            try
-            {
-                _xmlDocument = new XmlDocument();
-                _xmlDocument.Load(filepath);
-                _lastSavedXmlDocument = (XmlDocument)_xmlDocument.Clone();
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
+        #endregion
 
         #region Save Files
         public void Save(string filepath)
@@ -144,35 +110,27 @@ namespace bark_GUI.XmlHandling
         #endregion
 
         /// <summary> Removes any link to previous files. </summary>
-        public void Clear()
+        public void Clear() { _xmlDocument = null; }
+        #endregion
+
+        #region Private Methods
+        private bool _LoadXml(string filepath)
         {
-            _xmlDocument = null;
+            try
+            {
+                _xmlDocument = new XmlDocument();
+                _xmlDocument.Load(filepath);
+                _lastSavedXmlDocument = (XmlDocument)_xmlDocument.Clone();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
+        #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /* UTILITY PRIVATE METHODS */
-
-
-
-
-
-
-
-
-
-
-
+        #region Utility Methods
         private string _clearZeros(string s)
         {
             while (s.EndsWith("\n0 0"))
@@ -186,19 +144,16 @@ namespace bark_GUI.XmlHandling
             return s;
         }
 
-
-
-
-
         private bool _isValueElement(string value)
         {
             if (value.Trim() == "constant" || value.Trim() == "variable")
                 return true;
             return false;
         }
-        private bool _isValueElement(TreeNode t) { return _isValueElement(t.Name); }
-        private bool _isValueElement(XmlNode x) { return _isValueElement(x.Name); }
 
+        private bool _isValueElement(TreeNode t) { return _isValueElement(t.Name); }
+
+        private bool _isValueElement(XmlNode x) { return _isValueElement(x.Name); }
 
         private string _getXsdPathOf(XmlDocument xml, string xmlPath)
         {
@@ -214,28 +169,13 @@ namespace bark_GUI.XmlHandling
             }
             return pathXsd;
         }
+
         private string _getDirectoryOf(string filepath) { return filepath.Remove(filepath.LastIndexOf('\\')); }
+
         private string _getFileNameOf(string filePath) { return filePath.Substring(filePath.LastIndexOf('\\') + 1); }
+        #endregion
 
-
-
-
-
-
-
-
-
-        /* VALIDATION PRIVATE METHODS */
-
-
-
-
-
-
-
-
-
-        #region XML Validation
+        #region XML Validation Methods
         /// <summary> Validates an XML file against the XSD schema.
         /// The XSD schema's path is included in the XML file.</summary>
         /// <param name="filePath">The XML file's path.</param>
@@ -277,6 +217,7 @@ namespace bark_GUI.XmlHandling
             //Handle if any gathered errors
             return _HandleErrors("XML Validation");
         }
+
         // Gather any warnings or errors upon the XML Validation
         private void _ValidationCallBack(object sender, ValidationEventArgs args)
         {
@@ -289,6 +230,7 @@ namespace bark_GUI.XmlHandling
 
 
         }
+
         /// <summary> Creates a Log of the errors that occured during an action and shows them to the user. </summary>
         /// <param name="action">On which action is the error refering to. (e.g. XML Validation)</param>
         private bool _HandleErrors(string action)
@@ -300,7 +242,7 @@ namespace bark_GUI.XmlHandling
             MessageBox.Show(_errors.Count + " Errors occured upon " + action);
 
             //Create the error log's name
-            string errorPath = String.Format("{0}{1}_{2}_error.log", Pref.Path.ErrorLog, DateTime.Now.ToString("yyyy-MM-dd"), action);
+            string errorPath = String.Format("{0}{1}_{2}_error.log", Settings.Default.PathErrorLog, DateTime.Now.ToString("yyyy-MM-dd"), action);
 
             //Create the error Log
             using (StreamWriter sw = new StreamWriter(new FileStream(errorPath, FileMode.Create)))

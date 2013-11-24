@@ -1,4 +1,4 @@
-﻿namespace bark_GUI
+namespace bark_GUI
 {
     partial class ControlPrefPath
     {

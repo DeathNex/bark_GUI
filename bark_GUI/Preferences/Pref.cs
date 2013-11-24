@@ -12,10 +12,10 @@ namespace bark_GUI.Preferences
         {
             public static string MainDirectory = @Directory.GetCurrentDirectory();
 
-            public static string Samples = @"Samples";
-            public static string Materials = @"Materials";
-            public static string ErrorLog = @"";
-            public static string SavePref = @"prefs.txt";
+            public static string Samples = MainDirectory + @"\Samples";
+            public static string Materials = MainDirectory + @"\Materials";
+            public static string ErrorLog = MainDirectory + @"\";
+            public static string SavePref = MainDirectory + @"\prefs.txt";
             public static string BarkExe = @"C:\Program Files (x86)\bark\0.5\bin";
             public static string CurrentFile = @"";
 
@@ -64,9 +64,8 @@ namespace bark_GUI.Preferences
         {
             var paths = Path._ToSave();
 
-            using (FileStream fsWriter = new FileStream(Path.SavePref, FileMode.Create))
+            using (var sw = new StreamWriter(new FileStream(Path.SavePref, FileMode.Create)))
             {
-                StreamWriter sw = new StreamWriter(fsWriter);
                 sw.WriteLine("$PATHS");
                 foreach (var s in paths)
                     sw.WriteLine(s);
@@ -86,9 +85,8 @@ namespace bark_GUI.Preferences
 
             try
             {
-                using (FileStream fsLoader = new FileStream(Path.SavePref, FileMode.Open))
+                using (var sr = new StreamReader(new FileStream(Path.SavePref, FileMode.Open)))
                 {
-                    var sr = new StreamReader(fsLoader);
                     var line = sr.ReadLine();
                     while (line != null)
                     {

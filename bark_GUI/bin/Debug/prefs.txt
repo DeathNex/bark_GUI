@@ -1,0 +1,11 @@
+$PATHS
+Samples="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples"
+Materials="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Materials"
+ErrorLog="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\"
+BarkExe="C:\Program Files (x86)\bark\0.5\bin"
+$RECENT LIST
+Recent="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples\polystyrene.brk"
+Recent="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples\transparent.brk"
+Recent="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples\wall_sun.brk"
+Recent="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples\wall3l.brk"
+Recent="C:\Users\John\Documents\GitHub\bark_GUI\bark_GUI\bin\Debug\Samples\wall3l_tr.brk"

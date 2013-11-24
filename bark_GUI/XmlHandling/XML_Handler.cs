@@ -303,9 +303,8 @@ namespace bark_GUI.XmlHandling
             string errorPath = String.Format("{0}{1}_{2}_error.log", Pref.Path.ErrorLog, DateTime.Now.ToString("yyyy-MM-dd"), action);
 
             //Create the error Log
-            using (FileStream fs = new FileStream(errorPath, FileMode.Create))
+            using (StreamWriter sw = new StreamWriter(new FileStream(errorPath, FileMode.Create)))
             {
-                StreamWriter sw = new StreamWriter(fs);
                 foreach (string error in _errors)
                     foreach (var c in error)
                         if (c == '\n')  //The linebreaks are not handled correctly by the streamwriter

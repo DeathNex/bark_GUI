@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace bark_GUI
 {
     public partial class ControlPrefPath : UserControl
     {
-        public ControlPrefPath(string name, string path)
+        public ControlPrefPath(string name, string path,
+            Environment.SpecialFolder root = Environment.SpecialFolder.MyComputer)
         {
             InitializeComponent();
 
             labelName.Text = name;
             textBoxPath.Text = path;
+            folderBrowserDialog.RootFolder = root;
             folderBrowserDialog.SelectedPath = path;
             folderBrowserDialog.Description = "Please select the desired folder.";
         }
@@ -30,6 +26,7 @@ namespace bark_GUI
 
         private void textBoxPath_TextChanged(object sender, EventArgs e)
         {
+            // TODO: Validate path before accepting.
             folderBrowserDialog.SelectedPath = textBoxPath.Text;
         }
     }

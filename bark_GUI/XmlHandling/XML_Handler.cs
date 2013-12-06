@@ -7,7 +7,6 @@ using System.Xml.Schema;
 using System.Windows.Forms;
 using System.IO;
 using bark_GUI.Properties;
-
 #endregion
 
 namespace bark_GUI.XmlHandling

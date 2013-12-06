@@ -1,13 +1,18 @@
-﻿using System.Diagnostics;
+﻿#region using
+using System;
+using System.Diagnostics;
 using System.Xml;
 using bark_GUI.CustomControls;
 using bark_GUI.Structure.ElementType;
 using bark_GUI.Structure.Items;
+#endregion
 
 namespace bark_GUI.XmlHandling
 {
     static class XmlParser
     {
+        private enum XmlValueType{constant, variable, function, keyword, reference}
+
         /// <summary> Recursive method that fills the element items with values (info).</summary>
         /// <param name="inXmlNode"> Which XML Node you wish to include in the elements. </param>
         public static void DrawInfo(XmlNode inXmlNode)

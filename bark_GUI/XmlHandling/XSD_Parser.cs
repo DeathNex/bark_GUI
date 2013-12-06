@@ -7,66 +7,63 @@ namespace bark_GUI.XmlHandling
 {
     public static class XsdParser
     {
+        /// <summary>
+        /// Gets the name attribute of the given xml element if exists.
+        /// </summary>
+        /// <param name="xsdNode">Xml element that might contain a name attribute.</param>
+        /// <returns>The name if exists or null.</returns>
         public static string GetName(XmlNode xsdNode)
         {
-            if (xsdNode.Attributes != null && xsdNode.Attributes.GetNamedItem("name") != null)
-                return xsdNode.Attributes.GetNamedItem("name").Value.Trim();
+            if (xsdNode.Attributes != null && xsdNode.Attributes["name"] != null)
+                return xsdNode.Attributes["name"].Value.Trim();
             return null;
-        }
-        public static string GetType(XmlNode xsdNode)
-        {
-            Debug.Assert(xsdNode.Attributes != null, "xsdNode.Attributes != null");
-            return xsdNode.Attributes.GetNamedItem("type").Value.Trim();
         }
 
-        public static string GetHelp(XmlNode xsdNode)
+        /// <summary>
+        /// Gets the type of the given xml element if exists.
+        /// </summary>
+        /// <param name="xsdNode"> Xml element that might contain a type attribute. </param>
+        /// <returns>The type if exists or null.</returns>
+        public static string GetType(XmlNode xsdNode)
         {
-            //Find help text if exists
-            if (xsdNode.HasChildNodes)
-            {
-                foreach (XmlNode xc in xsdNode.ChildNodes)
-                    if (xc.HasChildNodes)
-                        //Element Item Help
-                        if (xc.LocalName == "annotation")
-                        {
-                            foreach (XmlNode xcc in xc.ChildNodes)
-                                if (xcc.LocalName == "documentation")
-                                {
-                                    return xcc.InnerText;
-                                }
-                        }
-                        //Group Item Help
-                        else if (xc.LocalName == "complexType")
-                        {
-                            foreach (XmlNode xcc in xc.ChildNodes)
-                                if (xcc.HasChildNodes && xcc.LocalName == "all" || xcc.LocalName == "sequence" || xcc.LocalName == "choice")
-                                    foreach (XmlNode xccc in xcc.ChildNodes)
-                                        if (xccc.HasChildNodes && xccc.LocalName == "annotation")
-                                        {
-                                            foreach (XmlNode xcccc in xccc.ChildNodes)
-                                                if (xcccc.LocalName == "documentation")
-                                                {
-                                                    return xcccc.InnerText;
-                                                }
-                                        }
-                        }
-            }
+            if (xsdNode != null && xsdNode.Attributes != null && xsdNode.Attributes["xs:type"] != null)
+                return xsdNode.Attributes["xs:type"].Value.Trim();
             return null;
         }
+
+        /// <summary>
+        /// Gets help from tag xs:documentation inside the tag xs:annotation that is a child of the given xml element.
+        /// </summary>
+        /// <param name="xsdNode">Xml element that might contain help text.</param>
+        /// <returns>The help text if exists or null.</returns>
+        public static string GetHelp(XmlNode xsdNode)
+        {
+            var elementNotes = xsdNode["xs:annotation"];
+            if (elementNotes == null)
+                return null;
+            var xmlElement = elementNotes["xs:documentation"];
+            return xmlElement != null ? xmlElement.InnerText : null;
+        }
+
         public static List<Item> GetChildren(XmlNode xNode, GroupItem parent, bool isFunction)
         {
             List<Item> list = null;
-            if (xNode.HasChildNodes)
+
+            if (!xNode.HasChildNodes) return null;
+
+            list = new List<Item>(xNode.ChildNodes.Count);
+
+            foreach (XmlNode x in xNode.ChildNodes)
             {
-                list = new List<Item>(xNode.ChildNodes.Count);
-                foreach (XmlNode x in xNode.ChildNodes)
+                switch (x.LocalName)
                 {
-                    if (x.LocalName == "element")
+                    case "element":
                         if (IsElementItem(x))
                             list.Add(new ElementItem(x, parent, isFunction));
                         else
                             list.Add(new GroupItem(x, parent, isFunction));
-                    else if (x.LocalName == "complexType")
+                        break;
+                    case "complexType":
                         foreach (XmlNode xc in x.ChildNodes)
                         {
                             if (xc.LocalName == "element")
@@ -84,6 +81,7 @@ namespace bark_GUI.XmlHandling
                                             list.Add(new GroupItem(xcc, parent, isFunction));
                                 }
                         }
+                        break;
                 }
             }
             return list;
@@ -103,31 +101,48 @@ namespace bark_GUI.XmlHandling
 
 
 
-        public static bool IsGroupItem(XmlNode xsdNode) { return !IsElementItem(xsdNode); }
+        public static bool IsGroupItem(XmlNode xsdNode)
+        {
+            return !IsElementItem(xsdNode);
+        }
         public static bool IsElementItem(XmlNode xsdNode)
         {
-            if (xsdNode.Attributes != null && xsdNode.Attributes.GetNamedItem("type") != null)
-                return true;
-            Debug.Assert(xsdNode.FirstChild.FirstChild.Attributes != null, "xsdNode.FirstChild.FirstChild.Attributes != null");
-            if (xsdNode.FirstChild != null && xsdNode.FirstChild.FirstChild != null &&
-                xsdNode.FirstChild.FirstChild.LocalName == "attribute" && xsdNode.FirstChild.FirstChild.Attributes.GetNamedItem("name") != null &&
-                xsdNode.FirstChild.FirstChild.Attributes.GetNamedItem("name").Value == "reference")
+            return (HasTypeAttribute(xsdNode) || IsElementReferenceItem(xsdNode));
+        }
+        public static bool IsElementReferenceItem(XmlNode xsdNode)
+        {
+            if (xsdNode["xs:complexType"] != null && xsdNode["xs:complexType"].FirstChild != null &&
+                xsdNode["xs:complexType"].FirstChild.LocalName == "attribute" &&
+                xsdNode["xs:complexType"].FirstChild.Attributes != null &&
+                xsdNode["xs:complexType"].FirstChild.Attributes["xs:name"] != null &&
+                xsdNode["xs:complexType"].FirstChild.Attributes["xs:name"].Value == "reference")
                 return true;
             return false;
+        }
+        public static bool HasTypeAttribute(XmlNode xsdNode)
+        {
+            return (xsdNode != null && xsdNode.Attributes != null && xsdNode.Attributes.GetNamedItem("type") != null);
         }
         public static bool IsRequired(XmlNode xsdNode)
         {
             int number;
+
             if (xsdNode.Attributes == null) return true;
+
             var xAtt = xsdNode.Attributes.GetNamedItem("minOccurs") as XmlAttribute;
+
             return xAtt == null || !int.TryParse(xAtt.Value, out number) || number != 0;
         }
         public static bool IsMupltiple(XmlNode xsdNode)
         {
             int number;
+
             if (xsdNode.Attributes == null) return false;
+
             var xAtt = xsdNode.Attributes.GetNamedItem("maxOccurs") as XmlAttribute;
+
             if (xAtt == null) return false;
+
             if (int.TryParse(xAtt.Value, out number))
             {
                 if (number > 1)
@@ -152,60 +167,22 @@ namespace bark_GUI.XmlHandling
 
         public static bool HasType(XmlNode xsdNode)
         {
-            return (xsdNode.Attributes != null && xsdNode.Attributes.GetNamedItem("type") != null);
+            return (GetType(xsdNode) != null);
         }
         public static bool HasAttributes(XmlNode xsdNode)
         {
-            return (xsdNode.Attributes != null);
+            return xsdNode.NodeType == XmlNodeType.Element && ((XmlElement)xsdNode).HasAttributes;
         }
         public static bool HasReference(XmlNode xsdNode)
         {
-            if (xsdNode.HasChildNodes)
-                foreach (XmlNode xc in xsdNode.ChildNodes)
-                    if (xc.LocalName == "complexType" && xc.HasChildNodes)
-                        foreach (XmlNode xcc in xc.ChildNodes)
-                            if (xcc.LocalName == "attribute")
-                            {
-                                Debug.Assert(xcc.Attributes != null, "xcc.Attributes != null");
-                                if (xcc.Attributes.GetNamedItem("name") != null && xcc.Attributes.GetNamedItem("name").Value == "reference")
-                                    return true;
-                            }
-            return false;
+            if (xsdNode == null || xsdNode["xs:complexType"] == null ||
+                xsdNode["xs:complexType"]["xs:attribute"] == null ||
+                xsdNode["xs:complexType"]["xs:attribute"].HasAttributes ||
+                xsdNode["xs:complexType"]["xs:attribute"]["@name"] == null)
+                return false;
+
+            return xsdNode["xs:complexType"]["xs:attribute"]["@name"].Value == "reference";
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         public static List<string> DrawUnits(XmlNode xsdNode)
@@ -219,5 +196,6 @@ namespace bark_GUI.XmlHandling
                 }
             return options;
         }
+
     }
 }

@@ -26,12 +26,12 @@
       <xs:sequence>
         <!--BaseElement <simulation>-->
         <xs:element name="simulation">
+          <xs:annotation>
+            <xs:documentation>This is where the help text can exist.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:all>
-              <xs:annotation>
-                <xs:documentation>This is where the help text can exist.</xs:documentation>
-              </xs:annotation>
-
+              
               <xs:element name="start_time" type="time">
                 <xs:annotation>
                   <xs:documentation>This is also where the help text can exist.</xs:documentation>

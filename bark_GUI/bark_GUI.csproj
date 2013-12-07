@@ -68,35 +68,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
+    <Compile Include="Forms\About\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.Designer.cs">
+    <Compile Include="Forms\About\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControlPrefPath.cs">
+    <Compile Include="Forms\Preferences\ControlPrefPath.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ControlPrefPath.Designer.cs">
+    <Compile Include="Forms\Preferences\ControlPrefPath.Designer.cs">
       <DependentUpon>ControlPrefPath.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlGroup.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlGroup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlGroup.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlGroup.Designer.cs">
       <DependentUpon>ControlGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlKeyword.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlKeyword.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlKeyword.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlKeyword.Designer.cs">
       <DependentUpon>ControlKeyword.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\GeneralControl.cs" />
-    <Compile Include="PreferencesForm.cs">
+    <Compile Include="Forms\Viewer\CustomControls\GeneralControl.cs" />
+    <Compile Include="Forms\Preferences\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PreferencesForm.Designer.cs">
+    <Compile Include="Forms\Preferences\PreferencesForm.Designer.cs">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.cs" />
@@ -104,37 +104,37 @@
     <Compile Include="Structure\ElementType\ElementKeyword.cs" />
     <Compile Include="Structure\ElementType\ElementReference.cs" />
     <Compile Include="Structure\ItemTypes\ComplexType.cs" />
-    <Compile Include="CustomControls\ControlFunction.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlFunction.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlFunction.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlFunction.Designer.cs">
       <DependentUpon>ControlFunction.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlReference.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlReference.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlReference.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlReference.Designer.cs">
       <DependentUpon>ControlReference.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlConstant.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlConstant.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlConstant.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlConstant.Designer.cs">
       <DependentUpon>ControlConstant.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlVariable.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlVariable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlVariable.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlVariable.Designer.cs">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ControlVariableTable.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlVariableTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomControls\ControlVariableTable.Designer.cs">
+    <Compile Include="Forms\Viewer\CustomControls\ControlVariableTable.Designer.cs">
       <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\CustomControl.cs">
+    <Compile Include="Forms\Viewer\CustomControls\CustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Structure\ElementType\ElementFunction.cs" />
@@ -143,27 +143,27 @@
     <Compile Include="Structure\Items\GroupItem.cs" />
     <Compile Include="Structure\Items\Item.cs" />
     <Compile Include="Structure\ItemTypes\ItemType.cs" />
-    <Compile Include="FormDiagram.cs">
+    <Compile Include="Forms\Diagram\FormDiagram.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDiagram.Designer.cs">
+    <Compile Include="Forms\Diagram\FormDiagram.Designer.cs">
       <DependentUpon>FormDiagram.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveOnExitForm.cs">
+    <Compile Include="Forms\Dialogs\SaveOnExitForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SaveOnExitForm.Designer.cs">
+    <Compile Include="Forms\Dialogs\SaveOnExitForm.Designer.cs">
       <DependentUpon>SaveOnExitForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Structure\ItemTypes\SimpleType.cs" />
     <Compile Include="Structure\Structure.cs" />
     <Compile Include="Structure\Unit.cs" />
-    <Compile Include="ViewerForm.cs">
+    <Compile Include="Forms\Viewer\ViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ViewerForm.Designer.cs">
+    <Compile Include="Forms\Viewer\ViewerForm.Designer.cs">
       <DependentUpon>ViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Structure\Items\ElementItem.cs" />
@@ -171,38 +171,38 @@
     <Compile Include="XmlHandling\XML_Parser.cs" />
     <Compile Include="XmlHandling\XSD_Handler.cs" />
     <Compile Include="XmlHandling\XSD_Parser.cs" />
-    <EmbeddedResource Include="AboutBox.resx">
+    <EmbeddedResource Include="Forms\About\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControlPrefPath.resx">
+    <EmbeddedResource Include="Forms\Preferences\ControlPrefPath.resx">
       <DependentUpon>ControlPrefPath.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlConstant.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlConstant.resx">
       <DependentUpon>ControlConstant.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlFunction.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlFunction.resx">
       <DependentUpon>ControlFunction.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlGroup.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlGroup.resx">
       <DependentUpon>ControlGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlKeyword.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlKeyword.resx">
       <DependentUpon>ControlKeyword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlReference.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlReference.resx">
       <DependentUpon>ControlReference.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlVariable.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlVariable.resx">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomControls\ControlVariableTable.resx">
+    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlVariableTable.resx">
       <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDiagram.resx">
+    <EmbeddedResource Include="Forms\Diagram\FormDiagram.resx">
       <DependentUpon>FormDiagram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesForm.resx">
+    <EmbeddedResource Include="Forms\Preferences\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -216,10 +216,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SaveOnExitForm.resx">
+    <EmbeddedResource Include="Forms\Dialogs\SaveOnExitForm.resx">
       <DependentUpon>SaveOnExitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ViewerForm.resx">
+    <EmbeddedResource Include="Forms\Viewer\ViewerForm.resx">
       <DependentUpon>ViewerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -283,7 +283,7 @@ namespace bark_GUI.XmlHandling
         private static void _createUnit(XmlNode xNode)
         {
             //Avoid unexpected situations
-            if (!xNode.HasChildNodes)
+            if (!XsdParser.HasChildren(xNode))
                 return;
 
 
@@ -291,7 +291,7 @@ namespace bark_GUI.XmlHandling
             //Name
             var name = XsdParser.GetName(xNode);
             //Enumeration
-            var options = XsdParser.DrawUnits(xNode);
+            var options = XsdParser.GetUnitOptions(xNode);
 
 
             //Finish
@@ -307,11 +307,11 @@ namespace bark_GUI.XmlHandling
             var name = XsdParser.GetName(xNode);
 
             //Avoid unexpected situations
-            if (!xNode.HasChildNodes)
+            if (!XsdParser.HasChildren(xNode))
                 return;
 
             //Draw information
-            if (xNode.FirstChild.LocalName == "restriction")
+            if (xNode["xs:restriction"] != null)
             {
                 if (xNode.FirstChild.FirstChild.LocalName == "enumeration")
                 {
@@ -390,12 +390,12 @@ namespace bark_GUI.XmlHandling
                     Structure.Structure.Add(new SimpleType(name, basicType, min, max));
                 }
             }
-            else if (xNode.FirstChild.LocalName == "list")
+            else if (xNode["list"] != null)
             {
                 BasicType basicType = BasicType.String;
                 Restriction restriction = Restriction.Basic;
-                Debug.Assert(xNode.FirstChild.Attributes != null, "xNode.FirstChild.Attributes != null");
-                string xsValue = xNode.FirstChild.Attributes.GetNamedItem("itemType").Value;
+                Debug.Assert(xNode["list"].HasAttributes, "xNode[list].Attributes != null");
+                string xsValue = xNode["list"].Attributes["itemType"].Value;
                 switch (xsValue)
                 {
                     case "xs:string":

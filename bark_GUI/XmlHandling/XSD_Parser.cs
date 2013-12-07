@@ -7,6 +7,7 @@ namespace bark_GUI.XmlHandling
 {
     public static class XsdParser
     {
+        #region Get
         /// <summary>
         /// Gets the name attribute of the given xml element if exists.
         /// </summary>
@@ -87,115 +88,84 @@ namespace bark_GUI.XmlHandling
             return list;
         }
 
+        public static List<string> GetUnitOptions(XmlNode xsdNode)
+        {
+            var options = new List<string>();
+            var errorMsg = "Error!\n\n";
+            errorMsg += "Folder: XmlHandling - Class: XSD_Parser - Method: DrawUnits()\n";
+            errorMsg += "XSD - Units - " + xsdNode.Name + ": " + "\n\t";
 
+            var xmlNodeList = xsdNode["xs:restriction"];
 
+            Debug.Assert(xmlNodeList != null, errorMsg + "Expected 'xs:restriction' child not found.");
 
+            foreach (XmlElement option in xmlNodeList)
+            {
+                Debug.Assert(option.Name == "xs:enumeration", errorMsg + "Expected 'xs:enumeration' child not found.");
+                Debug.Assert(option.HasAttributes && option.Attributes["value"] != null, errorMsg + " - xs:enumeration: " +
+                    "\n\tExpected 'value' attribute not found.");
+                options.Add(option.Attributes["value"].Value.Trim());
+            }
 
+            return options;
+        }
+        #endregion
 
-
-
-
-
-
-
-
-
+        #region Is
+        public static bool IsElementItem(XmlNode xsdNode)
+        {
+            return HasType(xsdNode);
+        }
 
         public static bool IsGroupItem(XmlNode xsdNode)
         {
             return !IsElementItem(xsdNode);
         }
-        public static bool IsElementItem(XmlNode xsdNode)
-        {
-            return (HasTypeAttribute(xsdNode) || IsElementReferenceItem(xsdNode));
-        }
+
         public static bool IsElementReferenceItem(XmlNode xsdNode)
         {
-            if (xsdNode["xs:complexType"] != null && xsdNode["xs:complexType"].FirstChild != null &&
-                xsdNode["xs:complexType"].FirstChild.LocalName == "attribute" &&
-                xsdNode["xs:complexType"].FirstChild.Attributes != null &&
-                xsdNode["xs:complexType"].FirstChild.Attributes["xs:name"] != null &&
-                xsdNode["xs:complexType"].FirstChild.Attributes["xs:name"].Value == "reference")
-                return true;
-            return false;
+            return GetType(xsdNode) == "reference";
         }
-        public static bool HasTypeAttribute(XmlNode xsdNode)
-        {
-            return (xsdNode != null && xsdNode.Attributes != null && xsdNode.Attributes.GetNamedItem("type") != null);
-        }
+
         public static bool IsRequired(XmlNode xsdNode)
         {
             int number;
 
-            if (xsdNode.Attributes == null) return true;
+            if (xsdNode.Attributes != null && xsdNode.Attributes["minOccurs"] != null &&
+                int.TryParse(xsdNode.Attributes["minOccurs"].Value.Trim(), out number) && number == 0)
+                return false;
 
-            var xAtt = xsdNode.Attributes.GetNamedItem("minOccurs") as XmlAttribute;
-
-            return xAtt == null || !int.TryParse(xAtt.Value, out number) || number != 0;
+            return true;
         }
+
         public static bool IsMupltiple(XmlNode xsdNode)
         {
             int number;
 
-            if (xsdNode.Attributes == null) return false;
-
-            var xAtt = xsdNode.Attributes.GetNamedItem("maxOccurs") as XmlAttribute;
-
-            if (xAtt == null) return false;
-
-            if (int.TryParse(xAtt.Value, out number))
-            {
-                if (number > 1)
+            if (xsdNode.Attributes != null && xsdNode.Attributes["maxOccurs"] != null)
+                if ((int.TryParse(xsdNode.Attributes["maxOccurs"].Value.Trim(), out number) && number > 1) ||
+                    (xsdNode.Attributes["maxOccurs"].Value.Trim() == "unbounded"))
                     return true;
-            }
-            else if (xAtt.Value == "unbounded")
-                return true;
+
             return false;
         }
+        #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
+        #region Has
         public static bool HasType(XmlNode xsdNode)
         {
             return (GetType(xsdNode) != null);
         }
+
         public static bool HasAttributes(XmlNode xsdNode)
         {
             return xsdNode.NodeType == XmlNodeType.Element && ((XmlElement)xsdNode).HasAttributes;
         }
-        public static bool HasReference(XmlNode xsdNode)
+
+        public static bool HasChildren(XmlNode xsdNode)
         {
-            if (xsdNode == null || xsdNode["xs:complexType"] == null ||
-                xsdNode["xs:complexType"]["xs:attribute"] == null ||
-                xsdNode["xs:complexType"]["xs:attribute"].HasAttributes ||
-                xsdNode["xs:complexType"]["xs:attribute"]["@name"] == null)
-                return false;
-
-            return xsdNode["xs:complexType"]["xs:attribute"]["@name"].Value == "reference";
+            return xsdNode.HasChildNodes;
         }
-
-
-        public static List<string> DrawUnits(XmlNode xsdNode)
-        {
-            List<string> options = new List<string>();
-            foreach (XmlNode option in xsdNode.FirstChild.ChildNodes)
-                if (option.LocalName == "enumeration")
-                {
-                    Debug.Assert(option.Attributes != null, "option.Attributes != null");
-                    options.Add(option.Attributes.GetNamedItem("value").Value.Trim());
-                }
-            return options;
-        }
-
+        #endregion
     }
 }

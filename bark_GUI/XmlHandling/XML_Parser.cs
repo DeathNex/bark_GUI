@@ -17,6 +17,8 @@ namespace bark_GUI.XmlHandling
         /// <param name="inXmlNode"> Which XML Node you wish to include in the elements. </param>
         public static void DrawInfo(XmlNode inXmlNode)
         {
+            try
+            {
             if (inXmlNode == null)
                 return;
 
@@ -42,7 +44,7 @@ namespace bark_GUI.XmlHandling
                                 Debug.Print("### Element with multiple items hit!\n{0}", item);
                             Debug.Assert(elementItem != null, "elementItem != null");
                             elementItem.SelectType(EType.Constant);
-                            ElementConstant eConstant = elementItem.SelectedType as ElementConstant;
+                            var eConstant = elementItem.SelectedType as ElementConstant;
                             Debug.Assert(eConstant != null, "eConstant != null");
                             eConstant.Value = inXmlNode.InnerText;
                             Debug.Assert(inXmlNode.Attributes != null, "inXmlNode.Attributes != null");
@@ -57,7 +59,7 @@ namespace bark_GUI.XmlHandling
                                 Debug.Print("### Element with multiple items hit!\n{0}", item);
                             Debug.Assert(elementItem != null, "elementItem != null");
                             elementItem.SelectType(EType.Variable);
-                            ElementVariable eVariable = elementItem.SelectedType as ElementVariable;
+                            var eVariable = elementItem.SelectedType as ElementVariable;
                             Debug.Assert(eVariable != null, "eVariable != null");
                             eVariable.Value = inXmlNode.InnerText;
                             Debug.Assert(inXmlNode.Attributes != null, "inXmlNode.Attributes != null");
@@ -86,6 +88,12 @@ namespace bark_GUI.XmlHandling
             else if (inXmlNode.Attributes != null && inXmlNode.Attributes.GetNamedItem("reference") != null)
             {
                 var rvalue = inXmlNode.Attributes.GetNamedItem("reference").Value;
+            }
+
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

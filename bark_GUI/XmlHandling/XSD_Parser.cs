@@ -26,8 +26,8 @@ namespace bark_GUI.XmlHandling
         /// <returns>The type if exists or null.</returns>
         public static string GetType(XmlNode xsdNode)
         {
-            if (xsdNode != null && xsdNode.Attributes != null && xsdNode.Attributes["xs:type"] != null)
-                return xsdNode.Attributes["xs:type"].Value.Trim();
+            if (xsdNode != null && xsdNode.Attributes != null && xsdNode.Attributes["type"] != null)
+                return xsdNode.Attributes["type"].Value.Trim();
             return null;
         }
 

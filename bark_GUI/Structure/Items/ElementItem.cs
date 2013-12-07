@@ -11,12 +11,11 @@ namespace bark_GUI.Structure.Items
     {
         /* PUBLIC PROPERTIES */
         public GeneralControl Control { get; private set; }
-        public ElementType.ElementType SelectedType { get { return _selectedType; } set { _selectedType = value; } }
+        public ElementType.ElementType SelectedType { get; set; }
 
         /* PRIVATE VARIABLES */
         // The control that is shown on the windows form.
         private ComplexType _complexType;
-        private ElementType.ElementType _selectedType;
 
 
 
@@ -86,7 +85,7 @@ namespace bark_GUI.Structure.Items
                         typeOptions = _complexType.GetTypeOptions();
                         if (typeOptions != null && typeOptions.Count > 0)
                         {
-                            _selectedType = _complexType.Constant;
+                            SelectedType = _complexType.Constant;
                             if (_complexType.Constant != null)
                                 list.Add(CustomControlType.Constant);
                             if (_complexType.Variable != null)
@@ -96,13 +95,13 @@ namespace bark_GUI.Structure.Items
                         }
                         else if (_complexType.Keyword != null)
                         {
-                            _selectedType = _complexType.Keyword;
+                            SelectedType = _complexType.Keyword;
                             list.Add(CustomControlType.Keyword);
                             keyOptions = _complexType.Keyword.SimpleType.GetOptions();
                         }
                         else if (_complexType.Reference != null)
                         {
-                            _selectedType = _complexType.Reference;
+                            SelectedType = _complexType.Reference;
                             list.Add(CustomControlType.Reference);
                             refOptions = _complexType.Reference.SimpleType.GetOptions();
                         }
@@ -130,19 +129,19 @@ namespace bark_GUI.Structure.Items
             switch (type)
             {
                 case EType.Constant:
-                    _selectedType = _complexType.Constant;
+                    SelectedType = _complexType.Constant;
                     break;
                 case EType.Variable:
-                    _selectedType = _complexType.Variable;
+                    SelectedType = _complexType.Variable;
                     break;
                 case EType.Function:
-                    _selectedType = _complexType.Function;
+                    SelectedType = _complexType.Function;
                     break;
                 case EType.Reference:
-                    _selectedType = _complexType.Reference;
+                    SelectedType = _complexType.Reference;
                     break;
                 case EType.Keyword:
-                    _selectedType = _complexType.Keyword;
+                    SelectedType = _complexType.Keyword;
                     break;
             }
         }

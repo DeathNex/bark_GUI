@@ -62,7 +62,7 @@ namespace bark_GUI.CustomControls
             if (Tag == null) return;
             var attributes = ((XmlNode) Tag).Attributes;
             if (attributes != null)
-                attributes.GetNamedItem("unit").Value = comboBoxUnit.SelectedText;
+                attributes["unit"].Value = comboBoxUnit.SelectedText;  //TODO: Remove Xml Dependency.
         }
         private void comboBoxUnit2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -70,7 +70,7 @@ namespace bark_GUI.CustomControls
             XmlNode xmlNode = Tag as XmlNode;
             if (xmlNode != null)
                 if (xmlNode.Attributes != null)
-                    xmlNode.Attributes.GetNamedItem("unit2").Value = comboBoxUnit2.SelectedText;
+                    xmlNode.Attributes["x_unit"].Value = comboBoxUnit2.SelectedText;  //TODO: Remove Xml Dependency.
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

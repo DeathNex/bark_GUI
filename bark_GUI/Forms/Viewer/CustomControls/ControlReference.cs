@@ -43,7 +43,7 @@ namespace bark_GUI.CustomControls
             if (Tag == null) return;
             var attributes = ((XmlNode) Tag).Attributes;
             if (attributes != null)
-                attributes.GetNamedItem("reference").Value = comboBoxValue.SelectedItem.ToString();
+                attributes["reference"].Value = comboBoxValue.SelectedItem.ToString();  //TODO: Remove Xml Dependency.
         }
     }
 }

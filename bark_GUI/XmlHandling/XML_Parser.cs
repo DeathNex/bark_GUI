@@ -1,5 +1,6 @@
 ﻿#region using
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using bark_GUI.CustomControls;
@@ -11,90 +12,296 @@ namespace bark_GUI.XmlHandling
 {
     static class XmlParser
     {
-        private enum XmlValueType{constant, variable, function, keyword, reference}
-
+        #region Public Methods
         /// <summary> Recursive method that fills the element items with values (info).</summary>
         /// <param name="inXmlNode"> Which XML Node you wish to include in the elements. </param>
         public static void DrawInfo(XmlNode inXmlNode)
         {
+            Item item;
+            const string errorMsg = "XmlHandling - XmlParser - DrawInfo:\n - ";
+
+            Debug.Assert(inXmlNode != null, errorMsg + "Given argument 'inXmlNode' was null.");
+
             try
             {
-            if (inXmlNode == null)
-                return;
+                // Find the element item from our built Structure to connect it.
+                item = Structure.Structure.FindItem(inXmlNode);
 
-            //Find the element item from our built Structure to connect it
-            var item = Structure.Structure.FindItem(inXmlNode);
-            ElementItem elementItem;
-            if (item == null)
-                return;
-            item.SetXmlNode(inXmlNode);
+                // Check.
+                Debug.Assert(item != null, errorMsg + "Item " + inXmlNode.LocalName + " not found in structure.");
 
-            //Check for NewName
-            if (inXmlNode.Attributes != null && inXmlNode.Attributes.GetNamedItem("name") != null)
-                item.NewName = inXmlNode.Attributes.GetNamedItem("name").Value;
+                // Handle Multiples.
+                {
+                    var groupItem = item as GroupItem;
+                    if (groupItem != null && groupItem.IsMultiple)
+                        item = groupItem.DuplicateMultiple();
+                }
 
-            // Loop through Element Item XML Nodes
-            if (inXmlNode.HasChildNodes)
-                foreach (XmlNode xc in inXmlNode.ChildNodes)
-                    switch (xc.Name)
+                // Set Item's XmlNode.
+                item.SetXmlNode(inXmlNode);
+
+                // Check for NewName
+                item.NewName = GetCustomName(inXmlNode);
+
+                // Loop through Element Item XML Nodes.
+                if (inXmlNode.HasChildNodes)
+                {
+                    foreach (XmlNode xc in inXmlNode.ChildNodes)
                     {
-                        case "constant":
-                            elementItem = item as ElementItem;
-                            if (item.Name == "temperature")      // TODO Multiple items handling.
-                                Debug.Print("### Element with multiple items hit!\n{0}", item);
-                            Debug.Assert(elementItem != null, "elementItem != null");
-                            elementItem.SelectType(EType.Constant);
-                            var eConstant = elementItem.SelectedType as ElementConstant;
-                            Debug.Assert(eConstant != null, "eConstant != null");
-                            eConstant.Value = inXmlNode.InnerText;
-                            Debug.Assert(inXmlNode.Attributes != null, "inXmlNode.Attributes != null");
-                            eConstant.Unit.Select(inXmlNode.Attributes.GetNamedItem("unit").Value.Trim());
-                            elementItem.Control.Select(CustomControlType.Constant);
-                            elementItem.Control.SetValue(eConstant.Value);
-                            elementItem.Control.SetUnit(inXmlNode.Attributes.GetNamedItem("unit").Value.Trim());
-                            break;
-                        case "variable":
-                            elementItem = item as ElementItem;
-                            if (item.Name == "temperature")      // TODO Multiple items handling.
-                                Debug.Print("### Element with multiple items hit!\n{0}", item);
-                            Debug.Assert(elementItem != null, "elementItem != null");
-                            elementItem.SelectType(EType.Variable);
-                            var eVariable = elementItem.SelectedType as ElementVariable;
-                            Debug.Assert(eVariable != null, "eVariable != null");
-                            eVariable.Value = inXmlNode.InnerText;
-                            Debug.Assert(inXmlNode.Attributes != null, "inXmlNode.Attributes != null");
-                            eVariable.Unit.Select(inXmlNode.Attributes.GetNamedItem("unit").Value.Trim());
-                            if (inXmlNode.Attributes.GetNamedItem("x_unit") != null)
-                            {
-                                eVariable.X_Unit.Select(inXmlNode.Attributes.GetNamedItem("x_unit").Value.Trim());
-                                elementItem.Control.SetX_Unit(inXmlNode.Attributes.GetNamedItem("x_unit").Value.Trim());
-                            }
-                            elementItem.Control.Select(CustomControlType.Variable);
-                            elementItem.Control.SetValue(inXmlNode.InnerText);
-                            elementItem.Control.SetUnit(inXmlNode.Attributes.GetNamedItem("unit").Value.Trim());
-                            
-                            break;
-                        case "function":
-                            var fvalue = xc.FirstChild.Name;
-                            break;
-                        case "keyword":
-                            var kvalue = inXmlNode.InnerText;
-                            break;
-                        default:
-                            DrawInfo(xc);
-                            break;
+                        switch (xc.Name)
+                        {
+                            case "constant":
+                                DrawAConstant(inXmlNode, item);
+                                break;
+                            case "variable":
+                                DrawAVariable(inXmlNode, item);
+                                break;
+                            case "function":
+                                DrawAFunction(inXmlNode, item, xc);
+                                break;
+                            case "keyword":
+                                DrawAKeyword(inXmlNode, item);
+                                break;
+                            default:
+                                // Recursive call.
+                                DrawInfo(xc);
+                                break;
+                        }
                     }
-            //Handle references
-            else if (inXmlNode.Attributes != null && inXmlNode.Attributes.GetNamedItem("reference") != null)
-            {
-                var rvalue = inXmlNode.Attributes.GetNamedItem("reference").Value;
-            }
-
+                }
+                else
+                {
+                    DrawAReference(inXmlNode, item);
+                }
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
+        #endregion
+
+        #region Private Draw Methods
+        private static void DrawAConstant(XmlNode inXmlNode, Item item)
+        {
+            const string errorMsg = "XmlHandling - XmlParser - DrawAConstant:\n - ";
+
+            // Check item.
+            Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+
+            var elementItem = item as ElementItem;
+
+            if (item.Name == "temperature")      // TODO Multiple items handling.
+                Debug.Print("### Element with multiple items hit!\n{0}", item);
+
+            // Check elementItem.
+            Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+
+            elementItem.SelectType(EType.Constant);
+
+            var eConstant = elementItem.SelectedType as ElementConstant;
+
+            // Check eConstant.
+            Debug.Assert(eConstant != null, errorMsg + "Variable eConstant was null.");
+
+            // Set the value.
+            eConstant.Value = inXmlNode.InnerText;
+
+            // Check inXmlNode.Attributes.
+            Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
+
+            // Set the selected unit.
+            eConstant.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
+
+            // Set the item's Control.
+            elementItem.Control.Select(CustomControlType.Constant);
+            elementItem.Control.SetValue(eConstant.Value);
+            elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+        }
+
+        private static void DrawAVariable(XmlNode inXmlNode, Item item)
+        {
+            const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+
+            // Check item.
+            Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+
+            var elementItem = item as ElementItem;
+
+            if (item.Name == "temperature")      // TODO Multiple items handling.
+                Debug.Print("### Element with multiple items hit!\n{0}", item);
+
+            // Check elementItem.
+            Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+
+            elementItem.SelectType(EType.Variable);
+
+            var eVariable = elementItem.SelectedType as ElementVariable;
+
+            // Check eConstant.
+            Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+
+            // Set the value.
+            eVariable.Value = inXmlNode.InnerText;
+
+            // Check inXmlNode.Attributes.
+            Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
+
+            // Set the selected unit.
+            eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
+
+            // Set the selected x_unit.
+            if (inXmlNode.Attributes["x_unit"] != null)
+            {
+                eVariable.X_Unit.Select(inXmlNode.Attributes["x_unit"].Value.Trim());
+                elementItem.Control.SetX_Unit(inXmlNode.Attributes["x_unit"].Value.Trim());
+            }
+            else
+            {
+                Debug.WriteLine("#CUSTOM WARNING\n" + errorMsg + "Item " + inXmlNode.LocalName +
+                    " is of type 'variable' but has no x_unit value.");
+            }
+
+            // Set the item's Control.
+            elementItem.Control.Select(CustomControlType.Variable);
+            elementItem.Control.SetValue(inXmlNode.InnerText);
+            elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+        }
+
+        // TODO: Handle functions.
+        private static void DrawAFunction(XmlNode inXmlNode, Item item, XmlNode xc)
+        {
+            var fvalue = xc.FirstChild.Name;
+
+            //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+
+            //// Check item.
+            //Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+
+            //var elementItem = item as ElementItem;
+
+            //if (item.Name == "temperature")      // TODO Multiple items handling.
+            //    Debug.Print("### Element with multiple items hit!\n{0}", item);
+
+            //// Check elementItem.
+            //Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+
+            //elementItem.SelectType(EType.Variable);
+
+            //var eVariable = elementItem.SelectedType as ElementVariable;
+
+            //// Check eConstant.
+            //Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+
+            //// Set the value.
+            //eVariable.Value = inXmlNode.InnerText;
+
+            //// Check inXmlNode.Attributes.
+            //Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
+
+            //// Set the selected unit.
+            //eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
+
+            //// Set the item's Control.
+            //elementItem.Control.Select(CustomControlType.Variable);
+            //elementItem.Control.SetValue(inXmlNode.InnerText);
+            //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+        }
+
+        // TODO: Handle keywords.
+        private static void DrawAKeyword(XmlNode inXmlNode, Item item)
+        {
+            var kvalue = inXmlNode.InnerText;
+
+            //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+
+            //// Check item.
+            //Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+
+            //var elementItem = item as ElementItem;
+
+            //if (item.Name == "temperature")      // TODO Multiple items handling.
+            //    Debug.Print("### Element with multiple items hit!\n{0}", item);
+
+            //// Check elementItem.
+            //Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+
+            //elementItem.SelectType(EType.Variable);
+
+            //var eVariable = elementItem.SelectedType as ElementVariable;
+
+            //// Check eConstant.
+            //Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+
+            //// Set the value.
+            //eVariable.Value = inXmlNode.InnerText;
+
+            //// Check inXmlNode.Attributes.
+            //Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
+
+            //// Set the selected unit.
+            //eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
+
+            //// Set the item's Control.
+            //elementItem.Control.Select(CustomControlType.Variable);
+            //elementItem.Control.SetValue(inXmlNode.InnerText);
+            //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+        }
+
+        // TODO: Handle references.
+        private static void DrawAReference(XmlNode inXmlNode, Item item)
+        {
+            // Checks.
+            if (inXmlNode.Attributes == null || inXmlNode.Attributes["reference"] == null)
+                return;
+
+            var rvalue = inXmlNode.Attributes["reference"].Value;
+
+            //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+
+            //// Check item.
+            //Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+
+            //var elementItem = item as ElementItem;
+
+            //if (item.Name == "temperature")      // TODO Multiple items handling.
+            //    Debug.Print("### Element with multiple items hit!\n{0}", item);
+
+            //// Check elementItem.
+            //Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+
+            //elementItem.SelectType(EType.Variable);
+
+            //var eVariable = elementItem.SelectedType as ElementVariable;
+
+            //// Check eConstant.
+            //Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+
+            //// Set the value.
+            //eVariable.Value = inXmlNode.InnerText;
+
+            //// Check inXmlNode.Attributes.
+            //Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
+
+            //// Set the selected unit.
+            //eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
+
+            //// Set the item's Control.
+            //elementItem.Control.Select(CustomControlType.Variable);
+            //elementItem.Control.SetValue(inXmlNode.InnerText);
+            //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+        }
+        #endregion
+
+        #region Private Utility Methods
+        private static string GetCustomName(XmlNode inXmlNode)
+        {
+            if (inXmlNode.Attributes != null && inXmlNode.Attributes["name"] != null)
+                return inXmlNode.Attributes["name"].Value;
+            return null;
+        }
+        #endregion
     }
 }
+
+

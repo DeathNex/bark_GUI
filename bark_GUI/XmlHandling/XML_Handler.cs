@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using System.Windows.Forms;
@@ -73,6 +74,9 @@ namespace bark_GUI.XmlHandling
                 MessageBox.Show(ex.Message);
                 return false;
             }
+            var debugMultiples = Structure.Structure.GroupItems.Where(item => item.IsMultiple).ToList();
+            var debugGroupItems = Structure.Structure.GroupItems.ToList();
+            var debugBoundary = debugGroupItems[9];
             return true;
         }
         #endregion
@@ -156,11 +160,11 @@ namespace bark_GUI.XmlHandling
 
         private string _getXsdPathOf(XmlDocument xml, string xmlPath)
         {
-            string pathXsd = _getDirectoryOf(xmlPath);
+            var pathXsd = _getDirectoryOf(xmlPath);
             try
             {
                 Debug.Assert(xml.DocumentElement != null, "xml.DocumentElement != null");
-                pathXsd += '\\' + xml.DocumentElement.Attributes.GetNamedItem("xsi:noNamespaceSchemaLocation").Value;
+                pathXsd += '\\' + xml.DocumentElement.Attributes["xsi:noNamespaceSchemaLocation"].Value;
             }
             catch (Exception ex)
             {

@@ -67,7 +67,7 @@ namespace bark_GUI.CustomControls
             if (Tag == null) return;
             XmlAttributeCollection attributes = ((XmlNode) Tag).Attributes;
             if (attributes != null)
-                attributes.GetNamedItem("unit").Value = comboBoxUnit.SelectedText.Trim();
+                attributes["unit"].Value = comboBoxUnit.SelectedText.Trim();  //TODO: Remove Xml Dependency.
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

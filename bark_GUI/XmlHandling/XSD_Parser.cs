@@ -46,48 +46,6 @@ namespace bark_GUI.XmlHandling
             return xmlElement != null ? xmlElement.InnerText : null;
         }
 
-        public static List<Item> GetChildren(XmlNode xNode, GroupItem parent, bool isFunction)
-        {
-            List<Item> list = null;
-
-            if (!xNode.HasChildNodes) return null;
-
-            list = new List<Item>(xNode.ChildNodes.Count);
-
-            foreach (XmlNode x in xNode.ChildNodes)
-            {
-                switch (x.LocalName)
-                {
-                    case "element":
-                        if (IsElementItem(x))
-                            list.Add(new ElementItem(x, parent, isFunction));
-                        else
-                            list.Add(new GroupItem(x, parent, isFunction));
-                        break;
-                    case "complexType":
-                        foreach (XmlNode xc in x.ChildNodes)
-                        {
-                            if (xc.LocalName == "element")
-                                if (IsElementItem(xc))
-                                    list.Add(new ElementItem(xc, parent, isFunction));
-                                else
-                                    list.Add(new GroupItem(xc, parent, isFunction));
-                            else if (xc.LocalName == "sequence" || xc.LocalName == "all" || xc.LocalName == "choice")
-                                foreach (XmlNode xcc in xc.ChildNodes)
-                                {
-                                    if (xcc.LocalName == "element")
-                                        if (IsElementItem(xcc))
-                                            list.Add(new ElementItem(xcc, parent, isFunction));
-                                        else
-                                            list.Add(new GroupItem(xcc, parent, isFunction));
-                                }
-                        }
-                        break;
-                }
-            }
-            return list;
-        }
-
         public static List<string> GetUnitOptions(XmlNode xsdNode)
         {
             var options = new List<string>();
@@ -165,6 +123,59 @@ namespace bark_GUI.XmlHandling
         public static bool HasChildren(XmlNode xsdNode)
         {
             return xsdNode.HasChildNodes;
+        }
+        #endregion
+
+        #region Create
+        /// <summary>
+        /// Creates all the children of the given item and returns them as a list of items.
+        ///  Includes inner children too (recursive through GroupItem constructors).
+        /// </summary>
+        /// <param name="inXmlNode"> The given item's XmlNode to create it's children. </param>
+        /// <param name="parent"> The parent of the given item's XmlNode. </param>
+        /// <param name="isFunction"> Keep track of function items. </param>
+        /// <returns></returns>
+        public static List<Item> CreateChildren(XmlNode inXmlNode, GroupItem parent, bool isFunction)
+        {
+            List<Item> list = null;
+
+            // Check.
+            if (!inXmlNode.HasChildNodes) return null;
+
+            list = new List<Item>(inXmlNode.ChildNodes.Count);
+
+            foreach (XmlNode x in inXmlNode.ChildNodes)
+            {
+                switch (x.LocalName)
+                {
+                    case "element":
+                        if (IsElementItem(x))
+                            list.Add(new ElementItem(x, parent, isFunction));
+                        else
+                            list.Add(new GroupItem(x, parent, isFunction));
+                        break;
+                    case "complexType":     // CHECK: Hardcoded XSD sequence.
+                        foreach (XmlNode xc in x.ChildNodes)
+                        {
+                            if (xc.LocalName == "element")
+                                if (IsElementItem(xc))
+                                    list.Add(new ElementItem(xc, parent, isFunction));
+                                else
+                                    list.Add(new GroupItem(xc, parent, isFunction));
+                            else if (xc.LocalName == "sequence" || xc.LocalName == "all" || xc.LocalName == "choice")
+                                foreach (XmlNode xcc in xc.ChildNodes)
+                                {
+                                    if (xcc.LocalName == "element")
+                                        if (IsElementItem(xcc))
+                                            list.Add(new ElementItem(xcc, parent, isFunction));
+                                        else
+                                            list.Add(new GroupItem(xcc, parent, isFunction));
+                                }
+                        }
+                        break;
+                }
+            }
+            return list;
         }
         #endregion
     }

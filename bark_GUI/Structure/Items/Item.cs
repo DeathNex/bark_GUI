@@ -9,11 +9,11 @@ namespace bark_GUI.Structure.Items
         public string Name { get; private set; }
         public string NewName;
         public GroupItem Parent { get; private set; }
+        public bool IsElementItem { get; private set; }
         public bool IsGroupItem { get; private set; }
         public bool IsFunction { get { return isFunction; } }
 
         /* INHERITING VARIABLES */
-        protected bool IsElementItem { get; private set; }
         protected bool IsRequired { get; private set; }
         protected bool isFunction;
         protected XmlNode XsdNode;

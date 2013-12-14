@@ -26,11 +26,13 @@ namespace bark_GUI.XmlHandling
 
         readonly XmlReaderSettings _settings;
 
-        // Constructor
+
+        #region Constructor
         public XsdHandler()
         {
             _settings = new XmlReaderSettings { IgnoreComments = true };
         }
+        #endregion
 
 
         #region Public Methods
@@ -82,7 +84,6 @@ namespace bark_GUI.XmlHandling
             return true;
         }
         #endregion
-
 
         #region Private Loading XSD Methods
 
@@ -248,7 +249,6 @@ namespace bark_GUI.XmlHandling
 
         #endregion
 
-
         #region Utility File Methods
         /// <summary> Using the Main XSD draws the included smaller XSD paths. </summary>
         /// <param name="xsd"> The XmlDocument Main XSD that contains all the other xsd parts. </param>
@@ -265,17 +265,18 @@ namespace bark_GUI.XmlHandling
                 if (xNode.LocalName == "include")
                 {
                     Debug.Assert(xNode.Attributes != null, "xNode.Attributes != null");
-                    paths.Add(currentDirectory + '\\' + xNode.Attributes.GetNamedItem("schemaLocation").Value);
+                    paths.Add(currentDirectory + '\\' + xNode.Attributes["schemaLocation"].Value);
                 }
 
             return paths;
         }
+
         /// <summary> Utility method that returns the directory of a given path. </summary>
         private string GetDirectoryOf(string filepath) { return filepath.Remove(filepath.LastIndexOf('\\')); }
+
         /// <summary> Utility method that returns the filename of a given path. </summary>
         private string GetFileNameOf(string filePath) { return filePath.Substring(filePath.LastIndexOf('\\') + 1); }
         #endregion
-
 
         #region XSD Parser Methods
         /// <summary> Using an XmlNode creates a Unit using the appropriate info. </summary>
@@ -320,7 +321,7 @@ namespace bark_GUI.XmlHandling
                         if (option.LocalName == "enumeration")
                         {
                             Debug.Assert(option.Attributes != null, "option.Attributes != null");
-                            options.Add(option.Attributes.GetNamedItem("value").Value.Trim());
+                            options.Add(option.Attributes["value"].Value.Trim());
                         }
 
                     //Finish
@@ -333,7 +334,7 @@ namespace bark_GUI.XmlHandling
                     BasicType basicType = BasicType.String;
 
                     Debug.Assert(xNode.FirstChild.Attributes != null, "xNode.FirstChild.Attributes != null");
-                    var xsValue = xNode.FirstChild.Attributes.GetNamedItem("base").Value;
+                    var xsValue = xNode.FirstChild.Attributes["base"].Value;
                     switch (xsValue)
                     {
                         case "xs:string":
@@ -372,16 +373,16 @@ namespace bark_GUI.XmlHandling
                         switch (maxMin.LocalName)
                         {
                             case "maxInclusive":
-                                max = double.Parse(maxMin.Attributes.GetNamedItem("value").Value.Trim());
+                                max = double.Parse(maxMin.Attributes["value"].Value.Trim());
                                 break;
                             case "minInclusive":
-                                min = double.Parse(maxMin.Attributes.GetNamedItem("value").Value.Trim());
+                                min = double.Parse(maxMin.Attributes["value"].Value.Trim());
                                 break;
                             case "maxExclusive":
-                                max = (double.Parse(maxMin.Attributes.GetNamedItem("value").Value.Trim())) - 1;
+                                max = (double.Parse(maxMin.Attributes["value"].Value.Trim())) - 1;
                                 break;
                             case "minExclusive":
-                                min = (double.Parse(maxMin.Attributes.GetNamedItem("value").Value.Trim())) + 1;
+                                min = (double.Parse(maxMin.Attributes["value"].Value.Trim())) + 1;
                                 break;
                         }
                     }
@@ -480,16 +481,16 @@ namespace bark_GUI.XmlHandling
                         if (xc.LocalName != "element") continue;
                         string defaultValue;
                         Debug.Assert(xc.Attributes != null, "xc.Attributes != null");
-                        switch (xc.Attributes.GetNamedItem("name").Value.Trim())
+                        switch (xc.Attributes["name"].Value.Trim())
                         {
                             case "constant":
-                                sType = Structure.Structure.FindSimpleType(xc.Attributes.GetNamedItem("type").Value.Trim());
-                                defaultValue = xc.Attributes.GetNamedItem("default") != null ?
-                                                   xc.Attributes.GetNamedItem("default").Value.Trim() : "";
+                                sType = Structure.Structure.FindSimpleType(xc.Attributes["type"].Value.Trim());
+                                defaultValue = xc.Attributes["default"] != null ?
+                                                   xc.Attributes["default"].Value.Trim() : "";
                                 constant = new ElementConstant(sType, defaultValue);
                                 break;
                             case "variable":
-                                sType = Structure.Structure.FindSimpleType(xc.Attributes.GetNamedItem("type").Value.Trim());
+                                sType = Structure.Structure.FindSimpleType(xc.Attributes["type"].Value.Trim());
                                 variable = new ElementVariable(sType);
                                 break;
                             case "function":
@@ -501,15 +502,15 @@ namespace bark_GUI.XmlHandling
                                             if (xcf.LocalName == "element")
                                             {
                                                 Debug.Assert(xcf.Attributes != null, "xcf.Attributes != null");
-                                                functionNames.Add(xcf.Attributes.GetNamedItem("ref").Value.Trim());
+                                                functionNames.Add(xcf.Attributes["ref"].Value.Trim());
                                             }
                                         function = new ElementFunction(functionNames);
                                     }
                                 break;
                             case "keyword":
-                                sType = Structure.Structure.FindSimpleType(xc.Attributes.GetNamedItem("type").Value.Trim());
-                                defaultValue = xc.Attributes.GetNamedItem("default") != null ?
-                                                   xc.Attributes.GetNamedItem("default").Value.Trim() : "";
+                                sType = Structure.Structure.FindSimpleType(xc.Attributes["type"].Value.Trim());
+                                defaultValue = xc.Attributes["default"] != null ?
+                                                   xc.Attributes["default"].Value.Trim() : "";
                                 keyword = new ElementKeyword(sType, defaultValue);
                                 break;
                         }
@@ -519,22 +520,22 @@ namespace bark_GUI.XmlHandling
                 else
                 {
                     Debug.Assert(x.Attributes != null, "x.Attributes != null");
-                    if (x.LocalName == "attribute" && x.Attributes.GetNamedItem("name").Value.Trim() == "unit")
+                    if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "unit")
                     {
-                        unit = Structure.Structure.FindUnit(x.Attributes.GetNamedItem("type").Value.Trim());
-                        defaultUnit = x.Attributes.GetNamedItem("default").Value.Trim();
+                        unit = Structure.Structure.FindUnit(x.Attributes["type"].Value.Trim());
+                        defaultUnit = x.Attributes["default"].Value.Trim();
                     }
-                    else if (x.LocalName == "attribute" && x.Attributes.GetNamedItem("name").Value.Trim() == "x_unit")
+                    else if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "x_unit")
                     {
                         if (variable == null) continue;
-                        var xUnit = Structure.Structure.FindUnit(x.Attributes.GetNamedItem("type").Value.Trim());
-                        var defaultXUnit = x.Attributes.GetNamedItem("default").Value.Trim();
+                        var xUnit = Structure.Structure.FindUnit(x.Attributes["type"].Value.Trim());
+                        var defaultXUnit = x.Attributes["default"].Value.Trim();
                         variable.SetX_Unit(xUnit, defaultXUnit);
                     }
                     //Handle References
-                    else if (x.LocalName == "attribute" && x.Attributes.GetNamedItem("name").Value.Trim() == "reference")
+                    else if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "reference")
                     {
-                        sType = Structure.Structure.FindSimpleType(x.Attributes.GetNamedItem("type").Value.Trim());
+                        sType = Structure.Structure.FindSimpleType(x.Attributes["type"].Value.Trim());
                         reference = new ElementReference(sType);
                     }
                 }

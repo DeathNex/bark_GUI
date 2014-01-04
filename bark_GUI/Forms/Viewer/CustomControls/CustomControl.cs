@@ -5,7 +5,7 @@ namespace bark_GUI.CustomControls
     public class CustomControl : UserControl
     {
         //Public Variables
-        public bool IsRequired {get{return isRequired;}}
+        public bool IsRequired { get { return isRequired; } }
 
         //Protected Variables
         protected bool isRequired;
@@ -14,7 +14,7 @@ namespace bark_GUI.CustomControls
         //Private Variables
         private string _name;
         private string _help;
-        
+
 
         //Constructors
         protected CustomControl() { }

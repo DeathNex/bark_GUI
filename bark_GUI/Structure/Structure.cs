@@ -113,9 +113,44 @@ namespace bark_GUI.Structure
         #region Private Find Item With Filter Methods
         private static Item FindItemWithFilters(XmlNode xmlItem, List<Item> results)
         {
+            var risingXmlItem = xmlItem;
+            List<Item> filteredResults = null;
 
             // Rise in parents 'till a different parent was found using filters. //!!!
 
+            // 0. Check parent existance.
+            filteredResults = FindItemWithParentExistanceFilter(risingXmlItem, results);
+
+            if (filteredResults.Count == 1) return filteredResults[0];
+
+            if (filteredResults.Count <= 0) return null;
+
+            // 1. Check parent name.
+            filteredResults = FindItemWithParentNameFilter(risingXmlItem, results);
+
+            if (filteredResults.Count == 1)
+                return filteredResults[0];
+
+            // 2. Check parent custom name.
+            filteredResults = FindItemWithParentCustomNameFilter(risingXmlItem, results);
+
+            if (filteredResults.Count == 1)
+                return filteredResults[0];
+
+            // Rise in parent.
+            var newXmlItem = xmlItem.ParentNode;
+            var newResults = results.Select(t => t.Parent).Distinct().Cast<Item>().ToList();
+
+            Debug.Assert(newResults.Count>1, "Filters were incapable of distinguishing a single item '"
+                    + xmlItem.Name + "' in the Structure.\n     Please make sure no exact duplicates exist.");
+
+            var finalResult = FindItemWithFilters(newXmlItem, newResults);
+            if (finalResult != null && finalResult.IsGroupItem)
+            {
+                var groupItem = finalResult as GroupItem;
+                if (groupItem != null) return groupItem.Children.Find(results.Contains);
+            }
+            return null;
         }
 
         private static List<Item> FindItemWithParentExistanceFilter(XmlNode xmlItem, List<Item> results)

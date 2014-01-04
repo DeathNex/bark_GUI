@@ -21,6 +21,7 @@ namespace bark_GUI.Structure.Items
 
 
         #region Constructors
+
         /// <summary> Creates the Root GroupItem of the XSD file that is not a function. </summary>
         /// <param name="xsdNode"> The root XmlNode of the XSD file. </param>
         public ElementItem(XmlNode xsdNode)
@@ -54,7 +55,7 @@ namespace bark_GUI.Structure.Items
         {
             CreateElementItem(xsdNode, isFunction);
         }
-        #endregion
+        
         //Utility Function for Constructors
         private void CreateElementItem(XmlNode xsdNode, bool isFunction)
         {
@@ -118,6 +119,8 @@ namespace bark_GUI.Structure.Items
             if (!isFunction)
                 bark_GUI.Structure.Structure.Add(this);
         }
+
+        #endregion
 
 
 

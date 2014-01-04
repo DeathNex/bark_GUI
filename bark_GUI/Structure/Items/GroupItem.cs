@@ -11,11 +11,29 @@ namespace bark_GUI.Structure.Items
         /* PUBLIC PROPERTIES */
         public List<Item> Children { get; private set; }
 
-        public List<Item> InnerChildren { get; private set; }
+        /// <summary>
+        /// Using the existing children, iterates in depth and adds all inner children through recursion.
+        /// </summary>
+        public List<Item> InnerChildren {
+            get
+            {
+                var innerChildren = new List<Item>();
+
+                if (Children != null)
+                    foreach (Item i in Children)
+                    {
+                        innerChildren.Add(i);
+                        if (i.IsGroupItem && ((GroupItem)i).Children != null)
+                            innerChildren.AddRange(((GroupItem)i).InnerChildren);
+                    }
+
+                return innerChildren;
+            }
+        }
 
         public TreeNode Tnode { get; private set; }
 
-        public bool IsMultiple { get; private set; }      // TODO Multiple items handling.
+        public bool IsMultiple { get; private set; }
 
         /* PRIVATE PROPERTIES */
         // Check used for multiples. If it's set create another instance. Used in DuplicateMultiple() method.
@@ -69,14 +87,9 @@ namespace bark_GUI.Structure.Items
 
             //Can exist multiple times?
             IsMultiple = XsdParser.IsMupltiple(xsdNode);
-            List<GroupItem> test;
-            if (IsMultiple)
-                test = Structure.GroupItems.Where(item => item.IsMultiple).ToList();
 
             //Children
             Children = XsdParser.CreateChildren(xsdNode, this, isFunction);
-            InnerChildren = new List<Item>();
-            _GetInnerChildren(this, this);
 
             //Include this in the Structure
             if (!isFunction)
@@ -90,38 +103,21 @@ namespace bark_GUI.Structure.Items
         /// Duplicates the current GroupItem and adds it to the Structure.
         /// </summary>
         /// <returns> The new clone of GroupItem. </returns>
-        public GroupItem Duplicate()    //CHECK: Unused method.
+        public GroupItem Duplicate()
         {
             var clone = new GroupItem(XsdNode, Parent);
-            Structure.GroupItems.Add(clone);
+            Parent.Children.Add(clone);
             return clone;
         }
 
         public GroupItem DuplicateMultiple()
         {
             // Check if this instance is set, if it's not set use this instance (to avoid empty item in structure).
-            return !IsSet ? Duplicate() : this;
+            return IsSet ? Duplicate() : this;
         }
 
         #endregion
 
-        #region Private Methods
-        /// <summary>
-        /// Using the existing children, iterates in depth and adds all inner children through recursion.
-        /// </summary>
-        /// <param name="inGroupItem"> The current GroupItem that is next for iteration.
-        ///  Used for recursion. (should be same as source when called) </param>
-        /// <param name="source"> The parent that called this method at first. Parent of all inner children. </param>
-        private static void _GetInnerChildren(GroupItem inGroupItem, GroupItem source)
-        {
-            if (inGroupItem.Children != null)
-                foreach (Item i in inGroupItem.Children)
-                {
-                    source.InnerChildren.Add(i);
-                    if (i.IsGroupItem && ((GroupItem)i).Children != null)
-                        _GetInnerChildren((GroupItem)i, source);
-                }
-        }
-        #endregion
+
     }
 }

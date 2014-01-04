@@ -76,7 +76,7 @@ namespace bark_GUI.XmlHandling
             }
             var debugMultiples = Structure.Structure.GroupItems.Where(item => item.IsMultiple).ToList();
             var debugGroupItems = Structure.Structure.GroupItems.ToList();
-            var debugBoundary = debugGroupItems[9];
+            var debugBoundaries = debugGroupItems.Where(b => b.Name == "boundary").ToList();
             return true;
         }
         #endregion

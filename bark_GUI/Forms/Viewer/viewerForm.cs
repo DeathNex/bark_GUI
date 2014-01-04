@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using bark_GUI.CustomControls;
 using bark_GUI.Structure.Items;
@@ -325,9 +326,8 @@ namespace bark_GUI
             var showAll = checkBoxTreeShowHidden.Checked;
 
             //Convert selected TreeNode to GroupItem
-            foreach (var g in Structure.Structure.GroupItems)
-                if (g.Tnode == tNode)
-                    r = g;
+            foreach (var g in Structure.Structure.GroupItems.Where(g => g.Tnode == tNode))
+                r = g;
 
             //Avoid useless time consuming by taking the worst case scenarios
             if (r == Structure.Structure.Root || r == null)
@@ -359,7 +359,7 @@ namespace bark_GUI
                 foreach (var i in Structure.Structure.ElementItems)
                 {
                     if (i.Control == null || i.Control.CurrentControl == null)
-                        continue;   //Unfinished, handle reference controls
+                        continue;   //TODO: Unfinished, handle reference controls
                     if (r.InnerChildren.Contains(i))
                         i.Control.CurrentControl.Show();
                     else
@@ -369,7 +369,7 @@ namespace bark_GUI
                 foreach (var i in Structure.Structure.ElementItems)
                 {
                     if (i.Control == null || i.Control.CurrentControl == null)
-                        continue;   //Unfinished, handle reference controls
+                        continue;   //TODO: Unfinished, handle reference controls
                     if (r.InnerChildren.Contains(i) && i.Control.IsRequired)
                         i.Control.CurrentControl.Show();
                     else

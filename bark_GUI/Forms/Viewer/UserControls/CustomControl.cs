@@ -2,30 +2,33 @@
 
 namespace bark_GUI.CustomControls
 {
-    public class CustomControl : UserControl
+    public class CustomControl : UserControl        //TODO: Replace CustomControl with ICustomControl. Clean dependencies.
     {
         //Public Variables
-        public bool IsRequired { get { return isRequired; } }
+        public new string Name { get; set; }
+
+        public string Help { get; set; }
+
+        public bool IsRequired { get; set; }
 
         //Protected Variables
-        protected bool isRequired;
         protected GeneralControl GeneralControl;
 
-        //Private Variables
-        private string _name;
-        private string _help;
+        #region Constructors
 
-
-        //Constructors
         protected CustomControl() { }
-        protected CustomControl(string name, bool isRequired, string help)
+
+        protected CustomControl(string name, bool isRequired, string help, GeneralControl generalControl)
         {
-            this._name = name;
-            this.isRequired = isRequired;
-            this._help = help;
+            Name = name;
+            IsRequired = isRequired;
+            Help = help;
+            GeneralControl = generalControl;
         }
 
-        protected CustomControlType convertToCustomControl_Type(string stringType)
+        #endregion
+
+        protected CustomControlType ConvertToCustomControl_Type(string stringType)
         {
             switch (stringType)
             {

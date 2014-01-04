@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace bark_GUI.CustomControls
 {
-    public partial class ControlVariableTable : CustomControl
+    public partial class ControlVariableTable : UserControl
     {
         // Constraint: textBox_TextChanged() Method works only for arrayColumns = 2 at 'Insert new value' part
 

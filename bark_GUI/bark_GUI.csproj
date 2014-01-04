@@ -80,61 +80,62 @@
     <Compile Include="Forms\Preferences\ControlPrefPath.Designer.cs">
       <DependentUpon>ControlPrefPath.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlGroup.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlGroup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlGroup.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlGroup.Designer.cs">
       <DependentUpon>ControlGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlKeyword.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlKeyword.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlKeyword.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlKeyword.Designer.cs">
       <DependentUpon>ControlKeyword.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\GeneralControl.cs" />
+    <Compile Include="Forms\Viewer\UserControls\GeneralControl.cs" />
     <Compile Include="Forms\Preferences\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Preferences\PreferencesForm.Designer.cs">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Viewer\UserControls\ICustomControl.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="Structure\ElementType\ElementConstant.cs" />
     <Compile Include="Structure\ElementType\ElementKeyword.cs" />
     <Compile Include="Structure\ElementType\ElementReference.cs" />
     <Compile Include="Structure\ItemTypes\ComplexType.cs" />
-    <Compile Include="Forms\Viewer\CustomControls\ControlFunction.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlFunction.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlFunction.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlFunction.Designer.cs">
       <DependentUpon>ControlFunction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlReference.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlReference.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlReference.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlReference.Designer.cs">
       <DependentUpon>ControlReference.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlConstant.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlConstant.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlConstant.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlConstant.Designer.cs">
       <DependentUpon>ControlConstant.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlVariable.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlVariable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlVariable.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlVariable.Designer.cs">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlVariableTable.cs">
+    <Compile Include="Forms\Viewer\UserControls\ControlVariableTable.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\ControlVariableTable.Designer.cs">
+    <Compile Include="Forms\Viewer\UserControls\ControlVariableTable.Designer.cs">
       <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\CustomControls\CustomControl.cs">
+    <Compile Include="Forms\Viewer\UserControls\CustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Structure\ElementType\ElementFunction.cs" />
@@ -178,25 +179,25 @@
       <DependentUpon>ControlPrefPath.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlConstant.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlConstant.resx">
       <DependentUpon>ControlConstant.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlFunction.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlFunction.resx">
       <DependentUpon>ControlFunction.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlGroup.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlGroup.resx">
       <DependentUpon>ControlGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlKeyword.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlKeyword.resx">
       <DependentUpon>ControlKeyword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlReference.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlReference.resx">
       <DependentUpon>ControlReference.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlVariable.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlVariable.resx">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\CustomControls\ControlVariableTable.resx">
+    <EmbeddedResource Include="Forms\Viewer\UserControls\ControlVariableTable.resx">
       <DependentUpon>ControlVariableTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Diagram\FormDiagram.resx">

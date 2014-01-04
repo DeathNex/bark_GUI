@@ -7,6 +7,7 @@ namespace bark_GUI.CustomControls
     public partial class ControlConstant : CustomControl
     {
         public ControlConstant(string name, List<string> typeOptions, List<string> unitOptions, bool isRequired, string help, GeneralControl generalControl)
+            :base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
 
@@ -20,7 +21,7 @@ namespace bark_GUI.CustomControls
                     comboBoxType.Enabled = false;
             }
             else
-            { } //Unfinished, "Keyword" element doesnt have types because it's not constant! (<function><ASHRAE..><side><keyword>front)
+            { } //TODO: Unfinished, "Keyword" element doesnt have types because it's not constant! (<function><ASHRAE..><side><keyword>front)
             //textBoxValue.Text = value.Trim();
             if (unitOptions != null)
             {
@@ -32,8 +33,6 @@ namespace bark_GUI.CustomControls
             }
             if (help != null)
                 toolTipHelp.SetToolTip(labelName, help);
-            this.isRequired = isRequired;
-            this.GeneralControl = generalControl;
         }
 
 
@@ -74,7 +73,7 @@ namespace bark_GUI.CustomControls
         {
             if (comboBoxType.SelectedItem.ToString() == "Constant")
                 return;
-            GeneralControl.ReplaceWith(convertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
+            GeneralControl.ReplaceWith(ConvertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
             SelectConstant();
         }
 

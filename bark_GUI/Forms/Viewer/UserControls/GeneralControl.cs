@@ -14,12 +14,16 @@ namespace bark_GUI.CustomControls
 
 
         //Private Variables
+        private List<ICustomControl> _customControls;
+
         ControlConstant _controlConstant;
         ControlVariable _controlVariable;
         ControlFunction _controlFunction;
         ControlGroup _controlGroup;
         ControlReference _controlReference;
         ControlKeyword _controlKeyword;
+
+        #region Constructors
 
         /// <summary>
         /// Create all proper controls for an ElementItem using all information gathered.
@@ -44,9 +48,9 @@ namespace bark_GUI.CustomControls
         /// <param name="name"> The name of the group. (Mandatory) </param>
         /// <param name="isRequired"> If the element is optional or mandatory. (Optional) </param>
         /// <param name="help"> Some help text if exists. (Optional) </param>
-        public GeneralControl(string name, bool isRequired, string help)
+        public GeneralControl(string name, bool isRequired, string help = null)
         {
-            List<CustomControlType> controlTypes = new List<CustomControlType>(1) {CustomControlType.Group};
+            List<CustomControlType> controlTypes = new List<CustomControlType>(1) { CustomControlType.Group };
             CreateGeneralControl(name, isRequired, help, controlTypes, null, null, null, null, null);
         }
 
@@ -62,7 +66,7 @@ namespace bark_GUI.CustomControls
             Name = name;
             IsRequired = isRequired;
             Help = help ?? "";
-            
+
             //Create Controls
             foreach (var type in controlTypes)
                 switch (type)
@@ -115,6 +119,8 @@ namespace bark_GUI.CustomControls
             }
         }
 
+        #endregion
+
         public void ReplaceWith(CustomControlType customControlType)
         {
             System.Windows.Forms.Control viewer = CurrentControl.Parent;
@@ -159,10 +165,7 @@ namespace bark_GUI.CustomControls
             viewer.Controls.Remove(me);
             CurrentControl = newMe;
         }
-
-
-
-
+        
         public void Select(CustomControlType customControlType)
         {
             switch (customControlType)
@@ -188,9 +191,10 @@ namespace bark_GUI.CustomControls
             }
         }
 
-
         public void SetValue(string value) { CurrentControl.SetValue(value); }
+
         public void SetUnit(string unit) { CurrentControl.SetUnit(unit); }
+
         public void SetX_Unit(string xUnit) { CurrentControl.SetX_Unit(xUnit); }
     }
 }

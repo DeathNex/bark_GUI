@@ -7,7 +7,7 @@ namespace bark_GUI.CustomControls
     {
         public ControlFunction(string name, ICollection<string> typeOptions, ICollection<string> refOptions,
             bool isRequired, string help, GeneralControl generalControl)
-            :base(name, isRequired, help)
+            :base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
 
@@ -32,8 +32,6 @@ namespace bark_GUI.CustomControls
 
             if (help != null)
                 toolTipHelp.SetToolTip(labelName, help);
-            this.isRequired = isRequired;
-            this.GeneralControl = generalControl;
         }
 
 
@@ -64,7 +62,7 @@ namespace bark_GUI.CustomControls
         {
             if (comboBoxType.SelectedItem.ToString() == "Function" || comboBoxType.DroppedDown)
                 return;
-            GeneralControl.ReplaceWith(convertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
+            GeneralControl.ReplaceWith(ConvertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
             SelectFunction();
         }
 

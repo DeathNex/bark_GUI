@@ -8,6 +8,7 @@ namespace bark_GUI.CustomControls
     {
         public ControlVariable(string name, ICollection<string> typeOptions, ICollection<string> unitOptions,
             ICollection<string> unitXOptions, bool isRequired, string help, GeneralControl generalControl)
+            : base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
 
@@ -39,8 +40,6 @@ namespace bark_GUI.CustomControls
 
             if (help != null)
                 toolTipHelp.SetToolTip(labelName, help);
-            this.isRequired = isRequired;
-            this.GeneralControl = generalControl;
         }
 
 
@@ -77,7 +76,7 @@ namespace bark_GUI.CustomControls
         {
             if (comboBoxType.SelectedItem.ToString() == "Variable")
                 return;
-            GeneralControl.ReplaceWith(convertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
+            GeneralControl.ReplaceWith(ConvertToCustomControl_Type(comboBoxType.SelectedItem.ToString()));
             SelectVariable();
         }
 

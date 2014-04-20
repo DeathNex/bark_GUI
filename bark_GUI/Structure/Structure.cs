@@ -28,6 +28,8 @@ namespace bark_GUI.Structure
 
         private static List<ComplexType> _complexTypes;
 
+        private static Dictionary<string, List<Item>> _referenceLists;
+
         private static List<GroupItem> _functions;
 
         #region Public Initiliazation Methods
@@ -39,6 +41,7 @@ namespace bark_GUI.Structure
             _types = new List<ItemType>();
             _simpleTypes = new List<SimpleType>();
             _complexTypes = new List<ComplexType>();
+            _referenceLists = new Dictionary<string, List<Item>>();
             _functions = new List<GroupItem>();
             Items = new List<Item>();
             ElementItems = new List<ElementItem>();
@@ -62,6 +65,8 @@ namespace bark_GUI.Structure
         #region Public Methods
 
         #region Add
+        // These methods are used during the Creation of the Structure. (When loading the XSD)
+
         public static void Add(Unit unit) { _units.Add(unit); }
 
         public static void Add(SimpleType type) { _types.Add(type); _simpleTypes.Add(type); }
@@ -71,9 +76,15 @@ namespace bark_GUI.Structure
         public static void Add(ElementItem eItem) { ElementItems.Add(eItem); Items.Add(eItem); }
 
         public static void Add(GroupItem gItem) { if (gItem.IsFunction) _functions.Add(gItem); else { GroupItems.Add(gItem); Items.Add(gItem); } }
+
+        public static void AddReferenceList(string name) { _referenceLists[name] = new List<Item>(); }
+
+        public static void AddReference(Item item){if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Add(item); }
         #endregion
 
         #region Find
+        // These methods are used during the Info Population on the already created Structure. (When loading the XML)
+
         public static Unit FindUnit(string unitName) { return _units.FirstOrDefault(u => u.Name == unitName); }
 
         public static ItemType FindType(string typeName) { return _types.FirstOrDefault(t => t.Name == typeName); }
@@ -86,6 +97,9 @@ namespace bark_GUI.Structure
         public static Item FindItem(XmlNode xmlItem)    // CHECK: Xml dependency. Can be removed?
         {
             const string errorMsg = "Structure - FindItem:\n - ";
+
+            if (xmlItem.Name == Root.Name) return Root;
+
             var results = Items.Where(i => i.Name == xmlItem.Name).ToList();
 
             Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
@@ -105,6 +119,12 @@ namespace bark_GUI.Structure
             return result;
         }
 
+        // Returns a list of references on that element name as a string for controls to show.
+        public static List<string> FindReferenceListOptions(string name)
+        {
+            return !_referenceLists.ContainsKey(name) ? null : _referenceLists[name].Select(item => item.NewName ?? item.Name).ToList();
+        }
+
         #endregion
 
         #endregion
@@ -118,24 +138,23 @@ namespace bark_GUI.Structure
 
             // Rise in parents 'till a different parent was found using filters. //!!!
 
-            // 0. Check parent existance.
-            filteredResults = FindItemWithParentExistanceFilter(risingXmlItem, results);
-
+            // 1. Check custom name.
+            filteredResults = FindItemWithNewNameFilter(risingXmlItem, results);
             if (filteredResults.Count == 1) return filteredResults[0];
 
+            // 2. Check parent existance.
+            filteredResults = FindItemWithParentExistanceFilter(risingXmlItem, results);
+            if (filteredResults.Count == 1) return filteredResults[0];
             if (filteredResults.Count <= 0) return null;
 
-            // 1. Check parent name.
+            // 3. Check parent name.
             filteredResults = FindItemWithParentNameFilter(risingXmlItem, results);
+            if (filteredResults.Count == 1) return filteredResults[0];
 
-            if (filteredResults.Count == 1)
-                return filteredResults[0];
-
-            // 2. Check parent custom name.
+            // 4. Check parent custom name.
             filteredResults = FindItemWithParentCustomNameFilter(risingXmlItem, results);
 
-            if (filteredResults.Count == 1)
-                return filteredResults[0];
+            if (filteredResults.Count == 1) return filteredResults[0];
 
             // Rise in parent.
             var newXmlItem = xmlItem.ParentNode;
@@ -153,11 +172,23 @@ namespace bark_GUI.Structure
             return null;
         }
 
+        private static List<Item> FindItemWithNewNameFilter(XmlNode xmlItem, List<Item> results)
+        {
+            List<Item> resultsFiltered = new List<Item>(results.Count);
+
+            // 1. Filter by custom name.
+            resultsFiltered.AddRange(results.Where(r =>
+                (xmlItem.Attributes != null && xmlItem.Attributes["name"] != null) &&
+                r.NewName != null && r.NewName == xmlItem.Attributes["name"].Value));
+
+            return resultsFiltered;
+        }
+
         private static List<Item> FindItemWithParentExistanceFilter(XmlNode xmlItem, List<Item> results)
         {
             List<Item> resultsFiltered = new List<Item>(results.Count);
 
-            // 0. Filter by parent existance.
+            // 2. Filter by parent existance.
             resultsFiltered.AddRange(results.Where(r => xmlItem.ParentNode != null && r.Parent != null));
 
             return resultsFiltered;
@@ -167,7 +198,7 @@ namespace bark_GUI.Structure
         {
             List<Item> resultsFiltered = new List<Item>(results.Count);
 
-            // 1. Filter by parent-name.
+            // 3. Filter by parent-name.
             resultsFiltered.AddRange(results.Where(r => xmlItem.ParentNode != null && xmlItem.ParentNode.Name == r.Parent.Name));
 
             return resultsFiltered;
@@ -177,7 +208,7 @@ namespace bark_GUI.Structure
         {
             List<Item> resultsFiltered = new List<Item>(results.Count);
 
-            // 2. Filter by parent's attribute (custom) name.
+            // 4. Filter by parent's attribute (custom) name.
             resultsFiltered.AddRange(results.Where(r => xmlItem.ParentNode != null &&
                 xmlItem.ParentNode.Attributes != null && xmlItem.ParentNode.Attributes["name"] != null &&
                 xmlItem.ParentNode.Attributes["name"].Value.Trim() == r.Parent.NewName));

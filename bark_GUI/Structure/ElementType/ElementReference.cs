@@ -20,7 +20,7 @@ namespace bark_GUI.Structure.ElementType
         //Constructor
         public ElementReference(SimpleType simpleType)
         {
-            this._type = EType.Constant;
+            this._type = EType.Reference;
             this.SimpleType = simpleType;
         }
     }

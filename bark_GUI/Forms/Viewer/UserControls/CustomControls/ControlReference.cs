@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace bark_GUI.CustomControls
@@ -14,9 +15,7 @@ namespace bark_GUI.CustomControls
             /* USE IN XML LOAD NOT XSD
             if (options != null)
             {
-                foreach (string s in options)
-                    comboBoxValue.Items.Add(s.Trim());
-                comboBoxValue.SelectedIndex = 0;
+                
             }
             */
 
@@ -30,6 +29,17 @@ namespace bark_GUI.CustomControls
 
         /* PUBLIC METHODS */
         public override void SetValue(string value) { comboBoxValue.Text = value; }
+
+        public void SetOptions(List<string> options)
+        {
+            var selectedText = comboBoxValue.Text;
+
+            foreach (var s in options)
+                comboBoxValue.Items.Add(s.Trim());
+            comboBoxValue.SelectedIndex = 0;
+
+            comboBoxValue.Text = selectedText;
+        }
 
 
 

@@ -120,6 +120,11 @@ namespace bark_GUI
         {
             openFileDialog.ShowDialog();
         }
+        //File Save
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _saveFile();
+        }
         //File Save As
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -175,11 +180,6 @@ namespace bark_GUI
         {
             _loadFile(openFileDialog.FileName);
         }
-        //File Save
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _saveFile();
-        }
         //File Save As
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
@@ -189,7 +189,7 @@ namespace bark_GUI
         #endregion
         #endregion
 
-        #region Utility Methods
+        #region Action Methods
         private void _saveFile() { _saveAsFile(Settings.Default.PathCurrentFile); }
 
         private void _saveAsFile(string filepath) { _xmlHandler.Save(filepath); }
@@ -389,19 +389,43 @@ namespace bark_GUI
         /// <summary> Uses the existing structure loaded by XML to create the ElementViewer nodes. </summary>
         private void _InitializeElementViewer()
         {
-            elementViewer.Controls.Clear();
             var tmp = "case";
+
+            // Clear.
+            elementViewer.Controls.Clear();
+
+            // Iterate through the Element Items and append them in the Viewer. (including their parents)
             foreach (var item in Structure.Structure.ElementItems)
             {
+                // Check.
                 if (item.Control == null || item.Control.CurrentControl == null) continue;
-                if (item.Parent != null && item.Parent.Name != tmp)
+
+                // Create this item's parent as GROUP if it doesn't already exist.
+                // (to allow a better view of the elements' position in the hierarchy)
+                var parentViewName = item.Parent.Name;
+
+                // If a custom name exists, append it to the viewName.
+                if (!string.IsNullOrEmpty(item.Parent.NewName))
+                    parentViewName = string.Format("({0}) {1}", item.Parent.Name, item.Parent.NewName);
+
+                // If the parent of this element doesnt already exist, add it.
+                if (item.Parent != null && parentViewName != tmp && parentViewName != tmp)
                 {
-                    tmp = item.Parent.Name;
-                    //List<CustomControlType> list = new List<CustomControlType>();
-                    //list.Add(CustomControlType.Group);
-                    elementViewer.Controls.Add((new GeneralControl(tmp, true, "help text")).CurrentControl);
+                    tmp = parentViewName;
+                    elementViewer.Controls.Add((new GeneralControl(item, tmp, true, "help text")).CurrentControl);
                 }
+
+                // Add reference options in the reference controls (must be done after the XML is read)
+                if (item.Control.CurrentControl is ControlReference)
+                {
+                    var options = Structure.Structure.FindReferenceListOptions(item.Name);
+                    (item.Control.CurrentControl as ControlReference).SetOptions(options);
+                }
+
+                // Append the item in the Viewer.
                 elementViewer.Controls.Add(item.Control.CurrentControl);
+
+                // If the item is optional (not required) hide it.
                 if (!item.Control.IsRequired)
                     item.Control.CurrentControl.Hide();
             }

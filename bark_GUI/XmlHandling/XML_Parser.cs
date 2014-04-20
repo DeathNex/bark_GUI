@@ -46,6 +46,10 @@ namespace bark_GUI.XmlHandling
                 // Loop through Element Item XML Nodes.
                 if (inXmlNode.HasChildNodes)
                 {
+                    // Add to the reference list if can be referenced to.
+                    Structure.Structure.AddReference(item);
+
+                    // Iterate through the child nodes to draw their info using the appropriate method.
                     foreach (XmlNode xc in inXmlNode.ChildNodes)
                     {
                         switch (xc.Name)
@@ -208,44 +212,37 @@ namespace bark_GUI.XmlHandling
             //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
         }
 
-        // TODO: Handle keywords.
+        // TODO: Check if keyword works. (exists only in wallsun.brk>boundary-external>function)
         private static void DrawAKeyword(XmlNode inXmlNode, Item item)
         {
             var kvalue = inXmlNode.InnerText;
 
-            //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+            const string errorMsg = "XmlHandling - XmlParser - DrawAKeyword:\n - ";
 
-            //// Check item.
-            //Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+            // Check item.
+            Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'keyword' but is not of type ElementItem.");
 
-            //var elementItem = item as ElementItem;
+            var elementItem = item as ElementItem;
 
-            //if (item.Name == "temperature")      // TODO Multiple items handling.
-            //    Debug.Print("### Element with multiple items hit!\n{0}", item);
+            // Check elementItem.
+            Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
 
-            //// Check elementItem.
-            //Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+            elementItem.SelectType(EType.Keyword);
 
-            //elementItem.SelectType(EType.Variable);
+            var eKeyword = elementItem.SelectedType as ElementKeyword;
 
-            //var eVariable = elementItem.SelectedType as ElementVariable;
+            // Check eKeyword.
+            Debug.Assert(eKeyword != null, errorMsg + "Variable eKeyword was null.");
 
-            //// Check eConstant.
-            //Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+            // Set the value.
+            eKeyword.Value = kvalue;
 
-            //// Set the value.
-            //eVariable.Value = inXmlNode.InnerText;
+            // Check inXmlNode.Attributes.
+            Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
 
-            //// Check inXmlNode.Attributes.
-            //Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
-
-            //// Set the selected unit.
-            //eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
-
-            //// Set the item's Control.
-            //elementItem.Control.Select(CustomControlType.Variable);
-            //elementItem.Control.SetValue(inXmlNode.InnerText);
-            //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+            // Set the item's Control.
+            elementItem.Control.Select(CustomControlType.Keyword);
+            elementItem.Control.SetValue(kvalue);
         }
 
         // TODO: Handle references.
@@ -257,39 +254,29 @@ namespace bark_GUI.XmlHandling
 
             var rvalue = inXmlNode.Attributes["reference"].Value;
 
-            //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+            const string errorMsg = "XmlHandling - XmlParser - DrawAReference:\n - ";
 
-            //// Check item.
-            //Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
+            // Check item.
+            Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'reference' but is not of type ElementItem.");
 
-            //var elementItem = item as ElementItem;
+            var elementItem = item as ElementItem;
 
-            //if (item.Name == "temperature")      // TODO Multiple items handling.
-            //    Debug.Print("### Element with multiple items hit!\n{0}", item);
+            // Check elementItem.
+            Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
 
-            //// Check elementItem.
-            //Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
+            elementItem.SelectType(EType.Reference);
 
-            //elementItem.SelectType(EType.Variable);
+            var eReference = elementItem.SelectedType as ElementReference;
 
-            //var eVariable = elementItem.SelectedType as ElementVariable;
+            // Check eReference.
+            Debug.Assert(eReference != null, errorMsg + "Variable eReference was null.");
 
-            //// Check eConstant.
-            //Debug.Assert(eVariable != null, errorMsg + "Variable eVariable was null.");
+            // Set the value.
+            eReference.Value = rvalue;
 
-            //// Set the value.
-            //eVariable.Value = inXmlNode.InnerText;
-
-            //// Check inXmlNode.Attributes.
-            //Debug.Assert(inXmlNode.Attributes != null, errorMsg + "The 'Attributes' of 'inXmlNode' were null.");
-
-            //// Set the selected unit.
-            //eVariable.Unit.Select(inXmlNode.Attributes["unit"].Value.Trim());
-
-            //// Set the item's Control.
-            //elementItem.Control.Select(CustomControlType.Variable);
-            //elementItem.Control.SetValue(inXmlNode.InnerText);
-            //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+            // Set the item's Control.
+            elementItem.Control.Select(CustomControlType.Reference);
+            elementItem.Control.SetValue(rvalue);
         }
         #endregion
 

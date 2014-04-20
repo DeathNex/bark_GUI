@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using bark_GUI.CustomControls;
 using bark_GUI.Structure.ElementType;
@@ -72,7 +73,7 @@ namespace bark_GUI.Structure.Items
                 //Find what kind of simpleType or complexType this element item is
                 if (XsdParser.HasType(xsdNode))
                 {
-                    ItemType itemType = bark_GUI.Structure.Structure.FindType(XsdParser.GetType(xsdNode));
+                    ItemType itemType = Structure.FindType(XsdParser.GetType(xsdNode));
                     if (itemType.IsSimpleType())
                         return;
                     _complexType = itemType as ComplexType;
@@ -84,6 +85,8 @@ namespace bark_GUI.Structure.Items
                         xUnitOptions = _complexType.GetX_UnitOptions();
                         functionOptions = _complexType.GetFunctionNames();
                         typeOptions = _complexType.GetTypeOptions();
+
+                        // Handle types selection on this element
                         if (typeOptions != null && typeOptions.Count > 0)
                         {
                             SelectedType = _complexType.Constant;
@@ -106,18 +109,18 @@ namespace bark_GUI.Structure.Items
                             list.Add(CustomControlType.Reference);
                             refOptions = _complexType.Reference.SimpleType.GetOptions();
                         }
-                        else { }
+                        else { throw new Exception(""); }
                     }
-                }//Handle references
+                }
                 else { }
 
                 //Create the Controls for this ElementItem with the gathered information
-                Control = new GeneralControl(Name, IsRequired, Help, list,
+                Control = new GeneralControl(XmlNode, Name, IsRequired, Help, list,
                     typeOptions, unitOptions, xUnitOptions, functionOptions, keyOptions);
             }
             //Include this in the Structure
             if (!isFunction)
-                bark_GUI.Structure.Structure.Add(this);
+                Structure.Add(this);
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace bark_GUI.Structure.ElementType
         //Constructor
         public ElementKeyword(SimpleType simpleType, string defaultValue)
         {
-            this._type = EType.Constant;
+            this._type = EType.Keyword;
             this._simpleType = simpleType;
             this._defaultValue = defaultValue;
         }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace bark_GUI.CustomControls
 {
     public partial class ControlConstant : CustomControl
     {
-        public ControlConstant(string name, List<string> typeOptions, List<string> unitOptions, bool isRequired, string help, GeneralControl generalControl)
+        // Constructor
+        public ControlConstant(string name, List<string> typeOptions, List<string> unitOptions,
+            bool isRequired, string help, GeneralControl generalControl)
             :base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
@@ -56,17 +59,22 @@ namespace bark_GUI.CustomControls
 
         private void textBoxValue_TextChanged(object sender, EventArgs e)
         {
-            if (Tag != null)
-            {
-                ((XmlNode) Tag).FirstChild.FirstChild.Value = textBoxValue.Text.Trim().TrimStart(new char[1] { '0' });
-            }
+            // Check.
+            if (Tag == null) return;
+
+            // Update the XML Element inside the XML Document.
+            ((XmlNode) Tag).FirstChild.FirstChild.Value = textBoxValue.Text.Trim().TrimStart(new char[1] { '0' });
         }
+
         private void comboBoxUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Check.
             if (Tag == null) return;
-            XmlAttributeCollection attributes = ((XmlNode) Tag).Attributes;
+
+            // Update the XML Element inside the XML Document.
+            var attributes = ((XmlNode) Tag).Attributes;
             if (attributes != null)
-                attributes["unit"].Value = comboBoxUnit.SelectedText.Trim();  //TODO: Remove Xml Dependency.
+                attributes["unit"].Value = comboBoxUnit.SelectedText.Trim();
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

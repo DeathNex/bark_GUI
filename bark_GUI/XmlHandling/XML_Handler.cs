@@ -84,12 +84,14 @@ namespace bark_GUI.XmlHandling
         #region Save Files
         public void Save(string filepath)
         {
+            // Check for empty path.
             if (filepath == string.Empty)
                 return;
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings { Indent = true };
+
+            // Write the current XML Document to file.
             try
             {
-                using (var xWriter = XmlWriter.Create(filepath, xmlWriterSettings))
+                using (var xWriter = XmlWriter.Create(filepath, new XmlWriterSettings { Indent = true }))
                 {
                     _xmlDocument.Save(xWriter);
                 }
@@ -98,6 +100,8 @@ namespace bark_GUI.XmlHandling
             {
                 MessageBox.Show("Could not overwrite file." + "\n" + e.Message);
             }
+
+            // Keep the last saved XML Document for 'Dirty file' comparison.
             _lastSavedXmlDocument = (XmlDocument)_xmlDocument.Clone();
         }
 

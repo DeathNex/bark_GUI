@@ -29,6 +29,7 @@ namespace bark_GUI.CustomControls
         /// Create all proper controls for an ElementItem using all information gathered.
         /// Usually, not all parameters need values.
         /// </summary>
+        /// <param name="tag"> The XML Element to apply changes backwards and allow save. </param>
         /// <param name="name"> The name of the element. (Mandatory) </param>
         /// <param name="isRequired"> If the element is optional or mandatory. (Optional) </param>
         /// <param name="help"> Some help text if exists. (Optional) </param>
@@ -38,23 +39,24 @@ namespace bark_GUI.CustomControls
         /// <param name="xUnitOptions"> What options to show in the x_unit dropdown. (Used in Variable only) </param>
         /// <param name="funcOptions"> What options to show in the functions dropdown. (Used in Function only) </param>
         /// <param name="keyOptions"> What options to show in the keywords dropdown. (Used in Keywords only) </param>
-        public GeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
+        public GeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions)
         {
-            CreateGeneralControl(name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions, funcOptions, keyOptions);
+            CreateGeneralControl(tag, name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions, funcOptions, keyOptions);
         }
         /// <summary> Create a custom group control. </summary>
+        /// <param name="tag"> The XML Element to apply changes backwards and allow save. </param>
         /// <param name="name"> The name of the group. (Mandatory) </param>
         /// <param name="isRequired"> If the element is optional or mandatory. (Optional) </param>
         /// <param name="help"> Some help text if exists. (Optional) </param>
-        public GeneralControl(string name, bool isRequired, string help = null)
+        public GeneralControl(object tag, string name, bool isRequired, string help = null)
         {
             List<CustomControlType> controlTypes = new List<CustomControlType>(1) { CustomControlType.Group };
-            CreateGeneralControl(name, isRequired, help, controlTypes, null, null, null, null, null);
+            CreateGeneralControl(tag, name, isRequired, help, controlTypes, null, null, null, null, null);
         }
 
-        private void CreateGeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
+        private void CreateGeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions)
         {
@@ -67,30 +69,30 @@ namespace bark_GUI.CustomControls
             IsRequired = isRequired;
             Help = help ?? "";
 
-            //Create Controls
+            // Create Controls and connect the XML Element - Object with the control via Tag.
             foreach (var type in controlTypes)
                 switch (type)
                 {
                     case CustomControlType.Constant:
                         if (typeOptions != null && typeOptions.Contains("Constant") && unitOptions != null)
-                            _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this);
+                            _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this) { Tag = tag };
                         break;
                     case CustomControlType.Variable:
                         if (typeOptions != null && typeOptions.Contains("Variable") && unitOptions != null) // && x_unitOptions != null
-                            _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this);
+                            _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this) { Tag = tag };
                         break;
                     case CustomControlType.Function:
                         if (typeOptions != null && typeOptions.Contains("Function") && funcOptions != null)
-                            _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this);
+                            _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this) { Tag = tag };
                         break;
                     case CustomControlType.Group:
-                        _controlGroup = new ControlGroup(name, isRequired, this);
+                        _controlGroup = new ControlGroup(name, isRequired, this) {Tag = tag};
                         break;
                     case CustomControlType.Reference:
-                        _controlReference = new ControlReference(name, isRequired, help, this);
+                        _controlReference = new ControlReference(name, isRequired, help, this) {Tag = tag};
                         break;
                     case CustomControlType.Keyword:
-                        _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this);
+                        _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this) {Tag = tag};
                         break;
                 }
 
@@ -121,6 +123,7 @@ namespace bark_GUI.CustomControls
 
         #endregion
 
+        // When the user changes the type of an element (e.g. constant to variable) the control must be replaced.
         public void ReplaceWith(CustomControlType customControlType)
         {
             System.Windows.Forms.Control viewer = CurrentControl.Parent;
@@ -166,6 +169,7 @@ namespace bark_GUI.CustomControls
             CurrentControl = newMe;
         }
         
+        // Selects the current/active custom control.
         public void Select(CustomControlType customControlType)
         {
             switch (customControlType)

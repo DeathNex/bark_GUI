@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml;
 using bark_GUI.Structure.Items;
 
@@ -173,6 +175,35 @@ namespace bark_GUI.XmlHandling
                                 }
                         }
                         break;
+                    case "key":
+                        var referenceListName = "";
+
+                        // Check valid syntax.
+                        Debug.Assert(x.ChildNodes != null && x.ChildNodes != null,
+                            "XML Handling - XSD Parser - CreateChildren - Found a 'key' without child elements.");
+
+                        // Get the referenced item path.
+                        foreach (var xc in x.ChildNodes.Cast<XmlElement>().Where(xc => xc.LocalName == "selector"))
+                        {
+                            Debug.Assert(xc.Attributes != null && xc.Attributes["xpath"] != null,
+                            "XML Handling - XSD Parser - CreateChildren - Found a 'key' and child 'selector' without xpath.");
+                            referenceListName = xc.Attributes["xpath"].Value.Trim();
+                        }
+
+                        // Check valid syntax.
+                        Debug.Assert(!string.IsNullOrEmpty(referenceListName),
+                            "XML Handling - XSD Parser - CreateChildren - Found a 'key' without a 'selector' child.");
+
+                        // Get the name of the referenced element and create a reference list.
+                        referenceListName = referenceListName.Substring(referenceListName.LastIndexOf('/')+1);
+                        Structure.Structure.AddReferenceList(referenceListName);
+                        break;
+                    case "annotation":
+                        break;
+                    case "keyref":
+                        break;
+                    default:
+                        throw new Exception("Stopped at XSD PARSING...\n Unhandled element: " + x.LocalName);
                 }
             }
             return list;

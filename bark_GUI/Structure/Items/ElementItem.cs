@@ -11,7 +11,6 @@ namespace bark_GUI.Structure.Items
     public class ElementItem : Item
     {
         /* PUBLIC PROPERTIES */
-        public GeneralControl Control { get; private set; }
         public ElementType.ElementType SelectedType { get; set; }
 
         /* PRIVATE VARIABLES */
@@ -66,7 +65,7 @@ namespace bark_GUI.Structure.Items
             List<string> xUnitOptions = null;       //Variable
             List<string> functionOptions = null;    //Function
             List<string> keyOptions = null;         //Keyword
-            List<string> refOptions = null;         //Reference
+            // Reference Options cannot be gathered during XSD Load.
 
             if (XsdParser.HasAttributes(xsdNode))
             {
@@ -107,7 +106,8 @@ namespace bark_GUI.Structure.Items
                         {
                             SelectedType = _complexType.Reference;
                             list.Add(CustomControlType.Reference);
-                            refOptions = _complexType.Reference.SimpleType.GetOptions();
+                            // Cannot retrieve reference options during the XSD load.
+                            // Instead it's done at Element Viewer Initialization (after the XML is loaded).
                         }
                         else { throw new Exception(""); }
                     }

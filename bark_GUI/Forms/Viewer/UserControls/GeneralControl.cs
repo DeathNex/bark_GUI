@@ -7,14 +7,23 @@ namespace bark_GUI.CustomControls
     public class GeneralControl
     {
         //Public Variables
-        public string Name;
+        public string Name {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                foreach (var customControl in _customControls)
+                    customControl.SetControlName(_name);
+            }
+        }
         public bool IsRequired;
         public string Help;
         public CustomControl CurrentControl;
 
 
         //Private Variables
-        private List<ICustomControl> _customControls;
+        private string _name;
+        private List<CustomControl> _customControls;
 
         ControlConstant _controlConstant;
         ControlVariable _controlVariable;
@@ -60,6 +69,8 @@ namespace bark_GUI.CustomControls
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions)
         {
+            _customControls = new List<CustomControl>();
+
             //Handle bad situations
             if (controlTypes == null || controlTypes.Count < 1)
                 return;
@@ -75,24 +86,39 @@ namespace bark_GUI.CustomControls
                 {
                     case CustomControlType.Constant:
                         if (typeOptions != null && typeOptions.Contains("Constant") && unitOptions != null)
-                            _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this) { Tag = tag };
+                        {
+                            _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this)
+                            {Tag = tag};
+                            _customControls.Add(_controlConstant);
+                        }
                         break;
                     case CustomControlType.Variable:
                         if (typeOptions != null && typeOptions.Contains("Variable") && unitOptions != null) // && x_unitOptions != null
-                            _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this) { Tag = tag };
+                        {
+                            _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this)
+                            { Tag = tag };
+                            _customControls.Add(_controlVariable);
+                        }
                         break;
                     case CustomControlType.Function:
                         if (typeOptions != null && typeOptions.Contains("Function") && funcOptions != null)
-                            _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this) { Tag = tag };
+                        {
+                            _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this)
+                            { Tag = tag };
+                            _customControls.Add(_controlFunction);
+                        }
                         break;
                     case CustomControlType.Group:
                         _controlGroup = new ControlGroup(name, isRequired, this) {Tag = tag};
+                        _customControls.Add(_controlGroup);
                         break;
                     case CustomControlType.Reference:
                         _controlReference = new ControlReference(name, isRequired, help, this) {Tag = tag};
+                        _customControls.Add(_controlReference);
                         break;
                     case CustomControlType.Keyword:
                         _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this) {Tag = tag};
+                        _customControls.Add(_controlKeyword);
                         break;
                 }
 
@@ -200,5 +226,7 @@ namespace bark_GUI.CustomControls
         public void SetUnit(string unit) { CurrentControl.SetUnit(unit); }
 
         public void SetX_Unit(string xUnit) { CurrentControl.SetX_Unit(xUnit); }
+
+
     }
 }

@@ -41,7 +41,7 @@ namespace bark_GUI.XmlHandling
                 item.SetXmlNode(inXmlNode);
 
                 // Check for NewName
-                item.NewName = GetCustomName(inXmlNode);
+                item.NewName = GetNewName(inXmlNode);
 
                 // Loop through Element Item XML Nodes.
                 if (inXmlNode.HasChildNodes)
@@ -212,7 +212,7 @@ namespace bark_GUI.XmlHandling
             //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
         }
 
-        // TODO: Check if keyword works. (exists only in wallsun.brk>boundary-external>function)
+        // TODO: Check if keyword works.
         private static void DrawAKeyword(XmlNode inXmlNode, Item item)
         {
             var kvalue = inXmlNode.InnerText;
@@ -281,7 +281,7 @@ namespace bark_GUI.XmlHandling
         #endregion
 
         #region Private Utility Methods
-        private static string GetCustomName(XmlNode inXmlNode)
+        private static string GetNewName(XmlNode inXmlNode)
         {
             if (inXmlNode.Attributes != null && inXmlNode.Attributes["name"] != null)
                 return inXmlNode.Attributes["name"].Value;

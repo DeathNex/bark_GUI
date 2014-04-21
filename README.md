@@ -52,6 +52,18 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.14
+-----
++	Fixed 'Multiple' elements overwriting each other.
++	Renamed the "XSDValidatorUtility.xsd" to "XSDValidatorSimpleTypes.xsd".
++	Implemented 'Keyword' element. Changed the "XSDValidator.xsd", "XSDValidatorComplexTypes.xsd",
+		"XSDValidatorSimpleTypes" and all XML (.brk) files to work with the new structure.
++	Implemented 'Reference' element. Applies to every element from the XSD that
+		is under key-keyref restriction. Uses the name of the element to create the list
+		(e.g. all 'material' elements).
++	Added controls to all 'Group Elements' for better handling in the Element Viewer.
++	Fixed the order of the Element Viewer. (Multiple elements no longer appear in the bottom)
+
 v0.13
 -----
 +	Added to GitHub.

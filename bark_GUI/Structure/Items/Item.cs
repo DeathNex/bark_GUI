@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Xml;
+using bark_GUI.CustomControls;
 using bark_GUI.XmlHandling;
 
 namespace bark_GUI.Structure.Items
@@ -8,27 +9,29 @@ namespace bark_GUI.Structure.Items
     {
         /* PUBLIC VARIABLES */
         public string Name { get; private set; }
-        public string NewName {
-            get { return newName; }
-            set {
-                newName = value;
+        public string NewName
+        {
+            get { return _newName; }
+            set
+            {
+                _newName = value;
+
+                // Set the new name to the Tree-Node of the Group Viewer.
                 if (IsGroupItem)
                 {
                     var x = this as GroupItem;
                     Debug.Assert(x != null, string.Format("Error on Item {0} {1}\n" +
-                                "Inconsistency between property IsGroupItem and actually being a group item.", Name, newName));
-                    x.Tnode.Name = value;
+                                "Inconsistency between property IsGroupItem and actually being a group item.", Name, _newName));
+                    x.Tnode.Name = CustomName;
                 }
-                else
-                {
-                    var x = this as ElementItem;
-                    Debug.Assert(x != null, string.Format("Error on Item {0} {1}\n" +
-                                "Inconsistency between property IsGroupItem(false) and actually being an element item.", Name, newName));
-                    x.Control.Name = value;
-                }
+
+                // Set the custom new name to the Control of the Element Viewer.
+                Control.Name = CustomName;
             }
         }
+        public string CustomName { get { return !string.IsNullOrEmpty(_newName) ? string.Format("({0}) {1}", Name, _newName) : Name; } }
         public GroupItem Parent { get; private set; }
+        public GeneralControl Control { get; protected set; }
         public bool IsElementItem { get; private set; }
         public bool IsGroupItem { get; private set; }
         public bool IsFunction { get { return isFunction; } }
@@ -43,7 +46,7 @@ namespace bark_GUI.Structure.Items
         /* PRIVATE VARIABLES */
         private static int _count;
         private int _id;
-        private string newName;
+        private string _newName;
 
 
         #region Constructors

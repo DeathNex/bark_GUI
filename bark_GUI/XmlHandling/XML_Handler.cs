@@ -74,9 +74,9 @@ namespace bark_GUI.XmlHandling
                 MessageBox.Show(ex.Message);
                 return false;
             }
-            var debugMultiples = Structure.Structure.GroupItems.Where(item => item.IsMultiple).ToList();
-            var debugGroupItems = Structure.Structure.GroupItems.ToList();
-            var debugBoundaries = debugGroupItems.Where(b => b.Name == "boundary").ToList();
+            //var debugMultiples = Structure.Structure.GroupItems.Where(item => item.IsMultiple).ToList();
+            //var debugGroupItems = Structure.Structure.GroupItems.ToList();
+            //var debugBoundaries = debugGroupItems.Where(b => b.Name == "boundary").ToList();
             return true;
         }
         #endregion

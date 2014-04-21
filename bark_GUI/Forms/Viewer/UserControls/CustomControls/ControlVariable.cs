@@ -50,6 +50,12 @@ namespace bark_GUI.CustomControls
         public override void SetValue(string value) { control_variable_table.Fill(value); }
         public override void SetUnit(string unit) { comboBoxUnit2.Text = unit; }
         public override void SetX_Unit(string xUnit) { comboBoxUnit.Text = xUnit; }
+        // Set the Control's name for the Element Viewer.
+        public override void SetControlName(string name)
+        {
+            Name = name;
+            labelName.Text = name;
+        }
 
 
 

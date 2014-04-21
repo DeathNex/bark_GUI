@@ -10,7 +10,8 @@
 </simulation>
 <setup>
 	<materials>
-		<material name="polysterene" phase="solid">
+		<material name="polysterene">
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>0.034</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>657.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>35.</constant></density>

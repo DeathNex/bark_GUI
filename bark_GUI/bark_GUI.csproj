@@ -258,10 +258,11 @@
     <None Include="Samples\XSDValidatorFunctions.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Samples\XSDValidatorUnits.xsd">
+    <None Include="Samples\XSDValidatorSimpleTypes.xsd">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Samples\XSDValidatorUtility.xsd">
+    <None Include="Samples\XSDValidatorUnits.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -389,45 +389,57 @@ namespace bark_GUI
         /// <summary> Uses the existing structure loaded by XML to create the ElementViewer nodes. </summary>
         private void _InitializeElementViewer()
         {
-            var tmp = "case";
-
             // Clear.
             elementViewer.Controls.Clear();
 
-            // Iterate through the Element Items and append them in the Viewer. (including their parents)
-            foreach (var item in Structure.Structure.ElementItems)
+            // Iterate through the Group Items and append their children in the Viewer.
+            PopulateElementViewer(Structure.Structure.Root);
+        }
+
+        // Recursive function that populates the element viewer with the appropriate elements.
+        private void PopulateElementViewer(GroupItem root)
+        {
+            foreach (var child in root.Children)
             {
-                // Check.
-                if (item.Control == null || item.Control.CurrentControl == null) continue;
+                // Check for Controls.
+                if (child.Control == null || child.Control.CurrentControl == null) continue;
 
-                // Create this item's parent as GROUP if it doesn't already exist.
-                // (to allow a better view of the elements' position in the hierarchy)
-                var parentViewName = item.Parent.Name;
-
-                // If a custom name exists, append it to the viewName.
-                if (!string.IsNullOrEmpty(item.Parent.NewName))
-                    parentViewName = string.Format("({0}) {1}", item.Parent.Name, item.Parent.NewName);
-
-                // If the parent of this element doesnt already exist, add it.
-                if (item.Parent != null && parentViewName != tmp && parentViewName != tmp)
+                // Do ElementItem specific actions.
+                if (child.IsElementItem)
                 {
-                    tmp = parentViewName;
-                    elementViewer.Controls.Add((new GeneralControl(item, tmp, true, "help text")).CurrentControl);
+                    var item = child as ElementItem;
+
+                    // Check.
+                    if (item == null) continue;
+
+                    // Add reference options in the reference controls (must be done after the XML is read)
+                    if (item.Control.CurrentControl is ControlReference)
+                    {
+                        var options = Structure.Structure.FindReferenceListOptions(item.Name);
+                        (item.Control.CurrentControl as ControlReference).SetOptions(options);
+                    }
                 }
 
-                // Add reference options in the reference controls (must be done after the XML is read)
-                if (item.Control.CurrentControl is ControlReference)
-                {
-                    var options = Structure.Structure.FindReferenceListOptions(item.Name);
-                    (item.Control.CurrentControl as ControlReference).SetOptions(options);
-                }
-
-                // Append the item in the Viewer.
-                elementViewer.Controls.Add(item.Control.CurrentControl);
+                // Append the item's Control in the Element Viewer.
+                // Append the GroupItem's Control too, to allow a better view 
+                // of the elements' position in the hierarchy in the Element Viewer.
+                elementViewer.Controls.Add(child.Control.CurrentControl);
 
                 // If the item is optional (not required) hide it.
-                if (!item.Control.IsRequired)
-                    item.Control.CurrentControl.Hide();
+                if (!child.Control.IsRequired)
+                    child.Control.CurrentControl.Hide();
+
+                // Do GroupItem specific actions.
+                if (child.IsGroupItem)
+                {
+                    var item = child as GroupItem;
+
+                    // Check.
+                    if (item == null) continue;
+
+                    // Recursive function.
+                    PopulateElementViewer(item);
+                }
             }
         }
         #endregion

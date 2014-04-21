@@ -9,16 +9,11 @@
   <!-- SPECIAL TYPES -->
 
 
-
-
   
-  
-  
-  
-  <!-- MATERIAL PHASE type in SimpleTypes -->
+  <!-- KEYWORDS in SimpleTypes -->
 
   <!--Define material_phase: "solid" or "liquid" or "gas"-->
-  <xs:simpleType name="material_phase">
+  <xs:simpleType name="keyword_material_phase">
     <xs:restriction base="xs:string">
       <xs:enumeration value="solid"/>
       <xs:enumeration value="liquid"/>
@@ -27,7 +22,7 @@
   </xs:simpleType>
 
   <!--Define side: "front" or "back"-->
-  <xs:simpleType name="side">
+  <xs:simpleType name="keyword_wall_side">
     <xs:restriction base="xs:string">
       <xs:enumeration value="front"/>
       <xs:enumeration value="back"/>

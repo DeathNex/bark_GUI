@@ -10,13 +10,15 @@
 </simulation>
 <setup>
 	<materials>
-		<material name="plaster" phase="solid">
+		<material name="plaster">
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>1.</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>1000.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>1800.</constant></density>
 			<emissivity  unit="-"><constant>1.</constant></emissivity>
 		</material>
-		<material name="concrete" phase="solid"> 
+		<material name="concrete"> 
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>2.</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>1000.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>2400.</constant></density>

@@ -10,13 +10,15 @@
 </simulation>
 <setup>
 	<materials>
-		<material phase="solid" name="plaster">
+		<material name="plaster">
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>1.</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>1000.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>1800.</constant></density>
 			<emissivity  unit="-"><constant>0.9</constant></emissivity>
 		</material>
-		<material phase="solid" name="concrete"> 
+		<material name="concrete"> 
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>2.</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>1000.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>2400.</constant></density>
@@ -28,7 +30,8 @@
 				<reference_thickness unit="cm"><constant>10.</constant></reference_thickness>
 			</solar_radiation>
 		</material>
-		<material phase="solid" name="transparent_insulation">
+		<material name="transparent_insulation">
+			<phase><keyword>solid</keyword></phase>
 			<conductivity  unit="W/mK"><constant>0.11</constant></conductivity>
 			<heat_capacity  unit="J/kgK"><constant>1000.</constant></heat_capacity>
 			<density  unit="kg/m3"><constant>500.</constant></density>
@@ -63,7 +66,7 @@
 			<geometry>
 				<thickness unit="cm"><constant>1</constant></thickness>
 			</geometry>
-			<material reference="transparent_insulation"/>
+			<material reference="plaster"/>
 		</layer>
 		<layer name="concrete">
 			<geometry>

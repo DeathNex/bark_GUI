@@ -82,6 +82,87 @@ namespace bark_GUI.Structure
         public static void AddReference(Item item){if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Add(item); }
         #endregion
 
+        #region Insert
+        public static void Insert(GroupItem groupItem)
+        {
+            // Find the correct position for this item.
+            // (to keep the order of the XML and not the XSD + extra of the XML at the end)
+            // If this step is skipped every subsequent multiple item will be appended in the end of the Structure and
+            // the Viewer(s).
+            int? position = null;
+
+
+            // Insert the item.
+            if (groupItem.IsFunction)
+            {
+                // Find the proper position to place this item in the list.
+                for (int i = 0; i < _functions.Count(); i++)
+                {
+                    if (_functions[i].Name == groupItem.Name) position = i;
+                    else if (position != null) break;
+                }
+
+                // If no proper position is found, just append it. (at the end)
+                if (position == null)
+                {
+                    Add(groupItem);
+                    return;
+                }
+
+                // Increase by 1 to add this item AFTER the last item found and not BEFORE it.
+                position++;
+
+                _functions.Insert((int) position, groupItem);
+            }
+            else
+            {
+                // Find the proper position to place this item in the list.
+                for (int i = 0; i < GroupItems.Count(); i++)
+                {
+                    if (GroupItems[i].Name == groupItem.Name) position = i;
+                    else if (position != null) break;
+                }
+
+                // Handle the result.
+                if (position == null)
+                {
+                    // If no proper position is found, just append it. (at the end of both lists)
+                    Add(groupItem);
+                    return;
+                }
+
+                // Add to the GroupItems list.
+                // Increase the position by 1 to add this item AFTER the last item found and not BEFORE it.
+                GroupItems.Insert((int) ++position, groupItem);
+
+
+
+                // Do the same for the Items list.
+                position = null;
+
+
+                // Find the proper position to place this item in the list.
+                for (int i = 0; i < Items.Count(); i++)
+                {
+                    if ((Items[i].IsGroupItem) && (Items[i].Name == groupItem.Name))
+                        position = i;
+                    else if (position != null)
+                        break;
+                }
+
+                // Handle the result.
+                if (position == null)
+                    // If no proper position is found, just append it. (at the end)
+                    Items.Add(groupItem);
+                else
+                    // Add to the Items list.
+                    // Increase the position by 1 to add this item AFTER the last item found and not BEFORE it.
+                    Items.Insert((int)++position, groupItem);
+            }
+
+        }
+        #endregion
+
         #region Find
         // These methods are used during the Info Population on the already created Structure. (When loading the XML)
 
@@ -216,5 +297,6 @@ namespace bark_GUI.Structure
             return resultsFiltered;
         }
         #endregion
+
     }
 }

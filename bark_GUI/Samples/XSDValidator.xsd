@@ -3,7 +3,7 @@
   <xs:include schemaLocation="XSDValidatorUnits.xsd"/>
   <xs:include schemaLocation="XSDValidatorComplexTypes.xsd"/>
   <xs:include schemaLocation="XSDValidatorFunctions.xsd"/>
-  <xs:include schemaLocation="XSDValidatorUtility.xsd"/>
+  <xs:include schemaLocation="XSDValidatorSimpleTypes.xsd"/>
   
 
   <!--SEARCH-TAGS:
@@ -63,6 +63,7 @@
                       <xs:complexType>
                         <xs:all>
 
+						  <xs:element name="phase" type="material_phase" />
                           <xs:element name="conductivity" type="conductivity" />
                           <xs:element name="heat_capacity" type="heat_capacity" />
                           <xs:element name="density" type="density" />
@@ -83,7 +84,6 @@
 
                         </xs:all>
                         <xs:attribute name="name" type="xs:string" use="required" />
-                        <xs:attribute name="phase" type="material_phase" default="solid" />
 
                       </xs:complexType>
                     </xs:element>

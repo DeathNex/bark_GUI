@@ -60,7 +60,7 @@ namespace bark_GUI.XmlHandling
 
                 // Load dynamically the xsd part files that contains the appropriate word.
                 // The order is important due to dependencies.
-                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("Utility")).Any(_LoadXsdUtility))
+                if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("SimpleTypes")).Any(_LoadXsdUtility))
                     return false;
                 if (!partsFilepath.Where(path => GetFileNameOf(path).Contains("Units")).Any(_LoadXsdUnits))
                     return false;
@@ -149,7 +149,7 @@ namespace bark_GUI.XmlHandling
             return true;
         }
 
-        /// <summary> Utility method that creates the structure of ComplexTypes. </summary>
+        /// <summary> Utility method that creates the structure of ComplexTypes. (Keywords' as types exist here) </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdComplexTypes(string filepath)
         {
@@ -213,7 +213,7 @@ namespace bark_GUI.XmlHandling
             return true;
         }
 
-        /// <summary> Utility method that creates the structure of SimpleTypes. </summary>
+        /// <summary> Utility method that creates the structure of SimpleTypes. (Keywords' options exist here) </summary>
         /// <returns> If there were no errors, success. </returns>
         private bool _LoadXsdUtility(string filepath)
         {

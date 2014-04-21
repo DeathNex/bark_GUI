@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml;
 using System.Windows.Forms;
+using bark_GUI.CustomControls;
 using bark_GUI.XmlHandling;
 
 namespace bark_GUI.Structure.Items
@@ -14,7 +15,8 @@ namespace bark_GUI.Structure.Items
         /// <summary>
         /// Using the existing children, iterates in depth and adds all inner children through recursion.
         /// </summary>
-        public List<Item> InnerChildren {
+        public List<Item> InnerChildren
+        {
             get
             {
                 var innerChildren = new List<Item>();
@@ -80,20 +82,26 @@ namespace bark_GUI.Structure.Items
         // Utility Function for Constructors. (to avoid code repeatance)
         private void CreateGroupItem(XmlNode xsdNode, GroupItem parent, bool isFunction)
         {
-            //TreeNode of TreeViewer
+            // TreeNode of TreeViewer
             Tnode = new TreeNode(Name) { ToolTipText = Help };
             if (parent != null)
                 parent.Tnode.Nodes.Add(Tnode);
 
-            //Can exist multiple times?
+            // Can exist multiple times?
             IsMultiple = XsdParser.IsMupltiple(xsdNode);
 
-            //Children
+            // Children
             Children = XsdParser.CreateChildren(xsdNode, this, isFunction);
 
-            //Include this in the Structure
-            if (!isFunction)
-                Structure.Add(this);
+            //Create the Controls for this ElementItem with the gathered information
+            Control = new GeneralControl(XmlNode, CustomName, IsRequired, Help);
+
+            // The following actions do not apply on 'function' element types.
+            if (isFunction) return;
+
+            // Include this in the Structure
+            if (!IsMultiple) Structure.Add(this);
+            else Structure.Insert(this);
         }
         #endregion
 
@@ -106,7 +114,21 @@ namespace bark_GUI.Structure.Items
         public GroupItem Duplicate()
         {
             var clone = new GroupItem(XsdNode, Parent);
-            Parent.Children.Add(clone);
+            var position = Parent.Children.IndexOf(this);
+
+            // Find the correct position for this item.
+            // (to keep the order of the XML and not the XSD + extra of the XML at the end)
+            // If this step is skipped every subsequent multiple item will be appended in the end of the Structure and
+            // the Viewer(s).
+            if (position >= 0)
+            {
+                do { position++; } while (position < Parent.Children.Count && Parent.Children[position].Name == Name);
+            }
+
+            // If no such child already exists, just place it, else insert it.
+            if(position == Parent.Children.Count) Parent.Children.Add(clone);
+            else Parent.Children.Insert(position, clone);
+
             return clone;
         }
 

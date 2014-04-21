@@ -9,6 +9,28 @@
                           element_name="function">element_REF -->
 
 
+  
+		<!-- REFERENCE -->
+  
+  <xs:complexType name="reference">
+	<xs:attribute name="reference" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  		<!-- KEYWORDS -->
+  
+  <xs:complexType name="material_phase">
+	<xs:choice>
+	  <xs:element name="keyword" type="keyword_material_phase" default="solid"/>
+	</xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="wall_side">
+	<xs:choice>
+	  <xs:element name="keyword" type="keyword_wall_side" default="front"/>
+	</xs:choice>
+  </xs:complexType>
+  
+  		<!-- CONSTANT/VARIABLE/FUNCTION -->
 
   <xs:complexType name="initial_temperature">
     <xs:choice>
@@ -165,18 +187,6 @@
       <xs:element name="constant" type="xs:decimal" default="0.0"/>
     </xs:choice>
     <xs:attribute name="unit" type="none" default="-"/>
-  </xs:complexType>
-  
-  <!-- NEW!!! -->
-  
-  <xs:complexType name="side_keyword">
-	<xs:choice>
-	  <xs:element name="keyword" type="side" default="front"/>
-	</xs:choice>
-  </xs:complexType>
-  
-  <xs:complexType name="reference">
-	<xs:attribute name="reference" type="xs:string" use="required" />
   </xs:complexType>
 
 </xs:schema>

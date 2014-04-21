@@ -241,7 +241,7 @@ namespace bark_GUI.Structure
             var newXmlItem = xmlItem.ParentNode;
             var newResults = results.Select(t => t.Parent).Distinct().Cast<Item>().ToList();
 
-            Debug.Assert(newResults.Count>1, "Filters were incapable of distinguishing a single item '"
+            Debug.Assert(newResults.Count>0, "Filters were incapable of distinguishing a single item '"
                     + xmlItem.Name + "' in the Structure.\n     Please make sure no exact duplicates exist.");
 
             var finalResult = FindItemWithFilters(newXmlItem, newResults);

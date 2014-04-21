@@ -63,6 +63,7 @@ v0.14
 		(e.g. all 'material' elements).
 +	Added controls to all 'Group Elements' for better handling in the Element Viewer.
 +	Fixed the order of the Element Viewer. (Multiple elements no longer appear in the bottom)
++	Visual Update on Element Viewer to help distinguish Grouped/Nested Element Items.
 
 v0.13
 -----

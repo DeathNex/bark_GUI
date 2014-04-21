@@ -1,4 +1,6 @@
-﻿namespace bark_GUI.CustomControls
+﻿using System.Windows.Forms;
+
+namespace bark_GUI.CustomControls
 {
     public partial class ControlGroup : CustomControl
     {
@@ -15,5 +17,7 @@
             Name = name;
             labelGroup.Text = name;
         }
+
+        public Control GetPanel() { return panelGroup; }
     }
 }

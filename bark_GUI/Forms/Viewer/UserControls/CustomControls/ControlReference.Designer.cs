@@ -38,29 +38,32 @@
             // 
             this.comboBoxValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxValue.FormattingEnabled = true;
-            this.comboBoxValue.Location = new System.Drawing.Point(245, 5);
+            this.comboBoxValue.Location = new System.Drawing.Point(327, 6);
+            this.comboBoxValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxValue.Name = "comboBoxValue";
-            this.comboBoxValue.Size = new System.Drawing.Size(150, 21);
+            this.comboBoxValue.Size = new System.Drawing.Size(199, 24);
             this.comboBoxValue.TabIndex = 10;
             this.comboBoxValue.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
             // 
             // labelName
             // 
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(3, 5);
+            this.labelName.Location = new System.Drawing.Point(4, 6);
+            this.labelName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(33, 13);
+            this.labelName.Size = new System.Drawing.Size(43, 17);
             this.labelName.TabIndex = 8;
             this.labelName.Text = "name";
             // 
-            // control_reference
+            // ControlReference
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.comboBoxValue);
             this.Controls.Add(this.labelName);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ControlReference";
-            this.Size = new System.Drawing.Size(398, 30);
+            this.Size = new System.Drawing.Size(530, 37);
             this.ResumeLayout(false);
             this.PerformLayout();
 

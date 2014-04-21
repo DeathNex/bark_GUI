@@ -39,18 +39,20 @@
             // 
             this.comboBoxFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFunc.FormattingEnabled = true;
-            this.comboBoxFunc.Location = new System.Drawing.Point(245, 6);
+            this.comboBoxFunc.Location = new System.Drawing.Point(327, 11);
+            this.comboBoxFunc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxFunc.Name = "comboBoxFunc";
-            this.comboBoxFunc.Size = new System.Drawing.Size(150, 21);
+            this.comboBoxFunc.Size = new System.Drawing.Size(199, 24);
             this.comboBoxFunc.TabIndex = 12;
             this.comboBoxFunc.SelectedIndexChanged += new System.EventHandler(this.comboBoxFunc_SelectedIndexChanged);
             // 
             // labelName
             // 
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(3, 9);
+            this.labelName.Location = new System.Drawing.Point(4, 11);
+            this.labelName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(33, 13);
+            this.labelName.Size = new System.Drawing.Size(43, 17);
             this.labelName.TabIndex = 11;
             this.labelName.Text = "name";
             // 
@@ -59,21 +61,23 @@
             this.comboBoxType.DisplayMember = "0";
             this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxType.FormattingEnabled = true;
-            this.comboBoxType.Location = new System.Drawing.Point(175, 5);
+            this.comboBoxType.Location = new System.Drawing.Point(233, 10);
+            this.comboBoxType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxType.Name = "comboBoxType";
-            this.comboBoxType.Size = new System.Drawing.Size(64, 21);
+            this.comboBoxType.Size = new System.Drawing.Size(84, 24);
             this.comboBoxType.TabIndex = 13;
             this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
             // 
-            // control_function
+            // ControlFunction
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.comboBoxType);
             this.Controls.Add(this.comboBoxFunc);
             this.Controls.Add(this.labelName);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ControlFunction";
-            this.Size = new System.Drawing.Size(397, 37);
+            this.Size = new System.Drawing.Size(530, 46);
             this.ResumeLayout(false);
             this.PerformLayout();
 

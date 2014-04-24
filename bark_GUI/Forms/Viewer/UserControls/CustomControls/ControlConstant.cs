@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace bark_GUI.CustomControls
@@ -48,11 +47,8 @@ namespace bark_GUI.CustomControls
         public override void SetValue(string value) { textBoxValue.Text = value; }
         public override void SetUnit(string unit) { comboBoxUnit.Text = unit; }
         // Set the Control's name for the Element Viewer.
-        public override void SetControlName(string name)
-        {
-            Name = name;
-            labelName.Text = name;
-        }
+        public override void SetControlName(string name) { Name = name; labelName.Text = name; }
+        public override bool HasValue() { return !string.IsNullOrEmpty(textBoxValue.Text.Trim()); }
 
 
 

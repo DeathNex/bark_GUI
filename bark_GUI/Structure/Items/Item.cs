@@ -22,7 +22,7 @@ namespace bark_GUI.Structure.Items
                     var x = this as GroupItem;
                     Debug.Assert(x != null, string.Format("Error on Item {0} {1}\n" +
                                 "Inconsistency between property IsGroupItem and actually being a group item.", Name, _newName));
-                    x.Tnode.Name = CustomName;
+                    x.Tnode.Text = CustomName;
                 }
 
                 // Set the custom new name to the Control of the Element Viewer.

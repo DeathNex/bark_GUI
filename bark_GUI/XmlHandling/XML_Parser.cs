@@ -80,7 +80,7 @@ namespace bark_GUI.XmlHandling
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
         }
         #endregion

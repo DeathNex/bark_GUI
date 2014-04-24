@@ -60,5 +60,6 @@ namespace bark_GUI.CustomControls
         public virtual void SetUnit(string unit) { }
         public virtual void SetX_Unit(string xUnit) { }
         public virtual void SetControlName(string name) { }
+        public virtual bool HasValue() { return false; }
     }
 }

@@ -17,6 +17,7 @@ namespace bark_GUI.CustomControls
             }
         }
         public bool IsRequired;
+        public bool HasValue { get { return CurrentControl.HasValue(); } }
         public string Help;
         public CustomControl CurrentControl;
 

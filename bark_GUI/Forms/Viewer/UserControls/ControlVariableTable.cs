@@ -109,6 +109,21 @@ namespace bark_GUI.CustomControls
 
             _filling = false;
         }
+
+        public bool HasValue()
+        {
+            var boxHasValue = false;
+
+            foreach (var textBox in _textBoxArray)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text.Trim()))
+                    boxHasValue = true;
+
+                if (boxHasValue) break;
+            }
+
+            return boxHasValue;
+        }
         #endregion
 
         #region Private Methods
@@ -393,5 +408,6 @@ namespace bark_GUI.CustomControls
             last_j = 0;
         }*/
         #endregion
+
     }
 }

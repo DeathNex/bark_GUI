@@ -19,6 +19,8 @@ namespace bark_GUI
 
         private const string Title = "Viewer";
 
+        private bool _elementViewerIsInitialized = false;
+
 
         #region Constructors
         public ViewerForm()
@@ -111,6 +113,12 @@ namespace bark_GUI
         {
             Dispose();
         }
+
+        private void elementViewer_MouseClick(object sender, MouseEventArgs e)
+        {
+            elementViewer.Focus();
+        }
+
         #endregion
 
         #region MenuStrip Clicks
@@ -200,6 +208,8 @@ namespace bark_GUI
             statusMain.Text = "Loading XML...";
 
             _closeFile();
+
+            _elementViewerIsInitialized = false;
 
             //Set the new current file path
             Settings.Default.PathCurrentFile = filepath;
@@ -324,6 +334,9 @@ namespace bark_GUI
             var tNode = treeViewer.SelectedNode;
             GroupItem selectedRoot = null;
 
+            // Check: The Viewer has been Initialized.
+            if (!_elementViewerIsInitialized || tNode == null) return;
+
             // Convert selected TreeNode to GroupItem
             foreach (var groupItem in Structure.Structure.GroupItems.Where(g => g.Tnode == tNode))
                 selectedRoot = groupItem;
@@ -369,44 +382,30 @@ namespace bark_GUI
 
             // Iterate through the Group Items and append their children in the Viewer.
             PopulateElementViewer(Structure.Structure.Root, elementViewer);
+
+            _elementViewerIsInitialized = true;
         }
 
         // Recursive function that hides/shows the controls of the element viewer.
         private void UpdateElementViewerControls(GroupItem selectedRoot, GroupItem root)
         {
-            var showAll = checkBoxTreeShowHidden.Checked;
-
-            foreach (var child in root.Children)
+            // Iterate this element's children and show/hide each control.
+            foreach (var child in root.Children.Where(child => child.Control != null && child.Control.CurrentControl != null))
             {
-                // Check for Controls.
-                if (child.Control == null || child.Control.CurrentControl == null) continue;
-
-                // Show the ElementItems and do a recursive call on the group items.
-                if (child.IsElementItem)
+                // Recursive call on the group items that have a child with value.
+                if (child.IsGroupItem)
                 {
-                    // Show the ElementItem Controls if they are under the selected GroupItem and should be shown.
-
-                    if ((showAll || child.Control.IsRequired) && selectedRoot.InnerChildren.Contains(child))
-                        child.Control.CurrentControl.Show();
-                    else
-                        child.Control.CurrentControl.Hide();
-                }
-                else if (child.IsGroupItem)
-                {
-                    // Recursive call on the group items.
                     var item = child as GroupItem;
                     var groupControl = child.Control.CurrentControl as ControlGroup;
 
                     // Check.
                     if (item == null || groupControl == null) continue;
 
-                    // Hide if needed.
-                    if (showAll || child.Control.IsRequired) groupControl.Show();
-                    else groupControl.Hide();
-
                     // Recursive function.
                     UpdateElementViewerControls(selectedRoot, item);
                 }
+
+                ShowOrHideControl(child, checkBoxTreeShowHidden.Checked, selectedRoot);
             }
         }
 
@@ -439,9 +438,6 @@ namespace bark_GUI
                 // of the elements' position in the hierarchy in the Element Viewer.
                 parent.Controls.Add(child.Control.CurrentControl);
 
-                // If the item is optional (not required) hide it.
-                if (!child.Control.IsRequired)
-                    child.Control.CurrentControl.Hide();
 
                 // Do GroupItem specific actions.
                 if (child.IsGroupItem)
@@ -455,13 +451,42 @@ namespace bark_GUI
                     // Recursive function.
                     PopulateElementViewer(item, groupControl.GetPanel());
                 }
+
+                // If the item is optional (not required) hide it.
+                ShowOrHideControl(child, checkBoxTreeShowHidden.Checked, root);
             }
         }
-        #endregion
 
-        private void elementViewer_MouseClick(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Encapsulates the Show or Hide control logic.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="showAll"></param>
+        /// <param name="selectedRoot"></param>
+        private void ShowOrHideControl(Item item, bool showAll, GroupItem selectedRoot)
         {
-            elementViewer.Focus();
+            var show = false;
+
+            // Show the Element if it has a value or show all option is enabled.
+            if ((item.IsElementItem) && (selectedRoot.InnerChildren.Contains(item) ||
+                selectedRoot == item))
+            {
+                if (showAll || item.Control.HasValue) show = true;
+            }
+            // Show the Group if it has any children Element and that child has a value or show all option is enabled.
+            else if ((item.IsGroupItem) && (selectedRoot.InnerChildren.Contains(item) ||
+                selectedRoot == item || ((GroupItem)item).InnerChildren.Contains(selectedRoot)))
+            {
+                var groupItem = (GroupItem)item;
+                var groupControl = ((ControlGroup)groupItem.Control.CurrentControl);
+
+                if (groupControl.HasChildrenOfElementItem() && (showAll || groupControl.HasValue())) show = true;
+            }
+            
+
+            if (show) item.Control.CurrentControl.Show();
+            else item.Control.CurrentControl.Hide();
         }
+        #endregion
     }
 }

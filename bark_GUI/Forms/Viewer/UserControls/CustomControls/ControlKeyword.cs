@@ -34,6 +34,7 @@ namespace bark_GUI.CustomControls
             Name = name;
             labelName.Text = name;
         }
+        public override bool HasValue() { return !string.IsNullOrEmpty(comboBoxValue.SelectedItem.ToString().Trim()); }
 
 
 

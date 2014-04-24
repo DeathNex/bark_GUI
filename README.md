@@ -52,6 +52,13 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.14b
+-----
++	Fixed a bug with the 'Show all optional items'.
++	Changed the rules of 'optional items' to show an item anyway if it has a value.
++	Empty GroupItems are now hidden. (unless you select an empty & optional child GroupItem)
++	Fixed TreeViewer to show the CustomNames instead of the XML Element names. (e.g. polysterene)
+
 v0.14
 -----
 +	Fixed 'Multiple' elements overwriting each other.

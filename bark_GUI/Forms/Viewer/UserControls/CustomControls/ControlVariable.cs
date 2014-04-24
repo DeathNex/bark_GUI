@@ -56,6 +56,7 @@ namespace bark_GUI.CustomControls
             Name = name;
             labelName.Text = name;
         }
+        public override bool HasValue() { return control_variable_table.HasValue(); }
 
 
 

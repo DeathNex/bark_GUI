@@ -7,12 +7,21 @@ namespace bark_GUI.CustomControls
         //Public Variables
         public new string Name { get; set; }
 
+        public string DefaultValue
+        {
+            get { return _defaultValue; }
+            set { _defaultValue = value; SetValue(value); } 
+        }
+
         public string Help { get; set; }
 
         public bool IsRequired { get; set; }
 
         //Protected Variables
         protected GeneralControl GeneralControl;
+
+        // Private Variables
+        private string _defaultValue;
 
         #region Constructors
 
@@ -60,6 +69,6 @@ namespace bark_GUI.CustomControls
         public virtual void SetUnit(string unit) { }
         public virtual void SetX_Unit(string xUnit) { }
         public virtual void SetControlName(string name) { }
-        public virtual bool HasValue() { return false; }
+        public virtual bool HasNewValue() { return false; }
     }
 }

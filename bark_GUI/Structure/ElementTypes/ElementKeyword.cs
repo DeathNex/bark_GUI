@@ -1,6 +1,7 @@
-﻿using bark_GUI.Structure.ItemTypes;
+﻿using System.Collections.Generic;
+using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI.Structure.ElementType
+namespace bark_GUI.Structure.ElementTypes
 {
     class ElementKeyword : ElementType
     {
@@ -10,13 +11,15 @@ namespace bark_GUI.Structure.ElementType
             get { return _value; }
             set { _value = value; }
         }
+        public List<string> KeywordOptions { get { return _simpleType.GetOptions(); } }
+
+        public string DefaultValue { get; set; }
         public SimpleType SimpleType { get { return _simpleType; } }
 
 
 
         /* PRIVATE VARIABLES */
         readonly SimpleType _simpleType; // xs:decimal
-        string _defaultValue;
 
 
 
@@ -25,9 +28,9 @@ namespace bark_GUI.Structure.ElementType
         //Constructor
         public ElementKeyword(SimpleType simpleType, string defaultValue)
         {
-            this._type = EType.Keyword;
-            this._simpleType = simpleType;
-            this._defaultValue = defaultValue;
+            _type = EType.Keyword;
+            _simpleType = simpleType;
+            DefaultValue = defaultValue;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI.Structure.ElementType
+namespace bark_GUI.Structure.ElementTypes
 {
     class ElementReference : ElementType
     {

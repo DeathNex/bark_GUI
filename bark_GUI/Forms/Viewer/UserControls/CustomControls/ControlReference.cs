@@ -34,6 +34,7 @@ namespace bark_GUI.CustomControls
         /* PUBLIC METHODS */
         public override void SetValue(string value)
         {
+            if (string.IsNullOrEmpty(value)) return;
             // Because this method can be called even before the reference control has any options,
             // check if this option exists. If it doesn't save it temporarily to set it later.
             if (comboBoxValue.Items.Count > 0 && comboBoxValue.Items.Contains(value)) comboBoxValue.Text = value;
@@ -57,7 +58,18 @@ namespace bark_GUI.CustomControls
             labelName.Text = name;
         }
 
-        public override bool HasValue() { return !string.IsNullOrEmpty(comboBoxValue.SelectedItem.ToString().Trim()); }
+        public override bool HasNewValue()
+        {
+            // Check if the control exists and has a value.
+            if (comboBoxValue == null || comboBoxValue.SelectedItem == null) return false;
+
+            // Check if the value is not empty and is not the default.
+            var valueIsNew = !string.IsNullOrEmpty(comboBoxValue.SelectedItem.ToString().Trim()) &&
+                               (comboBoxValue.SelectedItem.ToString().Trim() != DefaultValue);
+
+            // Return true if value changed.
+            return valueIsNew;
+        }
 
 
 

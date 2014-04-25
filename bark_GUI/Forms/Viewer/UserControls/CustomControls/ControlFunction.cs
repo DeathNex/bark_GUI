@@ -38,14 +38,25 @@ namespace bark_GUI.CustomControls
 
 
         /* PUBLIC METHODS */
-        public override void SetValue(string value) { comboBoxFunc.Text = value; }
+        public override void SetValue(string value) { if (!string.IsNullOrEmpty(value)) comboBoxFunc.Text = value; }
         // Set the Control's name for the Element Viewer.
         public override void SetControlName(string name)
         {
             Name = name;
             labelName.Text = name;
         }
-        public override bool HasValue() { return !string.IsNullOrEmpty(comboBoxFunc.Text.Trim()); }
+        public override bool HasNewValue()
+        {
+            // Check if the control exists and has a value.
+            if (comboBoxFunc == null || comboBoxFunc.SelectedItem == null) return false;
+
+            // Check if the value is not empty and is not the default.
+            var valueIsNew = !string.IsNullOrEmpty(comboBoxFunc.SelectedItem.ToString().Trim()) &&
+                               (comboBoxFunc.SelectedItem.ToString().Trim() != DefaultValue);
+
+            // Return true if value changed.
+            return valueIsNew;
+        }
 
 
 

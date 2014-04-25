@@ -1,5 +1,4 @@
-﻿#region using
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,7 +8,6 @@ using bark_GUI.CustomControls;
 using bark_GUI.Structure.Items;
 using bark_GUI.XmlHandling;
 using bark_GUI.Properties;
-#endregion
 
 namespace bark_GUI
 {
@@ -123,6 +121,8 @@ namespace bark_GUI
 
         #region MenuStrip Clicks
         /*File*/
+        //File New
+        private void newToolStripMenuItem_Click(object sender, EventArgs e) { _newFile(); }
         //File Open
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -198,6 +198,36 @@ namespace bark_GUI
         #endregion
 
         #region Action Methods
+        private void _newFile()
+        {
+            var path = Settings.Default.PathSamples + '\\' + Settings.Default.XSDValidatorName;
+
+            //Change the action status label
+            statusMain.Text = "Loading XML...";
+
+            _closeFile();
+
+            _elementViewerIsInitialized = false;
+
+            //Set the new current file path
+            Settings.Default.PathCurrentFile = null;
+
+            //Load the XML file
+            if (!_xmlHandler.New(path))
+            {
+                statusMain.Text = "Error";
+                return;
+            }
+
+            //Load the viewers
+            _InitializeTreeViewer();
+            _InitializeElementViewer();
+
+            //Update Status label at the bottom of the window
+            Text = "*Unsaved*";
+            statusMain.Text = "Ready";
+        }
+
         private void _saveFile() { _saveAsFile(Settings.Default.PathCurrentFile); }
 
         private void _saveAsFile(string filepath) { _xmlHandler.Save(filepath); }
@@ -368,6 +398,7 @@ namespace bark_GUI
         /// <summary> Uses the existing structure loaded by XSD to create the TreeViewer nodes. </summary>
         private void _InitializeTreeViewer()
         {
+            // Initialize nodes.
             treeViewer.Nodes.Clear();
             treeViewer.Nodes.Add(Structure.Structure.Root.Tnode);
             treeViewer.ExpandAll();
@@ -480,7 +511,7 @@ namespace bark_GUI
                 var groupItem = (GroupItem)item;
                 var groupControl = ((ControlGroup)groupItem.Control.CurrentControl);
 
-                if (groupControl.HasChildrenOfElementItem() && (showAll || groupControl.HasValue())) show = true;
+                if (groupControl.HasChildrenOfElementItem() && (showAll || groupControl.HasNewValue())) show = true;
             }
             
 

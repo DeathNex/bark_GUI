@@ -16,16 +16,11 @@ namespace bark_GUI.Structure.Items
             {
                 _newName = value;
 
-                // Set the new name to the Tree-Node of the Group Viewer.
+                // Update the Tree-Node of the Group Viewer with the custom new name.
                 if (IsGroupItem)
-                {
-                    var x = this as GroupItem;
-                    Debug.Assert(x != null, string.Format("Error on Item {0} {1}\n" +
-                                "Inconsistency between property IsGroupItem and actually being a group item.", Name, _newName));
-                    x.Tnode.Text = CustomName;
-                }
+                    ((GroupItem)this).Tnode.Text = CustomName;
 
-                // Set the custom new name to the Control of the Element Viewer.
+                // Update the Control of the Element Viewer with the custom new name.
                 Control.Name = CustomName;
             }
         }
@@ -34,11 +29,10 @@ namespace bark_GUI.Structure.Items
         public GeneralControl Control { get; protected set; }
         public bool IsElementItem { get; private set; }
         public bool IsGroupItem { get; private set; }
-        public bool IsFunction { get { return isFunction; } }
+        public bool IsFunction { get { return _isFunction; } protected set { _isFunction = value; } }
 
         /* INHERITING VARIABLES */
         protected bool IsRequired { get; private set; }
-        protected bool isFunction;
         protected XmlNode XsdNode;
         protected XmlNode XmlNode;
         protected string Help { get; private set; }
@@ -47,6 +41,7 @@ namespace bark_GUI.Structure.Items
         private static int _count;
         private int _id;
         private string _newName;
+        private bool _isFunction;
 
 
         #region Constructors
@@ -75,7 +70,7 @@ namespace bark_GUI.Structure.Items
             if (!isFunction)
                 _id = ++_count;
             this.XsdNode = xsdNode;
-            this.isFunction = isFunction;
+            this._isFunction = isFunction;
             this.Parent = parent;
             IsRequired = XsdParser.IsRequired(xsdNode);
             Name = XsdParser.GetName(xsdNode);

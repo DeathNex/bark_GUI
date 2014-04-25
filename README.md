@@ -52,6 +52,20 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.15
+-----
++	Implemented the 'New' (Xml file) of the menu.
++	Prepared right-click actions to work on specific treeViewer elements.
+		Requirement for right-click: (MinOccurs=0 & MaxOccurs="unbounded")
++	Added 'MinOccurs=0' in the material element inside the XSDValidator.xsd,
+		to allow right-click on all multiple-infinite elements.
++	Made use of 'default' values from XSD.
++	Renamed the 'Show all optional items' to 'Show all items'.
++	Updated the 'Show all items' to ignore default values.
++	Refactored class ElementItem & added error handling.
++	Refactored XSD Handler.
++	General Refactor.
+
 v0.14b
 -----
 +	Fixed a bug with the 'Show all optional items'.

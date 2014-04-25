@@ -59,7 +59,7 @@
                 <xs:complexType>
                   <xs:sequence>
                     <!--InnerElement D2 <material>-->
-                    <xs:element name="material" maxOccurs="unbounded">
+                    <xs:element name="material" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:all>
 

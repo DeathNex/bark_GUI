@@ -1,6 +1,6 @@
 using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI.Structure.ElementType
+namespace bark_GUI.Structure.ElementTypes
 {
     class ElementConstant : ElementType
     {
@@ -11,13 +11,14 @@ namespace bark_GUI.Structure.ElementType
             set { _value = value; }
         }
 
+        public string DefaultValue { get; set; }
+
         public Unit Unit { get; private set; }
         public string DefaultUnit { get; private set; }
 
 
         /* PRIVATE VARIABLES */
         SimpleType _simpleType; // xs:decimal
-        string _defaultValue;
 
 
 
@@ -28,7 +29,7 @@ namespace bark_GUI.Structure.ElementType
         {
             this._type = EType.Constant;
             this._simpleType = simpleType;
-            this._defaultValue = defaultValue;
+            DefaultValue = defaultValue;
         }
 
 

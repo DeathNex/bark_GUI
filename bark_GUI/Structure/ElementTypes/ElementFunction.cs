@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace bark_GUI.Structure.ElementType
+namespace bark_GUI.Structure.ElementTypes
 {
     class ElementFunction : ElementType
     {

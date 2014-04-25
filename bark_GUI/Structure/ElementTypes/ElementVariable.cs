@@ -1,34 +1,33 @@
 ﻿using System.Collections.Generic;
 using bark_GUI.Structure.ItemTypes;
 
-namespace bark_GUI.Structure.ElementType
+namespace bark_GUI.Structure.ElementTypes
 {
     class ElementVariable : ElementType
     {
         /* PUBLIC PROPRETY */
         public override string Value
         {
-            get{ return _value; }
-            set{ _value = _trimVariableTable(value); }
+            get { return _value; }
+            set { _value = _trimVariableTable(value); }
         }
-        public Unit Unit { get { return _unit; } }
-        public Unit X_Unit { get { return _xUnit; } }
-        public string DefaultUnit { get { return _defaultUnit; } }
+        public string DefaultValue { get; set; }
+
+        public Unit Unit { get; private set; }
+        public Unit XUnit { get; private set; }
+        public string DefaultUnit { get; private set; }
+        public string DefaultXUnit { get; private set; }
 
         /* PRIVATE VARIABLES */
-        private Unit _unit;
-        private string _defaultUnit;
         private SimpleType _simpleType; // xs:decimal
-        private Unit _xUnit;
-        private string _defaultXUnit;
-
 
 
         //Constructor
-        public ElementVariable(SimpleType simpleType)
+        public ElementVariable(SimpleType simpleType, string defaultValue)
         {
             this._type = EType.Variable;
             this._simpleType = simpleType;
+            DefaultValue = defaultValue;
         }
 
 
@@ -42,18 +41,9 @@ namespace bark_GUI.Structure.ElementType
 
 
 
-        public void SetUnit(Unit unit, string defaultUnit) { this._unit = unit; this._defaultUnit = defaultUnit; _unit.Select(_defaultUnit); }
-        public void SetX_Unit(Unit xUnit, string defaultXUnit) { this._xUnit = xUnit; this._defaultXUnit = defaultXUnit; xUnit.Select(defaultXUnit); }
-        public List<string> GetX_UnitOptions() { if (_xUnit != null) return _xUnit.GetOptions(); return null; }
-
-
-
-
-
-
-
-
-
+        public void SetUnit(Unit unit, string defaultUnit) { this.Unit = unit; this.DefaultUnit = defaultUnit; Unit.Select(defaultUnit); }
+        public void SetX_Unit(Unit xUnit, string defaultXUnit) { this.XUnit = xUnit; DefaultXUnit = defaultXUnit; xUnit.Select(defaultXUnit); }
+        public List<string> GetX_UnitOptions() { return XUnit != null ? XUnit.GetOptions() : null; }
 
 
         /* PRIVATE METHODS */

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using bark_GUI.CustomControls;
-using bark_GUI.Structure.ElementType;
+using bark_GUI.Structure.ElementTypes;
 using bark_GUI.Structure.Items;
 #endregion
 
@@ -34,7 +34,7 @@ namespace bark_GUI.XmlHandling
                 {
                     var groupItem = item as GroupItem;
                     if (groupItem != null && groupItem.IsMultiple)
-                        item = groupItem.DuplicateMultiple();
+                        item = groupItem.DuplicateEmptyMultiple();
                 }
 
                 // Set Item's XmlNode.
@@ -95,7 +95,7 @@ namespace bark_GUI.XmlHandling
 
             var elementItem = item as ElementItem;
 
-            if (item.Name == "temperature")      // TODO Multiple items handling.
+            if (item.Name == "temperature")
                 Debug.Print("### Element with multiple items hit!\n{0}", item);
 
             // Check elementItem.
@@ -132,7 +132,7 @@ namespace bark_GUI.XmlHandling
 
             var elementItem = item as ElementItem;
 
-            if (item.Name == "temperature")      // TODO Multiple items handling.
+            if (item.Name == "temperature")
                 Debug.Print("### Element with multiple items hit!\n{0}", item);
 
             // Check elementItem.
@@ -157,7 +157,7 @@ namespace bark_GUI.XmlHandling
             // Set the selected x_unit.
             if (inXmlNode.Attributes["x_unit"] != null)
             {
-                eVariable.X_Unit.Select(inXmlNode.Attributes["x_unit"].Value.Trim());
+                eVariable.XUnit.Select(inXmlNode.Attributes["x_unit"].Value.Trim());
                 elementItem.Control.SetX_Unit(inXmlNode.Attributes["x_unit"].Value.Trim());
             }
             else
@@ -212,7 +212,6 @@ namespace bark_GUI.XmlHandling
             //elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
         }
 
-        // TODO: Check if keyword works.
         private static void DrawAKeyword(XmlNode inXmlNode, Item item)
         {
             var kvalue = inXmlNode.InnerText;
@@ -245,7 +244,6 @@ namespace bark_GUI.XmlHandling
             elementItem.Control.SetValue(kvalue);
         }
 
-        // TODO: Handle references.
         private static void DrawAReference(XmlNode inXmlNode, Item item)
         {
             // Checks.

@@ -13,11 +13,11 @@ namespace bark_GUI.Properties {
         
         public Settings() {
             if(MenuRecentFiles == null) MenuRecentFiles = new ArrayList();
-            if (PathMainDirectory == null) PathMainDirectory = @Directory.GetCurrentDirectory();
-            if (PathSamples == null) PathSamples = PathMainDirectory + @"\Samples";
-            if (PathMaterials == null) PathMaterials = PathMainDirectory + @"\Materials";
-            if (PathErrorLog == null) PathErrorLog = PathMainDirectory + @"\";
-            if (PathBarkExe == null) PathBarkExe = @"C:\Program Files (x86)\bark\0.5\bin";
+            if (string.IsNullOrEmpty(PathMainDirectory)) PathMainDirectory = @Directory.GetCurrentDirectory();
+            if (string.IsNullOrEmpty(PathSamples)) PathSamples = PathMainDirectory + @"\Samples";
+            if (string.IsNullOrEmpty(PathMaterials)) PathMaterials = PathMainDirectory + @"\Materials";
+            if (string.IsNullOrEmpty(PathErrorLog)) PathErrorLog = PathMainDirectory + @"\";
+            if (string.IsNullOrEmpty(PathBarkExe)) PathBarkExe = @"C:\Program Files (x86)\bark\0.5\bin";
             PathCurrentFile = @"";
             // // To add event handlers for saving and changing settings, uncomment the lines below:
             //

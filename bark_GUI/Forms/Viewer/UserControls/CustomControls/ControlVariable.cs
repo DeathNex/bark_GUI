@@ -6,6 +6,22 @@ namespace bark_GUI.CustomControls
 {
     public partial class ControlVariable : CustomControl
     {
+        // Public Variables
+        public string DefaultUnit
+        {
+            get { return _defaultUnit; }
+            set { _defaultUnit = value; SetUnit(value); }
+        }
+        public string DefaultXUnit
+        {
+            get { return _defaultXUnit; }
+            set { _defaultXUnit = value; SetX_Unit(value); }
+        }
+
+        // Private Variables
+        private string _defaultUnit;
+        private string _defaultXUnit;
+
         public ControlVariable(string name, ICollection<string> typeOptions, ICollection<string> unitOptions,
             ICollection<string> unitXOptions, bool isRequired, string help, GeneralControl generalControl)
             : base(name, isRequired, help, generalControl)
@@ -47,16 +63,25 @@ namespace bark_GUI.CustomControls
 
 
         /* PUBLIC METHODS */
-        public override void SetValue(string value) { control_variable_table.Fill(value); }
-        public override void SetUnit(string unit) { comboBoxUnit2.Text = unit; }
-        public override void SetX_Unit(string xUnit) { comboBoxUnit.Text = xUnit; }
+        public override void SetValue(string value) { if (!string.IsNullOrEmpty(value)) control_variable_table.Fill(value); }
+        public override void SetUnit(string unit) { if (!string.IsNullOrEmpty(unit)) comboBoxUnit2.Text = unit; }
+        public override void SetX_Unit(string xUnit) { if (!string.IsNullOrEmpty(xUnit)) comboBoxUnit.Text = xUnit; }
         // Set the Control's name for the Element Viewer.
         public override void SetControlName(string name)
         {
             Name = name;
             labelName.Text = name;
         }
-        public override bool HasValue() { return control_variable_table.HasValue(); }
+        public override bool HasNewValue()
+        {
+            var valueIsNew = control_variable_table.HasValue() && control_variable_table.GetValue() != DefaultValue;
+            var unitIsNew = !string.IsNullOrEmpty(comboBoxUnit2.Text) &&
+                               (comboBoxUnit2.Text != DefaultUnit);
+            var xUnitIsNew = !string.IsNullOrEmpty(comboBoxUnit.Text) &&
+                               (comboBoxUnit.Text != DefaultXUnit);
+
+            return valueIsNew || unitIsNew || xUnitIsNew;
+        }
 
 
 

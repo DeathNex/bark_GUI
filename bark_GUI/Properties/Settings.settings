@@ -32,5 +32,8 @@
     <Setting Name="PathCurrentFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="XSDValidatorName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">XSDValidator.xsd</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

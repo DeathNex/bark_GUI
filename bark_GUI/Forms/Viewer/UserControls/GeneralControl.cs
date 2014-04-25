@@ -17,7 +17,7 @@ namespace bark_GUI.CustomControls
             }
         }
         public bool IsRequired;
-        public bool HasValue { get { return CurrentControl.HasValue(); } }
+        public bool HasValue { get { return CurrentControl.HasNewValue(); } }
         public string Help;
         public CustomControl CurrentControl;
 
@@ -51,9 +51,11 @@ namespace bark_GUI.CustomControls
         /// <param name="keyOptions"> What options to show in the keywords dropdown. (Used in Keywords only) </param>
         public GeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
-            List<string> funcOptions, List<string> keyOptions)
+            List<string> funcOptions, List<string> keyOptions,
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit)
         {
-            CreateGeneralControl(tag, name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions, funcOptions, keyOptions);
+            CreateGeneralControl(tag, name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions,
+                funcOptions, keyOptions, defaultValues, defaultUnit, defaultXUnit);
         }
         /// <summary> Create a custom group control. </summary>
         /// <param name="tag"> The XML Element to apply changes backwards and allow save. </param>
@@ -63,12 +65,13 @@ namespace bark_GUI.CustomControls
         public GeneralControl(object tag, string name, bool isRequired, string help = null)
         {
             List<CustomControlType> controlTypes = new List<CustomControlType>(1) { CustomControlType.Group };
-            CreateGeneralControl(tag, name, isRequired, help, controlTypes, null, null, null, null, null);
+            CreateGeneralControl(tag, name, isRequired, help, controlTypes, null, null, null, null, null, null, null, null);
         }
 
         private void CreateGeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
-            List<string> funcOptions, List<string> keyOptions)
+            List<string> funcOptions, List<string> keyOptions,
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit)
         {
             _customControls = new List<CustomControl>();
 
@@ -90,14 +93,27 @@ namespace bark_GUI.CustomControls
                         {
                             _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this)
                             {Tag = tag};
+
+                            // Set default values.
+                            if (defaultValues.ContainsKey(CustomControlType.Constant))
+                                _controlConstant.DefaultValue = defaultValues[CustomControlType.Constant];
+                            _controlConstant.DefaultUnit = defaultUnit;
+
                             _customControls.Add(_controlConstant);
                         }
                         break;
                     case CustomControlType.Variable:
-                        if (typeOptions != null && typeOptions.Contains("Variable") && unitOptions != null) // && x_unitOptions != null
+                        if (typeOptions != null && typeOptions.Contains("Variable") && unitOptions != null)// && xUnitOptions != null)
                         {
                             _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this)
                             { Tag = tag };
+
+                            // Set default values.
+                            if (defaultValues.ContainsKey(CustomControlType.Variable))
+                                _controlVariable.DefaultValue = defaultValues[CustomControlType.Variable];
+                            _controlVariable.DefaultUnit = defaultUnit;
+                            _controlVariable.DefaultXUnit = defaultXUnit;
+
                             _customControls.Add(_controlVariable);
                         }
                         break;
@@ -106,6 +122,11 @@ namespace bark_GUI.CustomControls
                         {
                             _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this)
                             { Tag = tag };
+
+                            // Set default values.
+                            if (defaultValues.ContainsKey(CustomControlType.Function))
+                                _controlFunction.DefaultValue = defaultValues[CustomControlType.Function];
+
                             _customControls.Add(_controlFunction);
                         }
                         break;
@@ -119,6 +140,11 @@ namespace bark_GUI.CustomControls
                         break;
                     case CustomControlType.Keyword:
                         _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this) {Tag = tag};
+
+                        // Set default values.
+                        if (defaultValues.ContainsKey(CustomControlType.Keyword))
+                            _controlKeyword.DefaultValue = defaultValues[CustomControlType.Keyword];
+
                         _customControls.Add(_controlKeyword);
                         break;
                 }

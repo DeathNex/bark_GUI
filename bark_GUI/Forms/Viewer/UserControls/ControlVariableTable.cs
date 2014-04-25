@@ -114,8 +114,14 @@ namespace bark_GUI.CustomControls
         {
             var boxHasValue = false;
 
+            // Iterate the text boxes to check if any of them have a value.
             foreach (var textBox in _textBoxArray)
             {
+                // If a text box is null, means there are no more text boxes left to check.
+                if (textBox == null)
+                    return false;
+
+                // 
                 if (!string.IsNullOrEmpty(textBox.Text.Trim()))
                     boxHasValue = true;
 
@@ -124,13 +130,35 @@ namespace bark_GUI.CustomControls
 
             return boxHasValue;
         }
+
+        public string GetValue()
+        {
+            var stop = false;
+            var result = "";
+            var rows = _textBoxArray.Length / ArrayColumns + (_textBoxArray.Length % ArrayColumns > 0 ? 1 : 0);
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < ArrayColumns; j++)
+                {
+                    if (_textBoxArray[i, j] == null) { stop = true; break; }
+
+                    result += _textBoxArray[i, j].Text.Trim() + '\t';
+                }
+                result = result.TrimEnd('\t');
+
+                if (stop) break;
+                result += '\n';
+            }
+
+            return result;
+        }
         #endregion
 
         #region Private Methods
         /// <summary> Adds a text box with value. </summary>
         private void _add(string value)
         {
-            // TODO use SuspendLayout & ResumeLayout for speed. (avoids reloading controls)
             // TODO Fix RowStyle breaking at row 13+... Try something with the RowCount?
             if (value == string.Empty)
                 return;
@@ -158,15 +186,16 @@ namespace bark_GUI.CustomControls
             }
         }
         /// <summary> Adds an empty text box. </summary>
-        private void _addEmpty() {
+        private void _addEmpty()
+        {
             if (LastJ > ArrayColumns - 1)
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             _textBoxArray[_lastIndex, LastJ] = new TextBox();
             table.Controls.Add(_textBoxArray[_lastIndex, LastJ]);
             _textBoxArray[_lastIndex, LastJ].Text = "";
             _textBoxArray[_lastIndex, LastJ].Dock = DockStyle.Fill;
-            _textBoxArray[_lastIndex, LastJ].TextChanged += new EventHandler(this.textBox_TextChanged);
-            _textBoxArray[_lastIndex, LastJ].KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
+            _textBoxArray[_lastIndex, LastJ].TextChanged += textBox_TextChanged;
+            _textBoxArray[_lastIndex, LastJ].KeyDown += textBox_KeyDown;
 
 
             if (LastJ < ArrayColumns - 1)
@@ -331,7 +360,7 @@ namespace bark_GUI.CustomControls
             }
         }
 
-        private void textBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.V && _hasTabsOrEnters(Clipboard.GetText()))
             {

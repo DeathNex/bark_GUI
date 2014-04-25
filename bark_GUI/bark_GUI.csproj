@@ -101,9 +101,9 @@
     </Compile>
     <Compile Include="Forms\Viewer\UserControls\ICustomControl.cs" />
     <Compile Include="Properties\Settings.cs" />
-    <Compile Include="Structure\ElementType\ElementConstant.cs" />
-    <Compile Include="Structure\ElementType\ElementKeyword.cs" />
-    <Compile Include="Structure\ElementType\ElementReference.cs" />
+    <Compile Include="Structure\ElementTypes\ElementConstant.cs" />
+    <Compile Include="Structure\ElementTypes\ElementKeyword.cs" />
+    <Compile Include="Structure\ElementTypes\ElementReference.cs" />
     <Compile Include="Structure\ItemTypes\ComplexType.cs" />
     <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlFunction.cs">
       <SubType>UserControl</SubType>
@@ -138,9 +138,9 @@
     <Compile Include="Forms\Viewer\UserControls\CustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Structure\ElementType\ElementFunction.cs" />
-    <Compile Include="Structure\ElementType\ElementType.cs" />
-    <Compile Include="Structure\ElementType\ElementVariable.cs" />
+    <Compile Include="Structure\ElementTypes\ElementFunction.cs" />
+    <Compile Include="Structure\ElementTypes\ElementType.cs" />
+    <Compile Include="Structure\ElementTypes\ElementVariable.cs" />
     <Compile Include="Structure\Items\GroupItem.cs" />
     <Compile Include="Structure\Items\Item.cs" />
     <Compile Include="Structure\ItemTypes\ItemType.cs" />

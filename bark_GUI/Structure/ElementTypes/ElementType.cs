@@ -1,4 +1,4 @@
-﻿namespace bark_GUI.Structure.ElementType
+﻿namespace bark_GUI.Structure.ElementTypes
 {
     public enum EType { Constant, Variable, Function, Reference, Keyword }
 

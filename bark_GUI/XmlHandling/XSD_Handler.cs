@@ -5,7 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using bark_GUI.Structure;
-using bark_GUI.Structure.ElementType;
+using bark_GUI.Structure.ElementTypes;
+using bark_GUI.Structure.ElementTypes;
 using bark_GUI.Structure.ItemTypes;
 using bark_GUI.Structure.Items;
 #endregion
@@ -478,9 +479,13 @@ namespace bark_GUI.XmlHandling
                 {
                     foreach (XmlNode xc in x.ChildNodes)
                     {
-                        if (xc.LocalName != "element") continue;
                         string defaultValue;
+
+                        // Check
+                        if (xc.LocalName != "element") continue;
                         Debug.Assert(xc.Attributes != null, "xc.Attributes != null");
+
+                        // Create Elements with their default values
                         switch (xc.Attributes["name"].Value.Trim())
                         {
                             case "constant":
@@ -491,7 +496,9 @@ namespace bark_GUI.XmlHandling
                                 break;
                             case "variable":
                                 sType = Structure.Structure.FindSimpleType(xc.Attributes["type"].Value.Trim());
-                                variable = new ElementVariable(sType);
+                                defaultValue = xc.Attributes["default"] != null ?
+                                                   xc.Attributes["default"].Value.Trim() : "";
+                                variable = new ElementVariable(sType, defaultValue);
                                 break;
                             case "function":
                                 if (xc.HasChildNodes && xc.FirstChild.HasChildNodes && xc.FirstChild.FirstChild.HasChildNodes)
@@ -517,13 +524,17 @@ namespace bark_GUI.XmlHandling
                     }
                 }
                 //Get Units & Default values
-                else
+                else if (x.LocalName == "attribute")
                 {
                     Debug.Assert(x.Attributes != null, "x.Attributes != null");
                     if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "unit")
                     {
                         unit = Structure.Structure.FindUnit(x.Attributes["type"].Value.Trim());
                         defaultUnit = x.Attributes["default"].Value.Trim();
+                        if (constant != null)
+                            constant.SetUnit(unit, defaultUnit);
+                        if (variable != null)
+                            variable.SetUnit(unit, defaultUnit);
                     }
                     else if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "x_unit")
                     {
@@ -532,17 +543,21 @@ namespace bark_GUI.XmlHandling
                         var defaultXUnit = x.Attributes["default"].Value.Trim();
                         variable.SetX_Unit(xUnit, defaultXUnit);
                     }
-                    //Handle References
+                        //Handle References
                     else if (x.LocalName == "attribute" && x.Attributes["name"].Value.Trim() == "reference")
                     {
                         sType = Structure.Structure.FindSimpleType(x.Attributes["type"].Value.Trim());
                         reference = new ElementReference(sType);
                     }
                 }
+                else
+                {
+                    Debug.WriteLine("Unhandled XSD Element named '{0}' inside '{1}'", x.LocalName, name);
+                }
             }
 
             //Finish
-            Structure.Structure.Add(new ComplexType(name, unit, defaultUnit, constant, variable, function, keyword, reference));
+            Structure.Structure.Add(new ComplexType(name, new List<ElementType> { constant, variable, function, keyword, reference }));
         }
         #endregion
     }

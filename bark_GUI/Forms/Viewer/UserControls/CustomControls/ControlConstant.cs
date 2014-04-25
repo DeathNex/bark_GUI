@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 
 namespace bark_GUI.CustomControls
 {
     public partial class ControlConstant : CustomControl
     {
+        // Public Variables
+        public string DefaultUnit {
+            get { return _defaultUnit; }
+            set { _defaultUnit = value; SetUnit(value); }
+        }
+
+        // Private Variables
+        private string _defaultUnit;
+
         // Constructor
         public ControlConstant(string name, List<string> typeOptions, List<string> unitOptions,
             bool isRequired, string help, GeneralControl generalControl)
@@ -13,27 +23,33 @@ namespace bark_GUI.CustomControls
         {
             InitializeComponent();
 
+            // Checks
+            Debug.Assert(typeOptions != null, "Control_Constant for element {0} constructor argument typeOptions is null.", name);
+            Debug.Assert(unitOptions != null, "Control_Constant for element {0} constructor argument unitOptions is null.", name);
+
+            // Set name.
             labelName.Text = name.Trim();
-            if (typeOptions != null)
-            {
-                foreach (string s in typeOptions)
-                    comboBoxType.Items.Add(s);
-                SelectConstant();
-                if (typeOptions.Count == 1)
-                    comboBoxType.Enabled = false;
-            }
-            else
-            { } //TODO: Unfinished, "Keyword" element doesnt have types because it's not constant! (<function><ASHRAE..><side><keyword>front)
-            //textBoxValue.Text = value.Trim();
-            if (unitOptions != null)
-            {
-                foreach (string s in unitOptions)
+
+            // Set possible types.
+            foreach (string s in typeOptions)
+                comboBoxType.Items.Add(s);
+
+            // Since this is the control for 'Constant' type, have it selected.
+            SelectConstant();
+
+            // Visual candy.
+            if (typeOptions.Count == 1)
+                comboBoxType.Enabled = false;
+            
+            // Set unit.
+            foreach (string s in unitOptions)
                     comboBoxUnit.Items.Add(s);
                 comboBoxUnit.SelectedIndex = 0;
                 if (unitOptions.Count == 1)
                     comboBoxUnit.Enabled = false;
-            }
-            if (help != null)
+            
+            // Set help
+            if (!string.IsNullOrEmpty(help))
                 toolTipHelp.SetToolTip(labelName, help);
         }
 
@@ -44,11 +60,23 @@ namespace bark_GUI.CustomControls
 
 
         /* PUBLIC METHODS */
-        public override void SetValue(string value) { textBoxValue.Text = value; }
-        public override void SetUnit(string unit) { comboBoxUnit.Text = unit; }
+        public override void SetValue(string value) { if(!string.IsNullOrEmpty(value)) textBoxValue.Text = value; }
+        public override void SetUnit(string unit) { if (!string.IsNullOrEmpty(unit)) comboBoxUnit.Text = unit; }
         // Set the Control's name for the Element Viewer.
         public override void SetControlName(string name) { Name = name; labelName.Text = name; }
-        public override bool HasValue() { return !string.IsNullOrEmpty(textBoxValue.Text.Trim()); }
+        public override bool HasNewValue()
+        {
+            // Check if the value is not empty and is not the default.
+            var valueIsNew = !string.IsNullOrEmpty(textBoxValue.Text.Trim()) &&
+                               (textBoxValue.Text.Trim() != DefaultValue);
+
+            // Check if the unit is not empty and is not the default.
+            var unitIsNew = !string.IsNullOrEmpty(comboBoxUnit.Text) &&
+                               (comboBoxUnit.Text != DefaultUnit);
+
+            // Return true if ANYTHING changed.
+            return valueIsNew || unitIsNew;
+        }
 
 
 

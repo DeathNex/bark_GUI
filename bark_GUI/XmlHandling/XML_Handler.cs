@@ -32,6 +32,24 @@ namespace bark_GUI.XmlHandling
 
 
         #region Public Methods
+
+
+        public bool New(string xsdFilepath)
+        {
+            //Check if the file exists before loading it
+            if (string.IsNullOrEmpty(xsdFilepath) || !File.Exists(xsdFilepath))
+            {
+                MessageBox.Show("Error!!!\nXSD file not found.\n" + xsdFilepath);
+                return false;
+            }
+
+            if (!_xsdHandler.Load(xsdFilepath))
+                throw new Exception("Could not load XSD files.");
+
+            return true;
+        }
+
+
         #region Load Files
         public bool Load() { return Load(Settings.Default.PathCurrentFile); }
 
@@ -74,9 +92,7 @@ namespace bark_GUI.XmlHandling
                 MessageBox.Show(ex.Message);
                 return false;
             }
-            //var debugMultiples = Structure.Structure.GroupItems.Where(item => item.IsMultiple).ToList();
-            //var debugGroupItems = Structure.Structure.GroupItems.ToList();
-            //var debugBoundaries = debugGroupItems.Where(b => b.Name == "boundary").ToList();
+
             return true;
         }
         #endregion
@@ -85,8 +101,7 @@ namespace bark_GUI.XmlHandling
         public void Save(string filepath)
         {
             // Check for empty path.
-            if (filepath == string.Empty)
-                return;
+            if (string.IsNullOrEmpty(filepath)) return;
 
             // Write the current XML Document to file.
             try
@@ -272,5 +287,6 @@ namespace bark_GUI.XmlHandling
             return false;
         }
         #endregion
+
     }
 }

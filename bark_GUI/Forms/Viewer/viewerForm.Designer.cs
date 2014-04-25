@@ -1,4 +1,6 @@
-﻿namespace bark_GUI
+﻿using System.Windows.Forms;
+
+namespace bark_GUI
 {
     partial class ViewerForm
     {
@@ -36,13 +38,6 @@
             this.elementViewer = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxTreeShowHidden = new System.Windows.Forms.CheckBox();
             this.treeViewer = new System.Windows.Forms.TreeView();
-            this.treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.panelElementSelect = new System.Windows.Forms.Panel();
             this.labelSelected = new System.Windows.Forms.Label();
             this.viewerSplit = new System.Windows.Forms.SplitContainer();
@@ -73,7 +68,6 @@
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
-            this.treeViewContextMenu.SuspendLayout();
             this.panelElementSelect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewerSplit)).BeginInit();
             this.viewerSplit.Panel1.SuspendLayout();
@@ -122,9 +116,9 @@
             this.checkBoxTreeShowHidden.AutoSize = true;
             this.checkBoxTreeShowHidden.Location = new System.Drawing.Point(10, 10);
             this.checkBoxTreeShowHidden.Name = "checkBoxTreeShowHidden";
-            this.checkBoxTreeShowHidden.Size = new System.Drawing.Size(153, 19);
+            this.checkBoxTreeShowHidden.Size = new System.Drawing.Size(106, 19);
             this.checkBoxTreeShowHidden.TabIndex = 1;
-            this.checkBoxTreeShowHidden.Text = "Show all optional items";
+            this.checkBoxTreeShowHidden.Text = "Show all items";
             this.checkBoxTreeShowHidden.UseVisualStyleBackColor = true;
             this.checkBoxTreeShowHidden.CheckedChanged += new System.EventHandler(this.checkBoxTreeShowHidden_CheckedChanged);
             // 
@@ -139,7 +133,6 @@
             // 
             // treeViewer
             // 
-            this.treeViewer.ContextMenuStrip = this.treeViewContextMenu;
             this.treeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewer.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.treeViewer.HideSelection = false;
@@ -150,54 +143,6 @@
             this.treeViewer.Size = new System.Drawing.Size(303, 507);
             this.treeViewer.TabIndex = 0;
             this.treeViewer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewer_AfterSelect);
-            // 
-            // treeViewContextMenu
-            // 
-            this.treeViewContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem5,
-            this.toolStripMenuItem6});
-            this.treeViewContextMenu.Name = "contextMenuStrip1";
-            this.treeViewContextMenu.Size = new System.Drawing.Size(143, 136);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem1.Text = "Add Material";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem2.Text = "Add Layer";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem3.Text = "Copy";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem4.Text = "Cut";
-            // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem5.Text = "Paste";
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem6.Text = "Delete";
             // 
             // panelElementSelect
             // 
@@ -321,6 +266,7 @@
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -455,7 +401,6 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             panel3.ResumeLayout(false);
-            this.treeViewContextMenu.ResumeLayout(false);
             this.panelElementSelect.ResumeLayout(false);
             this.viewerSplit.Panel1.ResumeLayout(false);
             this.viewerSplit.Panel2.ResumeLayout(false);
@@ -503,14 +448,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.FlowLayoutPanel elementViewer;
         private System.Windows.Forms.Label labelSelected;
-        private System.Windows.Forms.ContextMenuStrip treeViewContextMenu;
         private System.Windows.Forms.Panel panelElementSelect;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.CheckBox checkBoxTreeShowHidden;
     }
 }

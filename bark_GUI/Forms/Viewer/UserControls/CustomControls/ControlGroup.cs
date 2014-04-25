@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace bark_GUI.CustomControls
@@ -22,7 +24,7 @@ namespace bark_GUI.CustomControls
         public Control GetPanel() { return panelGroup; }
 
         // Public methods
-        public override bool HasValue()
+        public override bool HasNewValue()
         {
             var anyChildHasValue = false;
 
@@ -32,7 +34,7 @@ namespace bark_GUI.CustomControls
                 var childHasValue = false;
                 if (!(control is CustomControl)) continue;
 
-                childHasValue = (control as CustomControl).HasValue();
+                childHasValue = (control as CustomControl).HasNewValue();
 
                 if (childHasValue)
                 {

@@ -11,7 +11,7 @@ namespace bark_GUI.XmlHandling
     {
         #region Get
         /// <summary>
-        /// Gets the name attribute of the given xml element if exists.
+        /// Gets the name attribute of the given xml element if exists. (XSD file)
         /// </summary>
         /// <param name="xsdNode">Xml element that might contain a name attribute.</param>
         /// <returns>The name if exists or null.</returns>
@@ -23,7 +23,7 @@ namespace bark_GUI.XmlHandling
         }
 
         /// <summary>
-        /// Gets the type of the given xml element if exists.
+        /// Gets the type of the given xml element if exists. (XSD file)
         /// </summary>
         /// <param name="xsdNode"> Xml element that might contain a type attribute. </param>
         /// <returns>The type if exists or null.</returns>
@@ -33,6 +33,18 @@ namespace bark_GUI.XmlHandling
                 return xsdNode.Attributes["type"].Value.Trim();
             return null;
         }
+
+        ///// <summary>
+        ///// Gets the default attribute of the given xml element if exists. (XSD file)
+        ///// </summary>
+        ///// <param name="xsdNode">Xml element that might contain a default attribute.</param>
+        ///// <returns>The default value if exists or null.</returns>
+        //public static string GetDefault(XmlNode xsdNode)
+        //{
+        //    if (xsdNode.Attributes != null && xsdNode.Attributes["default"] != null)
+        //        return xsdNode.Attributes["default"].Value.Trim();
+        //    return null;
+        //}
 
         /// <summary>
         /// Gets help from tag xs:documentation inside the tag xs:annotation that is a child of the given xml element.
@@ -125,6 +137,25 @@ namespace bark_GUI.XmlHandling
         public static bool HasChildren(XmlNode xsdNode)
         {
             return xsdNode.HasChildNodes;
+        }
+
+        public static bool HasRightClickActions(XmlNode xsdNode)
+        {
+            // Must be multiple.
+            if (!IsMupltiple(xsdNode))
+                return false;
+
+            // Checks.
+            if (xsdNode == null || xsdNode.Attributes == null ||
+                xsdNode.Attributes["maxOccurs"] == null || xsdNode.Attributes["minOccurs"] == null)
+                return false;
+
+            // Must be able to be created freely, infinite times and deleted freely, down to 0.
+            if (xsdNode.Attributes["maxOccurs"].Value.Trim() == "unbounded" &&
+                xsdNode.Attributes["minOccurs"].Value.Trim() == "0")
+                return true;
+
+            return false;
         }
         #endregion
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using bark_GUI.Structure.ElementType;
+using bark_GUI.Structure.ElementTypes;
 
 namespace bark_GUI.Structure.ItemTypes
 {
@@ -15,20 +15,33 @@ namespace bark_GUI.Structure.ItemTypes
 
 
         //Constructor
-        public ComplexType(string name, Unit unit, string defaultUnit,
-            ElementConstant constant, ElementVariable variable, ElementFunction function, ElementKeyword keyword,
-            ElementReference reference)
+        public ComplexType(string name, List<ElementType> elements)
         {
             Name = name;
-            Constant = constant;
-            Variable = variable;
-            Function = function;
-            Keyword = keyword;
-            Reference = reference;
-            if (Constant != null)
-                Constant.SetUnit(unit, defaultUnit);
-            if (Variable != null)
-                Variable.SetUnit(unit, defaultUnit);
+
+            foreach (var element in elements)
+            {
+                if(element == null) continue;
+                switch (element.Type)
+                {
+                    case EType.Constant:
+                        Constant = (ElementConstant)element;
+                        break;
+                    case EType.Variable:
+                        Variable = (ElementVariable)element;
+                        break;
+                    case EType.Function:
+                        Function = (ElementFunction)element;
+                        break;
+                    case EType.Keyword:
+                        Keyword = (ElementKeyword)element;
+                        break;
+                    case EType.Reference:
+                        Reference = (ElementReference)element;
+                        break;
+
+                }
+            }
         }
 
         /* PUBLIC METHODS */
@@ -60,6 +73,11 @@ namespace bark_GUI.Structure.ItemTypes
             if (Function != null)
                 types.Add("Function");
             return types;
+        }
+
+        public List<string> GetKeywordOptions()
+        {
+            return Keyword != null ? Keyword.KeywordOptions : null;
         }
     }
 }

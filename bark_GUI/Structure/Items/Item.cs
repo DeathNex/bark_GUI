@@ -90,7 +90,20 @@ namespace bark_GUI.Structure.Items
 
         public void SetXmlNode(XmlNode xNode) { XmlNode = xNode; }
 
-
+        public virtual void Remove()
+        {
+            Control.Remove(); // Doesn't work.
+            Structure.Remove(this);
+            Parent.Children.Remove(this);
+            if (XmlNode != null && XmlNode.ParentNode != null)
+            {
+                var x = Parent.XmlNode.GetHashCode(); //DELETEME
+                var y = XmlNode.ParentNode.GetHashCode(); //DELETEME
+                Debug.Assert(Parent.XmlNode == XmlNode.ParentNode, "Inconsistency Between Parent 'Item' and Parent 'XmlNode'.");
+                XmlNode.ParentNode.RemoveChild(XmlNode);
+                    // The nodes that dont exist in the XML file dont have an XML Node. (even if data exists)
+            }
+        }
 
 
 

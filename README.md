@@ -48,9 +48,17 @@
 - [ ] Check XmlNode.FirstChild careless use.
 
 
-
+Add Stackoverflow to references. (Theory)
 #bark_GUI CHANGELOG#
 --------------------
+
+v0.16
+-----
++	Implemented the Right-Click actions (Add/Duplicate/Rename/Delete) on the TreeViewer.
++	Implemented the Right-Click action (Add) for parents on the TreeViewer.
+		Condition for right-click on parent: First child that can have right-click actions.
++	Fixed a visual bug on empty categories.
++	General improvements.
 
 v0.15
 -----

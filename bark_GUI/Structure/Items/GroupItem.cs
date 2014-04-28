@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using System.Windows.Forms;
@@ -43,8 +44,6 @@ namespace bark_GUI.Structure.Items
         /* PRIVATE VARIABLES */
         // Check used for multiples. If it's set create another instance. Used in DuplicateMultiple() method.
         private bool IsSet { get { return XmlNode != null; } }
-
-        private static ContextMenuStrip _rightClickMenu;
 
         #region Constructors
         /// <summary> Creates the Root GroupItem of the XSD file that is not a function. </summary>
@@ -93,12 +92,9 @@ namespace bark_GUI.Structure.Items
             HasRightClickActions = XsdParser.HasRightClickActions(xsdNode);
 
             // Create the TreeNode of TreeViewer.
-            Tnode = new TreeNode(Name) { ToolTipText = Help };
+            Tnode = new TreeNode(Name) { Tag = this, ToolTipText = Help };
             if (parent != null)
                 parent.Tnode.Nodes.Add(Tnode);
-            if (HasRightClickActions)
-                Tnode.ContextMenuStrip = GetRightClickMenu();
-            
 
             // Children
             Children = XsdParser.CreateChildren(xsdNode, this, isFunction);
@@ -110,8 +106,9 @@ namespace bark_GUI.Structure.Items
             if (isFunction) return;
 
             // Include this in the Structure
-            if (!IsMultiple) Structure.Add(this);
-            else Structure.Insert(this);
+            Structure.Add(this);
+            //if (!IsMultiple) Structure.Add(this);
+            //else Structure.Insert(this);
         }
         #endregion
 
@@ -136,10 +133,27 @@ namespace bark_GUI.Structure.Items
             }
 
             // If no such child already exists, just place it, else insert it.
-            if(position == Parent.Children.Count) Parent.Children.Add(clone);
+            if (position == Parent.Children.Count) Parent.Children.Add(clone);
             else Parent.Children.Insert(position, clone);
 
             return clone;
+        }
+        
+        public void DuplicateDeep()
+        {
+            // Get the data from the XML.
+            if (XmlNode == null) return;
+            var newXml = XmlNode.CloneNode(true);
+            Debug.Assert(Parent.XmlNode == XmlNode.ParentNode, "Inconsistency Between Parent 'Item' and Parent 'XmlNode'.");
+            var x = Parent.XmlNode.GetHashCode(); //DELETEME
+            var y = XmlNode.ParentNode.GetHashCode(); //DELETEME
+            if (XmlNode.ParentNode != null)
+                XmlNode.ParentNode.InsertAfter(newXml, XmlNode);
+            Debug.Assert(newXml == XmlNode.NextSibling, "Inconsistency Caused by INSERTAFTER");
+            newXml.AppendChild(newXml.FirstChild);
+            var x2 = newXml.GetHashCode(); //DELETEME
+            var y2 = XmlNode.NextSibling.GetHashCode(); //DELETEME
+            XmlParser.DrawInfo(newXml);
         }
 
         public GroupItem DuplicateEmptyMultiple()
@@ -148,48 +162,19 @@ namespace bark_GUI.Structure.Items
             return IsSet ? DuplicateEmpty() : this;
         }
 
-        #endregion
-
-        #region Private Static Methods
-
-        private static ContextMenuStrip GetRightClickMenu()
+        public override void Remove()
         {
-            if (_rightClickMenu != null) return _rightClickMenu;
+            Item child;
 
+            Tnode.Remove();
 
-            // Create the right-click menu if it doesn't exist.
-            _rightClickMenu = new ContextMenuStrip();
+            while (Children.Count > 0)
+            {
+                child = Children[0];
+                child.Remove();
+            }
 
-            // Create the right-click actions.
-            var menuItemAdd = new ToolStripMenuItem {Text = "Add"};
-            var menuItemDuplicate = new ToolStripMenuItem {Text = "Duplicate", Enabled = false};
-            var menuItemDelete = new ToolStripMenuItem {Text = "Delete"};
-
-            // Link the event handlers.
-            menuItemAdd.Click += ActionAdd;
-            menuItemDuplicate.Click += ActionDuplicate;
-            menuItemDelete.Click += ActionDelete;
-
-            // Add the to the menu.
-            _rightClickMenu.Items.AddRange(new ToolStripItem[] {menuItemAdd, menuItemDuplicate, menuItemDelete});
-
-
-            return _rightClickMenu;
-        }
-
-        private static void ActionAdd(object sender, EventArgs e)
-        {
-            // DuplicateEmptyMultiple();
-        }
-
-        private static void ActionDuplicate(object sender, EventArgs e)
-        {
-            // XmlParser.DrawInfo(XmlNode.Clone());
-        }
-
-        private static void ActionDelete(object sender, EventArgs e)
-        {
-            // this.Dispose();
+            base.Remove();
         }
 
         #endregion

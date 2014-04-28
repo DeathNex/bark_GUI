@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using bark_GUI.CustomControls;
+using bark_GUI.Forms.Dialogs;
 using bark_GUI.Structure.Items;
 using bark_GUI.XmlHandling;
 using bark_GUI.Properties;
@@ -513,11 +514,105 @@ namespace bark_GUI
 
                 if (groupControl.HasChildrenOfElementItem() && (showAll || groupControl.HasNewValue())) show = true;
             }
-            
+
 
             if (show) item.Control.CurrentControl.Show();
             else item.Control.CurrentControl.Hide();
         }
         #endregion
+
+        #region Right-Click TreeViewer
+
+        private TreeNode _activeNode = null;
+
+        private void treeViewer_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+
+            _activeNode = e.Node;
+            var item = _activeNode.Tag as GroupItem;
+
+            if (item != null && item.HasRightClickActions)
+                _activeNode.ContextMenuStrip = TreeNodeContextMenuStrip;
+            else if (item != null && item.IsGroupItem)
+            {
+                foreach (var child in item.Children.Where(child =>
+                    child.IsGroupItem && ((GroupItem)child).HasRightClickActions))
+                {
+                    _activeNode.ContextMenuStrip = TreeNodeParentContextMenuStrip;
+                }
+
+            }
+        }
+
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var groupItem = ((GroupItem)_activeNode.Tag).DuplicateEmptyMultiple();
+
+            var newName = InputBox.ShowDialog(("New Name for " + groupItem.Name), "Add");
+
+            // Validation
+            if (!string.IsNullOrEmpty(newName))
+                groupItem.NewName = newName;
+            else
+                groupItem.Remove();
+
+            _InitializeElementViewer();
+            _UpdateElementViewer();
+        }
+
+        private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ((GroupItem)_activeNode.Tag).DuplicateDeep();
+            _InitializeElementViewer();
+            _UpdateElementViewer();
+        }
+
+        private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var groupItem = ((GroupItem)_activeNode.Tag);
+            var newName = InputBox.ShowDialog(("New Name for " + groupItem.Name), "Rename", groupItem.NewName);
+
+            groupItem.NewName = newName;
+
+            _InitializeElementViewer();
+            _UpdateElementViewer();
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ((GroupItem)_activeNode.Tag).Remove();
+            _InitializeElementViewer();
+            _UpdateElementViewer();
+        }
+
+        private void AddParentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var groupItemParent = ((GroupItem)_activeNode.Tag);
+
+            // Get first child that can have Right-Click actions.
+            var childItem = groupItemParent.Children.First(child =>
+                child.IsGroupItem && ((GroupItem)child).HasRightClickActions);
+
+            // Check.
+            if(childItem == null) return;
+
+            // Create new childItem.
+            var newChild = ((GroupItem)childItem).DuplicateEmptyMultiple();
+
+            var newName = InputBox.ShowDialog(("New Name for " + newChild.Name), "Add");
+
+            // Validation
+            if (!string.IsNullOrEmpty(newName))
+                newChild.NewName = newName;
+            else
+                newChild.Remove();
+
+            _InitializeElementViewer();
+            _UpdateElementViewer();
+        }
+
+        #endregion
+
     }
 }

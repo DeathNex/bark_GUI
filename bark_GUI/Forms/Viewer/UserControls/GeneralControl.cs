@@ -216,10 +216,13 @@ namespace bark_GUI.CustomControls
                     newMe = _controlKeyword;
                     break;
             }
+            viewer.SuspendLayout();
             viewer.Controls.Add(newMe);
             viewer.Controls.SetChildIndex(newMe, viewer.Controls.GetChildIndex(me));
             viewer.Controls.Remove(me);
             CurrentControl = newMe;
+            CurrentControl.Focus();
+            viewer.ResumeLayout();
         }
         
         // Selects the current/active custom control.
@@ -254,6 +257,12 @@ namespace bark_GUI.CustomControls
 
         public void SetX_Unit(string xUnit) { CurrentControl.SetX_Unit(xUnit); }
 
-
+        public void Remove()
+        {
+            foreach (var control in _customControls)
+            {   
+                control.Remove();
+            }
+        }
     }
 }

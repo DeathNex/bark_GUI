@@ -62,6 +62,13 @@ namespace bark_GUI
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.TreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RenameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeNodeParentContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddParentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
@@ -79,6 +86,8 @@ namespace bark_GUI
             this.toolStripContainer1.SuspendLayout();
             this.statusStripMain.SuspendLayout();
             this.menuStripMain.SuspendLayout();
+            this.TreeNodeContextMenuStrip.SuspendLayout();
+            this.TreeNodeParentContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -143,6 +152,7 @@ namespace bark_GUI
             this.treeViewer.Size = new System.Drawing.Size(303, 507);
             this.treeViewer.TabIndex = 0;
             this.treeViewer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewer_AfterSelect);
+            this.treeViewer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewer_NodeMouseClick);
             // 
             // panelElementSelect
             // 
@@ -380,6 +390,58 @@ namespace bark_GUI
             this.saveFileDialog.Filter = "Bark Files|*.brk|XML Files|*.xml|All files|*.*";
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
+            // TreeNodeContextMenuStrip
+            // 
+            this.TreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddToolStripMenuItem,
+            this.DuplicateToolStripMenuItem,
+            this.RenameToolStripMenuItem,
+            this.DeleteToolStripMenuItem});
+            this.TreeNodeContextMenuStrip.Name = "TreeNodeContextMenuStrip";
+            this.TreeNodeContextMenuStrip.Size = new System.Drawing.Size(125, 92);
+            // 
+            // AddToolStripMenuItem
+            // 
+            this.AddToolStripMenuItem.Name = "AddToolStripMenuItem";
+            this.AddToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.AddToolStripMenuItem.Text = "Add";
+            this.AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
+            // DuplicateToolStripMenuItem
+            // 
+            this.DuplicateToolStripMenuItem.Name = "DuplicateToolStripMenuItem";
+            this.DuplicateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.DuplicateToolStripMenuItem.Text = "Duplicate";
+            this.DuplicateToolStripMenuItem.Click += new System.EventHandler(this.DuplicateToolStripMenuItem_Click);
+            // 
+            // RenameToolStripMenuItem
+            // 
+            this.RenameToolStripMenuItem.Name = "RenameToolStripMenuItem";
+            this.RenameToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.RenameToolStripMenuItem.Text = "Rename";
+            this.RenameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
+            // 
+            // DeleteToolStripMenuItem
+            // 
+            this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.DeleteToolStripMenuItem.Text = "Delete";
+            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+            // 
+            // TreeNodeParentContextMenuStrip
+            // 
+            this.TreeNodeParentContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddParentToolStripMenuItem});
+            this.TreeNodeParentContextMenuStrip.Name = "TreeNodeParentContextMenuStrip";
+            this.TreeNodeParentContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            // 
+            // AddParentToolStripMenuItem
+            // 
+            this.AddParentToolStripMenuItem.Name = "AddParentToolStripMenuItem";
+            this.AddParentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AddParentToolStripMenuItem.Text = "Add";
+            this.AddParentToolStripMenuItem.Click += new System.EventHandler(this.AddParentToolStripMenuItem_Click);
+            // 
             // ViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -417,6 +479,8 @@ namespace bark_GUI
             this.statusStripMain.PerformLayout();
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
+            this.TreeNodeContextMenuStrip.ResumeLayout(false);
+            this.TreeNodeParentContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -450,5 +514,12 @@ namespace bark_GUI
         private System.Windows.Forms.Label labelSelected;
         private System.Windows.Forms.Panel panelElementSelect;
         private System.Windows.Forms.CheckBox checkBoxTreeShowHidden;
+        private ContextMenuStrip TreeNodeContextMenuStrip;
+        private ToolStripMenuItem AddToolStripMenuItem;
+        private ToolStripMenuItem DuplicateToolStripMenuItem;
+        private ToolStripMenuItem DeleteToolStripMenuItem;
+        private ToolStripMenuItem RenameToolStripMenuItem;
+        private ContextMenuStrip TreeNodeParentContextMenuStrip;
+        private ToolStripMenuItem AddParentToolStripMenuItem;
     }
 }

@@ -26,7 +26,6 @@ namespace bark_GUI.Structure.Items
         /// <summary> Creates a child ElementItem from the XSD file. </summary>
         /// <param name="xsdNode"> The XmlNode from the XSD Functions file that represents this item. </param>
         /// <param name="parent"> The parent of this Node. </param>
-        /// <param name="defaultValue"> [Optional] Sets the default value of this element. </param>
         /// <param name="isFunction"> [Optional] Note that this is a Function. </param>
         public ElementItem(XmlNode xsdNode, GroupItem parent, bool isFunction = false)
             : base(xsdNode, parent, isFunction)

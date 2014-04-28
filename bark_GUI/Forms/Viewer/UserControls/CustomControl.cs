@@ -70,5 +70,11 @@ namespace bark_GUI.CustomControls
         public virtual void SetX_Unit(string xUnit) { }
         public virtual void SetControlName(string name) { }
         public virtual bool HasNewValue() { return false; }
+        public void Remove()
+        {
+            if (Parent != null && Parent.Controls.Contains(this))
+                Parent.Controls.Remove(this);
+            Dispose(true);
+        }
     }
 }

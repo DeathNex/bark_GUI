@@ -43,6 +43,8 @@ namespace bark_GUI.CustomControls
 
         public void SetOptions(List<string> options)
         {
+            comboBoxValue.Items.Clear();
+
             // Because this method can be called after the reference control was already set to a value,
             // check if a temporary saved value exists. If it does exist, use it.
             foreach (var s in options)

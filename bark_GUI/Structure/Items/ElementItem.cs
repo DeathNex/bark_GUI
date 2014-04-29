@@ -42,7 +42,7 @@ namespace bark_GUI.Structure.Items
 
             var itemType = Structure.FindType(XsdParser.GetType(xsdNode));
 
-            // Ingore simple types. //TODO: Handle SimpleTypes
+            // Ingore simple types.
             if (itemType.IsSimpleType()) return;
 
             _complexType = itemType as ComplexType;
@@ -121,6 +121,7 @@ namespace bark_GUI.Structure.Items
             List<string> xUnitOptions = null;                       //Variable
             List<string> functionOptions = null;                    //Function
             List<string> keyOptions = null;                         //Keyword
+            var valueValidators = new Dictionary<CustomControlType, ValueValidator>();
             // Reference Options cannot be gathered during XSD Load.//Reference
 
             // Default values
@@ -142,6 +143,7 @@ namespace bark_GUI.Structure.Items
                 list.Add(CustomControlType.Constant);
                 defaultValues[CustomControlType.Constant] = complexType.Constant.DefaultValue;
                 defaultUnitValue = complexType.Constant.DefaultUnit;
+                valueValidators[CustomControlType.Constant] = complexType.Constant.ValueIsValid;
             }
             if (complexType.Variable != null)
             {
@@ -149,26 +151,30 @@ namespace bark_GUI.Structure.Items
                 defaultValues[CustomControlType.Variable] = complexType.Variable.DefaultValue;
                 defaultUnitValue = complexType.Variable.DefaultUnit;
                 defaultXUnitValue = complexType.Variable.DefaultXUnit;
+                valueValidators[CustomControlType.Variable] = complexType.Variable.ValueIsValid;
             }
             if (complexType.Function != null)
             {
                 list.Add(CustomControlType.Function);
+                valueValidators[CustomControlType.Function] = complexType.Function.ValueIsValid;
             }
             if (complexType.Keyword != null)
             {
                 list.Add(CustomControlType.Keyword);
                 defaultValues[CustomControlType.Keyword] = complexType.Keyword.DefaultValue;
+                valueValidators[CustomControlType.Keyword] = complexType.Keyword.ValueIsValid;
             }
             if (complexType.Reference != null)
             {
                 list.Add(CustomControlType.Reference);
+                valueValidators[CustomControlType.Reference] = complexType.Reference.ValueIsValid;
             }
 
 
             // Create the Controls for this ElementItem with the gathered information.
             Control = new GeneralControl(XmlNode, Name, IsRequired, Help, list,
                 typeOptions, unitOptions, xUnitOptions, functionOptions, keyOptions,
-                defaultValues, defaultUnitValue, defaultXUnitValue);
+                defaultValues, defaultUnitValue, defaultXUnitValue, valueValidators);
         }
     }
 }

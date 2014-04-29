@@ -50,11 +50,12 @@ namespace bark_GUI
         {
             statusMain.Text = "Loading...";
 
-            if (Size.Empty != Settings.Default.WindowSize)
+            if (Settings.Default.WindowSize != Size.Empty)
             {
                 WindowState = Settings.Default.WindowState;
                 Location = Settings.Default.WindowLocation;
                 Size = Settings.Default.WindowSize;
+                viewerSplit.SplitterDistance = Settings.Default.WindowSeparatorPosition;
             }
 
             _UpdateRecent();
@@ -102,6 +103,7 @@ namespace bark_GUI
             Settings.Default.WindowState = WindowState;
             Settings.Default.WindowLocation = Location;
             Settings.Default.WindowSize = Size;
+            Settings.Default.WindowSeparatorPosition = viewerSplit.SplitterDistance;
             Settings.Default.PathCurrentFile = "";
             Settings.Default.Save();
 
@@ -503,7 +505,8 @@ namespace bark_GUI
             if ((item.IsElementItem) && (selectedRoot.InnerChildren.Contains(item) ||
                 selectedRoot == item))
             {
-                if (showAll || item.Control.HasValue) show = true;
+                if (item.IsRequired || (showAll || item.Control.HasValue))
+                    show = true;
             }
             // Show the Group if it has any children Element and that child has a value or show all option is enabled.
             else if ((item.IsGroupItem) && (selectedRoot.InnerChildren.Contains(item) ||
@@ -512,7 +515,9 @@ namespace bark_GUI
                 var groupItem = (GroupItem)item;
                 var groupControl = ((ControlGroup)groupItem.Control.CurrentControl);
 
-                if (groupControl.HasChildrenOfElementItem() && (showAll || groupControl.HasNewValue())) show = true;
+                if (groupControl.HasChildrenOfElementItem() && (groupControl.IsRequired ||
+                    (showAll || groupControl.HasNewValue())))
+                    show = true;
             }
 
 

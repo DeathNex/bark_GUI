@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using bark_GUI.Structure.ItemTypes;
 
 namespace bark_GUI.CustomControls
 {
@@ -18,6 +19,12 @@ namespace bark_GUI.CustomControls
             set { _defaultXUnit = value; SetX_Unit(value); }
         }
 
+        public new ValueValidator Validator
+        {
+            get { return control_variable_table.Validator; }
+            set { control_variable_table.Validator = value; }
+        }
+
         // Private Variables
         private string _defaultUnit;
         private string _defaultXUnit;
@@ -27,6 +34,8 @@ namespace bark_GUI.CustomControls
             : base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
+
+            control_variable_table.IsRequired = isRequired;
 
             labelName.Text = name.Trim();
             if (typeOptions != null)

@@ -35,5 +35,8 @@
     <Setting Name="XSDValidatorName" Type="System.String" Scope="User">
       <Value Profile="(Default)">XSDValidator.xsd</Value>
     </Setting>
+    <Setting Name="WindowSeparatorPosition" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">260</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

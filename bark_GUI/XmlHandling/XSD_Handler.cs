@@ -6,7 +6,6 @@ using System.Linq;
 using System.Xml;
 using bark_GUI.Structure;
 using bark_GUI.Structure.ElementTypes;
-using bark_GUI.Structure.ElementTypes;
 using bark_GUI.Structure.ItemTypes;
 using bark_GUI.Structure.Items;
 #endregion
@@ -330,8 +329,8 @@ namespace bark_GUI.XmlHandling
                 }
                 else
                 {
-                    var max = double.MaxValue;
-                    var min = double.MinValue;
+                    var max = decimal.MaxValue;
+                    var min = decimal.MinValue;
                     BasicType basicType = BasicType.String;
 
                     Debug.Assert(xNode.FirstChild.Attributes != null, "xNode.FirstChild.Attributes != null");
@@ -374,16 +373,16 @@ namespace bark_GUI.XmlHandling
                         switch (maxMin.LocalName)
                         {
                             case "maxInclusive":
-                                max = double.Parse(maxMin.Attributes["value"].Value.Trim());
+                                max = decimal.Parse(maxMin.Attributes["value"].Value.Trim());
                                 break;
                             case "minInclusive":
-                                min = double.Parse(maxMin.Attributes["value"].Value.Trim());
+                                min = decimal.Parse(maxMin.Attributes["value"].Value.Trim());
                                 break;
                             case "maxExclusive":
-                                max = (double.Parse(maxMin.Attributes["value"].Value.Trim())) - 1;
+                                max = (decimal.Parse(maxMin.Attributes["value"].Value.Trim())) - 1;
                                 break;
                             case "minExclusive":
-                                min = (double.Parse(maxMin.Attributes["value"].Value.Trim())) + 1;
+                                min = (decimal.Parse(maxMin.Attributes["value"].Value.Trim())) + 1;
                                 break;
                         }
                     }
@@ -392,12 +391,12 @@ namespace bark_GUI.XmlHandling
                     Structure.Structure.Add(new SimpleType(name, basicType, min, max));
                 }
             }
-            else if (xNode["list"] != null)
+            else if (xNode["xs:list"] != null)
             {
                 BasicType basicType = BasicType.String;
                 Restriction restriction = Restriction.Basic;
-                Debug.Assert(xNode["list"].HasAttributes, "xNode[list].Attributes != null");
-                string xsValue = xNode["list"].Attributes["itemType"].Value;
+                Debug.Assert(xNode["xs:list"].HasAttributes, "xNode[list].Attributes != null");
+                string xsValue = xNode["xs:list"].Attributes["itemType"].Value;
                 switch (xsValue)
                 {
                     case "xs:string":
@@ -410,25 +409,25 @@ namespace bark_GUI.XmlHandling
                         basicType = BasicType.Integer;
                         restriction = Restriction.MaxMin;
                         //Finish
-                        Structure.Structure.Add(new SimpleType(name, basicType, 1, double.MaxValue));
+                        Structure.Structure.Add(new SimpleType(name, basicType, 1, decimal.MaxValue));
                         break;
                     case "xs:nonPositiveInteger":
                         basicType = BasicType.Integer;
                         restriction = Restriction.MaxMin;
                         //Finish
-                        Structure.Structure.Add(new SimpleType(name, basicType, double.MinValue, 0));
+                        Structure.Structure.Add(new SimpleType(name, basicType, decimal.MinValue, 0));
                         break;
                     case "xs:nonNegativeInteger":
                         basicType = BasicType.Integer;
                         restriction = Restriction.MaxMin;
                         //Finish
-                        Structure.Structure.Add(new SimpleType(name, basicType, 0, double.MaxValue));
+                        Structure.Structure.Add(new SimpleType(name, basicType, 0, decimal.MaxValue));
                         break;
                     case "xs:negativeInteger":
                         basicType = BasicType.Integer;
                         restriction = Restriction.MaxMin;
                         //Finish
-                        Structure.Structure.Add(new SimpleType(name, basicType, double.MinValue, -1));
+                        Structure.Structure.Add(new SimpleType(name, basicType, decimal.MinValue, -1));
                         break;
                     case "xs:decimal":
                         basicType = BasicType.Decimal;
@@ -437,7 +436,7 @@ namespace bark_GUI.XmlHandling
                         basicType = BasicType.Decimal;
                         restriction = Restriction.MaxMin;
                         //Finish
-                        Structure.Structure.Add(new SimpleType(name, basicType, 0, double.MaxValue));
+                        Structure.Structure.Add(new SimpleType(name, basicType, 0, decimal.MaxValue));
                         break;
                 }
                 //Finish Alternative

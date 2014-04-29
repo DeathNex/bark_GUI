@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using bark_GUI.Structure.ItemTypes;
 
 namespace bark_GUI.CustomControls
 {
@@ -15,7 +16,8 @@ namespace bark_GUI.CustomControls
 
         public string Help { get; set; }
 
-        public bool IsRequired { get; set; }
+        // Inheriting Variables
+        public virtual bool IsRequired { get; set; }
 
         //Protected Variables
         protected GeneralControl GeneralControl;
@@ -65,6 +67,7 @@ namespace bark_GUI.CustomControls
         }
 
         /* INHERITING METHODS */
+        public ValueValidator Validator;
         public virtual void SetValue(string value) { }
         public virtual void SetUnit(string unit) { }
         public virtual void SetX_Unit(string xUnit) { }

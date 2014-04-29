@@ -1,13 +1,18 @@
-﻿namespace bark_GUI.Structure.ElementTypes
+﻿using bark_GUI.Structure.ItemTypes;
+
+namespace bark_GUI.Structure.ElementTypes
 {
     public enum EType { Constant, Variable, Function, Reference, Keyword }
 
     public class ElementType
     {
-        public virtual string Value { get { return _value; } set { _value = value; } }
-        public EType Type { get { return _type; } }
-        
-        protected EType _type;
-        protected string _value;
+        public string Value { get; set; }
+        public string DefaultValue { get; set; }
+        public EType CurrentElementType { get; protected set; }
+
+        // Inheriting variables.
+        protected SimpleType SimpleType { get; set; }
+
+        public bool ValueIsValid(string value) { return SimpleType.IsValid(value); }
     }
 }

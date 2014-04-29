@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Xml;
 
 namespace bark_GUI.CustomControls
@@ -51,6 +52,9 @@ namespace bark_GUI.CustomControls
             // Set help
             if (!string.IsNullOrEmpty(help))
                 toolTipHelp.SetToolTip(labelName, help);
+
+            // Red color if empty text box & required.
+            textBoxValue_TextChanged(null, null);
         }
 
 
@@ -88,11 +92,39 @@ namespace bark_GUI.CustomControls
 
         private void textBoxValue_TextChanged(object sender, EventArgs e)
         {
+            var value = textBoxValue.Text.Trim();
+            var isValid = true;
+
+            //// Fix value. (starting zeros)
+            //var fixedValue = value.TrimStart(new char[1] { '0' });
+            //if (!string.IsNullOrEmpty(fixedValue))
+            //    value = fixedValue;
+            //else
+            //    textBoxValue.Text = fixedValue;
+
+            // Validation
+            textBoxValue.ResetBackColor();
+            textBoxValue.ResetForeColor();
+
+            // Item Required Validation
+            if (string.IsNullOrEmpty(value) && IsRequired)
+                textBoxValue.BackColor = Color.Tomato;
+
+            // SimpleType Validation
+            if (Validator != null)
+                isValid = Validator(value);
+
+            if (!isValid)
+            {
+                textBoxValue.ForeColor = Color.Red;
+                return;
+            }
+
             // Check.
             if (Tag == null) return;
 
             // Update the XML Element inside the XML Document.
-            ((XmlNode) Tag).FirstChild.FirstChild.Value = textBoxValue.Text.Trim().TrimStart(new char[1] { '0' });
+            ((XmlNode) Tag).FirstChild.FirstChild.Value = value;
         }
 
         private void comboBoxUnit_SelectedIndexChanged(object sender, EventArgs e)

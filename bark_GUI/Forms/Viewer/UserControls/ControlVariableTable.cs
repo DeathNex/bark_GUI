@@ -1,9 +1,12 @@
 ﻿#region using
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using bark_GUI.Structure.ItemTypes;
+
 #endregion
 
 namespace bark_GUI.CustomControls
@@ -12,13 +15,22 @@ namespace bark_GUI.CustomControls
     {
         // Constraint: textBox_TextChanged() Method works only for arrayColumns = 2 at 'Insert new value' part
 
+        // Public Variables
+
+        public ValueValidator Validator;
+
+        public bool IsRequired;
+
+
+        // Private Variables
+
         private const int ArrayRowsMax = 300;
 
         private const int ArrayRowsMin = 1;
 
         private const int ArrayColumns = 2;
 
-        TextBox[,] _textBoxArray;
+        private TextBox[,] _textBoxArray;
 
         private bool _filling;
 
@@ -43,12 +55,15 @@ namespace bark_GUI.CustomControls
         {
             InitializeComponent();
 
-            //Initialize tables text boxes
+            // Initialize tables text boxes
             _textBoxArray = new TextBox[ArrayRowsMax, ArrayColumns];
 
             for (var i = 0; i < ArrayRowsMin; i++)
                 for (var j = 0; j < ArrayColumns; j++)
                     _addEmpty();
+
+            // Red colors if empty text boxes & required.
+            textBox_TextChanged(null, null);
         }
         #endregion
 
@@ -218,6 +233,32 @@ namespace bark_GUI.CustomControls
             }
         }
 
+        /// <summary> Decrease the number of text box rows until there is only 1 empty row. </summary>
+        private void _supress()
+        {
+            bool stopDeleting = false;
+            for (int i = _lastIndex - 1; i > 0; i--)
+            {
+                for (int j = ArrayColumns - 1; j >= 0; j--)
+                    if (!_lastRowIsEmpty())
+                        stopDeleting = true;
+
+                if (stopDeleting)
+                    break;
+
+                _removeRow();
+            }
+        }
+
+        private void _removeRow()
+        {
+            for (int j = ArrayColumns - 1; j >= 0; j--)
+                table.Controls.Remove(_textBoxArray[_lastIndex - 1, j]);
+            table.RowStyles.RemoveAt(_lastIndex - 1);
+            _lastIndex--;
+            LastJ = 0;
+        }
+
         /// <summary> Checks if the last row is empty or not. </summary>
         /// <returns> True if the last row has no strings. </returns>
         private bool _lastRowIsEmpty()
@@ -260,9 +301,110 @@ namespace bark_GUI.CustomControls
             return counter;
         }
 
+        private bool _hasTabsOrEnters(string s)
+        {
+            foreach (char c in s)
+                if (c == '\n' || c == '\t')
+                    return true;
+            return false;
+        }
+
+        private void _reset()
+        {
+            table.Controls.Clear();
+            _lastIndex = 0;
+            _lastJValue = 0;
+
+            //Initialize tables text boxes
+            _textBoxArray = new TextBox[ArrayRowsMax, ArrayColumns];
+        }
+
+        private string _trimVariableTable(string data)
+        {
+            data = data.Replace('\t', ' ');
+            data = data.Trim(new char[4] { ' ', '\r', '\n', '\t' });
+            char prev = data[0];
+            int i = 1;
+
+            while (i < data.Length)
+            {
+                char c = data[i];
+                prev = data[i - 1];
+                if (_isABreaker(c) && _isABreaker(prev))
+                {
+                    if (prev != '\n')
+                        data = data.Remove(i - 1, 1);
+                    else
+                        data = data.Remove(i, 1);
+                    i--;
+                }
+                i++;
+            }
+            return data;
+        }
+
         private void textBox_TextChanged(object sender, EventArgs e)
         {
+            var arrayIsValid = true;
+            var emptyTextBoxes = 0;
+
+            _supress();
+
             _expand();
+
+            // Validation
+            foreach (var textBox in _textBoxArray)
+            {
+                if (textBox == null) continue;
+
+                var value = textBox.Text.Trim();
+                var isValid = true;
+
+                textBox.ResetBackColor();
+                textBox.ResetForeColor();
+
+                // Item Required Validation
+                if (string.IsNullOrEmpty(value) && IsRequired)
+                {
+                    textBox.BackColor = Color.Tomato;
+                    emptyTextBoxes++;
+                    arrayIsValid = false;
+                    continue;
+                }
+
+                // SimpleType Validation
+                if (Validator != null)
+                    isValid = Validator(value);
+
+                if (!isValid)
+                {
+                    textBox.ForeColor = Color.Red;
+                    arrayIsValid = false;
+                }
+            }
+
+            // Check if there are just 2 empty text boxes, then the array is valid.
+            if (emptyTextBoxes == 2)
+            {
+                foreach (var textBox in _textBoxArray)
+                    if (textBox != null)
+                        textBox.ResetBackColor();
+
+                arrayIsValid = true;
+            }
+            else
+            {
+                // Reset the color of the last 2 text boxes.
+                if (_textBoxArray[_lastIndex - 1, 0] != null)
+                    _textBoxArray[_lastIndex - 1, 0].ResetBackColor();
+                if (_textBoxArray[_lastIndex - 1, 1] != null)
+                    _textBoxArray[_lastIndex - 1, 1].ResetBackColor();
+            }
+
+            // Check if the text boxes are not valid, don't save anything.
+            if (!arrayIsValid) return;
+
+
             if (Tag != null)
             {
                 string s;
@@ -368,74 +510,6 @@ namespace bark_GUI.CustomControls
                 Fill(_trimVariableTable(Clipboard.GetText()));
             }
         }
-
-        private bool _hasTabsOrEnters(string s)
-        {
-            foreach (char c in s)
-                if (c == '\n' || c == '\t')
-                    return true;
-            return false;
-        }
-
-        private void _reset()
-        {
-            table.Controls.Clear();
-            _lastIndex = 0;
-            _lastJValue = 0;
-
-            //Initialize tables text boxes
-            _textBoxArray = new TextBox[ArrayRowsMax, ArrayColumns];
-        }
-
-        private string _trimVariableTable(string data)
-        {
-            data = data.Replace('\t', ' ');
-            data = data.Trim(new char[4] { ' ', '\r', '\n', '\t' });
-            char prev = data[0];
-            int i = 1;
-
-            while (i < data.Length)
-            {
-                char c = data[i];
-                prev = data[i - 1];
-                if (_isABreaker(c) && _isABreaker(prev))
-                {
-                    if (prev != '\n')
-                        data = data.Remove(i - 1, 1);
-                    else
-                        data = data.Remove(i, 1);
-                    i--;
-                }
-                i++;
-            }
-            return data;
-        }
-        #endregion
-
-        #region Unused Methods
-        /*
-        /// <summary> Decrease the number of text box rows until there is only 1 empty row. </summary>
-        private void _supress()
-        {
-            bool delete = true;
-            for (int i = last_i-1; i >= 0; i--)
-            {
-                delete = true;
-                for (int j = last_j - 1; j >= 0; j--)
-                    if (!_lastRowIsEmpty())) delete = false;
-                if (!delete) break;
-                else _removeRow();
-            }
-            _expand();
-        }
-        private void _removeRow()
-        {
-            for (int j = last_j - 1; j >= 0; j--)
-                tableLayoutPanel1.Controls.Remove(textBoxArray[last_i - 1, j]);
-            tableLayoutPanel1.RowStyles.RemoveAt(last_i - 1);
-            last_i--;
-            last_j = 0;
-        }*/
         #endregion
 
     }

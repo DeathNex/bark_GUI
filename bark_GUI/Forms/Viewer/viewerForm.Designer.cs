@@ -96,7 +96,7 @@ namespace bark_GUI
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(0, 35);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(528, 507);
+            panel1.Size = new System.Drawing.Size(575, 507);
             panel1.TabIndex = 2;
             // 
             // elementViewer
@@ -106,7 +106,7 @@ namespace bark_GUI
             this.elementViewer.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.elementViewer.Location = new System.Drawing.Point(0, 0);
             this.elementViewer.Name = "elementViewer";
-            this.elementViewer.Size = new System.Drawing.Size(528, 507);
+            this.elementViewer.Size = new System.Drawing.Size(575, 507);
             this.elementViewer.TabIndex = 0;
             this.elementViewer.WrapContents = false;
             this.elementViewer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.elementViewer_MouseClick);
@@ -117,7 +117,7 @@ namespace bark_GUI
             panel2.Dock = System.Windows.Forms.DockStyle.Top;
             panel2.Location = new System.Drawing.Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(303, 35);
+            panel2.Size = new System.Drawing.Size(256, 35);
             panel2.TabIndex = 1;
             // 
             // checkBoxTreeShowHidden
@@ -137,7 +137,7 @@ namespace bark_GUI
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             panel3.Location = new System.Drawing.Point(0, 35);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(303, 507);
+            panel3.Size = new System.Drawing.Size(256, 507);
             panel3.TabIndex = 2;
             // 
             // treeViewer
@@ -149,7 +149,7 @@ namespace bark_GUI
             this.treeViewer.Name = "treeViewer";
             this.treeViewer.PathSeparator = ">";
             this.treeViewer.ShowNodeToolTips = true;
-            this.treeViewer.Size = new System.Drawing.Size(303, 507);
+            this.treeViewer.Size = new System.Drawing.Size(256, 507);
             this.treeViewer.TabIndex = 0;
             this.treeViewer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewer_AfterSelect);
             this.treeViewer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewer_NodeMouseClick);
@@ -161,7 +161,7 @@ namespace bark_GUI
             this.panelElementSelect.Location = new System.Drawing.Point(0, 0);
             this.panelElementSelect.MaximumSize = new System.Drawing.Size(0, 35);
             this.panelElementSelect.Name = "panelElementSelect";
-            this.panelElementSelect.Size = new System.Drawing.Size(528, 35);
+            this.panelElementSelect.Size = new System.Drawing.Size(575, 35);
             this.panelElementSelect.TabIndex = 1;
             // 
             // labelSelected
@@ -173,7 +173,7 @@ namespace bark_GUI
             this.labelSelected.MaximumSize = new System.Drawing.Size(0, 35);
             this.labelSelected.Name = "labelSelected";
             this.labelSelected.Padding = new System.Windows.Forms.Padding(2);
-            this.labelSelected.Size = new System.Drawing.Size(528, 35);
+            this.labelSelected.Size = new System.Drawing.Size(575, 35);
             this.labelSelected.TabIndex = 0;
             this.labelSelected.TextChanged += new System.EventHandler(this.labelSelected_TextChanged);
             // 
@@ -181,6 +181,7 @@ namespace bark_GUI
             // 
             this.viewerSplit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.viewerSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewerSplit.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.viewerSplit.Location = new System.Drawing.Point(0, 0);
             this.viewerSplit.Name = "viewerSplit";
             // 
@@ -196,7 +197,7 @@ namespace bark_GUI
             this.viewerSplit.Panel2.Controls.Add(panel1);
             this.viewerSplit.Panel2.Controls.Add(this.panelElementSelect);
             this.viewerSplit.Size = new System.Drawing.Size(844, 546);
-            this.viewerSplit.SplitterDistance = 307;
+            this.viewerSplit.SplitterDistance = 260;
             this.viewerSplit.SplitterWidth = 5;
             this.viewerSplit.TabIndex = 0;
             this.viewerSplit.TabStop = false;
@@ -433,12 +434,12 @@ namespace bark_GUI
             this.TreeNodeParentContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddParentToolStripMenuItem});
             this.TreeNodeParentContextMenuStrip.Name = "TreeNodeParentContextMenuStrip";
-            this.TreeNodeParentContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.TreeNodeParentContextMenuStrip.Size = new System.Drawing.Size(97, 26);
             // 
             // AddParentToolStripMenuItem
             // 
             this.AddParentToolStripMenuItem.Name = "AddParentToolStripMenuItem";
-            this.AddParentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AddParentToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.AddParentToolStripMenuItem.Text = "Add";
             this.AddParentToolStripMenuItem.Click += new System.EventHandler(this.AddParentToolStripMenuItem_Click);
             // 

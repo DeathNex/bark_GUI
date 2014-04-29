@@ -27,12 +27,12 @@ namespace bark_GUI.Structure.Items
         public string CustomName { get { return !string.IsNullOrEmpty(_newName) ? string.Format("({0}) {1}", Name, _newName) : Name; } }
         public GroupItem Parent { get; private set; }
         public GeneralControl Control { get; protected set; }
+        public bool IsRequired { get; protected set; }
         public bool IsElementItem { get; private set; }
         public bool IsGroupItem { get; private set; }
         public bool IsFunction { get { return _isFunction; } protected set { _isFunction = value; } }
 
         /* INHERITING VARIABLES */
-        protected bool IsRequired { get; private set; }
         protected XmlNode XsdNode;
         protected XmlNode XmlNode;
         protected string Help { get; private set; }

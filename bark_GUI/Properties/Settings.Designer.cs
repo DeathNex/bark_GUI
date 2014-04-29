@@ -153,5 +153,17 @@ namespace bark_GUI.Properties {
                 this["XSDValidatorName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("260")]
+        public int WindowSeparatorPosition {
+            get {
+                return ((int)(this["WindowSeparatorPosition"]));
+            }
+            set {
+                this["WindowSeparatorPosition"] = value;
+            }
+        }
     }
 }

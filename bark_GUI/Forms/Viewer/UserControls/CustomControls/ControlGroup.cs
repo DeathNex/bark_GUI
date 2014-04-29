@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,6 +13,9 @@ namespace bark_GUI.CustomControls
         {
             InitializeComponent();
             labelGroup.Text = name;
+
+            if (isRequired) labelGroup.Font = new Font(labelGroup.Font, FontStyle.Bold);
+            else labelGroup.Font = new Font(labelGroup.Font, FontStyle.Regular);
         }
 
         // Set the Control's name for the Element Viewer.

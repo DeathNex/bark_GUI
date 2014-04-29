@@ -50,12 +50,12 @@ namespace bark_GUI.Structure
             // These types pre-exist in the XSD. (primitive types)
             Add(new SimpleType("xs:string", BasicType.String));
             Add(new SimpleType("xs:integer", BasicType.Integer));
-            Add(new SimpleType("xs:PositiveInteger", BasicType.Integer, 1, double.MaxValue));
-            Add(new SimpleType("xs:nonPositiveInteger", BasicType.Integer, double.MinValue, 0));
-            Add(new SimpleType("xs:nonNegativeInteger", BasicType.Integer, 0, double.MaxValue));
-            Add(new SimpleType("xs:negativeInteger", BasicType.Integer, double.MinValue, -1));
+            Add(new SimpleType("xs:PositiveInteger", BasicType.Integer, 1, decimal.MaxValue));
+            Add(new SimpleType("xs:nonPositiveInteger", BasicType.Integer, decimal.MinValue, 0));
+            Add(new SimpleType("xs:nonNegativeInteger", BasicType.Integer, 0, decimal.MaxValue));
+            Add(new SimpleType("xs:negativeInteger", BasicType.Integer, decimal.MinValue, -1));
             Add(new SimpleType("xs:decimal", BasicType.Decimal));
-            Add(new SimpleType("decimal_positive", BasicType.Decimal, 0, double.MaxValue));
+            Add(new SimpleType("decimal_positive", BasicType.Decimal, 0, decimal.MaxValue));
         }
 
         public static void SetRoot(GroupItem newRoot) { Root = newRoot; }

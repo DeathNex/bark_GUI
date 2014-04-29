@@ -3,58 +3,60 @@
 #bark_GUI TODO#
 ---------------
 
-- [ ] Check/fix dirty files.
-- [ ] To add layers μόνο στα layers και το add materials μόνο στα materials.
-
+##NEXT TODO##
+- [ ] Load & read .dat files.
+- [ ] Graphical representation of data loaded from .dat files on charts.
 
 ##PRIMARY TODO##
-- [ ] Read from XSD & build acordingly
+- [x] Load XSD files and build the structure accordingly.
+- [x] Load XML files and place the data on the loaded structure items.
+- [x] Edit XML files and their data.
 - [ ] Handle type change (control replace without losing data)
-      1. Create Control of that type with the correct data (XSD);
-      2. Place it where this control was;
-      3. Update the _XmlDocument;
-	  4. Remove this (control);
+      [x] 1. Create Control of that type with the correct data (XSD);
+      [x] 2. Place it where this control was;
+      [ ] 3. Update the _XmlDocument;
+	  [x] 4. Remove this (control);
 - [ ] Handle Tree structure changes & update _XmlDocument
-	Στα materials και στα layers πρέπει να υπάρχει η δυνατότητα για δεξί κλικ και add material ή layer.
-	Προφανώς και delete.
+- [ ] Save and create XML files.
+- [x] User actions on certain items: Add, Delete, Rename, Duplicate (Material, Layer and others)
 
 ##SECONDARY TODO##
-- [ ] create 'help', tooltips & stuff via XML
+- [x] Group items in the element Viewer for better visual representation.
+- [ ] Implement dirty files for save.
+- [ ] Handle Functions (wallsun.brk)
 - [ ] try-catch dangerous code (like file handling, Tags, casts, null references)
-- [ ] 'Tab' Indexes on controls
-- [ ] Preferences> 'directory' search buttons
-- [ ] Flow/Resize controls.
-- >	Γενικώς είμαι της άποψης, όσο πιο λιτό γίνεται και αν χρειατεί κάτι στην πράξη τότε το προσθέτουμε.
+- [x] create 'help', tooltips & stuff via XML
+- [x] Preferences> 'directory' search buttons
+- [x] Flow/Resize controls.
 - [ ] Open XML files that are invalid (against an XSD)
 - [ ] Το θέμα είναι τι κάνει το GUI από εκεί και πέρα. Γενικώς αν υπάρχει δυνατότητα να διορθωθεί το σφάλμα
 	 εντός του GUI, τότε να φορτώσει το αρχείο, αλλιώς δεν το φορτώνει κι υποδεικνύει στον χρήστη
 	 να το διορθώσει εξωτερικά (δεν με πειράζει κι αυτό). Να το δούμε στην πράξη.
 - [ ] Properly handle the XMLHandler XSD & XML load errors in the try-catch. It doesnt always have to be a messagebox.
-- [ ] Θα ήταν πιο βολικό στο variable τα ξεχωριστά κουτάκια να φαίνονται ως πίνακας, έτσι ώστε ο χρήστης να μπορεί να κάνει copy paste μόνο ένα μέρος του πίνακα (π.χ. λίγες γραμμές ή μία στήλη). Επίσης copy paste ορισμένα κελιά από το bark_GUI στο bark_GUI.
-- [x] Γενικώς δουλεύει. Όταν όμως το path του αρχείου έχει κενά, μπερδεύεται. Χρειάζεται να του βάλεις εισαγωγικά όταν δώσεις την εντολή εκτέλεσης. Π.χ.
-	Bark.exe New Folder/temp.bark              a Νομίζει ότι το αρχείο λέγεται New και βγάζει λάθος.
-	Bark.exe New Folder/temp.bark          a Δουλεύει
-- [ ] Το scroll bar του variable να έρθει πιο δεξιά, για να ευθυγραμμιστεί η δεύτερη στήλη με τις μονάδες
-
-
-##FUTURE TODO##
-- [ ] Handle Functions (wallsun.brk)
-- [ ] Simulate.
-- [ ] Perfect UML Diagrams.
-- [ ] Add user custom types. (like decimal_positive)
+- [ ] Θα ήταν πιο βολικό στο variable τα ξεχωριστά κουτάκια να φαίνονται ως πίνακας,
+	 έτσι ώστε ο χρήστης να μπορεί να κάνει copy paste μόνο ένα μέρος του πίνακα
+	 (π.χ. λίγες γραμμές ή μία στήλη). Επίσης copy paste ορισμένα κελιά από το bark_GUI στο bark_GUI.
+- [x] Το scroll bar του variable να έρθει πιο δεξιά, για να ευθυγραμμιστεί η δεύτερη στήλη με τις μονάδες.
 
 ##POLISHING##
+- [ ] Update UML Diagrams.
 - [ ] Element view: Τα optional labels να φαίνονται με διαφορετικό χρώμα.
-- [ ] Check XmlNode.FirstChild careless use.
+- [ ] Check if any XmlNode.FirstChild careless use still remains.
 
 
-Add Stackoverflow to references. (Theory)
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.17
+-----
++	User input validation.
++	Variable table supression/deletion of empty rows fixed.
++	Saving viewer separator's position and fixed to tree viewer.
++	Changed Optional group items are shown without bold and mandatory group items with bold.
+
 v0.16
 -----
-+	Implemented the Right-Click actions (Add/Duplicate/Rename/Delete) on the TreeViewer.
++	Implemented the Right-Click actions (Add/Duplicate/Rename/Delete) on the TreeViewer. (with bugs)
 +	Implemented the Right-Click action (Add) for parents on the TreeViewer.
 		Condition for right-click on parent: First child that can have right-click actions.
 +	Fixed a visual bug on empty categories.

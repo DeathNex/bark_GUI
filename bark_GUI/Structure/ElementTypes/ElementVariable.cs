@@ -6,12 +6,11 @@ namespace bark_GUI.Structure.ElementTypes
     class ElementVariable : ElementType
     {
         /* PUBLIC PROPRETY */
-        public override string Value
-        {
-            get { return _value; }
-            set { _value = _trimVariableTable(value); }
-        }
-        public string DefaultValue { get; set; }
+        //public override string Value
+        //{
+        //    get { return _value; }
+        //    set { _value = _trimVariableTable(value); }
+        //}
 
         public Unit Unit { get; private set; }
         public Unit XUnit { get; private set; }
@@ -19,14 +18,14 @@ namespace bark_GUI.Structure.ElementTypes
         public string DefaultXUnit { get; private set; }
 
         /* PRIVATE VARIABLES */
-        private SimpleType _simpleType; // xs:decimal
+        //private string _value;
 
 
         //Constructor
         public ElementVariable(SimpleType simpleType, string defaultValue)
         {
-            this._type = EType.Variable;
-            this._simpleType = simpleType;
+            CurrentElementType = EType.Variable;
+            SimpleType = simpleType;
             DefaultValue = defaultValue;
         }
 
@@ -37,50 +36,54 @@ namespace bark_GUI.Structure.ElementTypes
 
 
         /* PUBLIC METHODS */
-
-
-
-
+        
         public void SetUnit(Unit unit, string defaultUnit) { this.Unit = unit; this.DefaultUnit = defaultUnit; Unit.Select(defaultUnit); }
         public void SetX_Unit(Unit xUnit, string defaultXUnit) { this.XUnit = xUnit; DefaultXUnit = defaultXUnit; xUnit.Select(defaultXUnit); }
         public List<string> GetX_UnitOptions() { return XUnit != null ? XUnit.GetOptions() : null; }
 
+        //public override bool ValueIsValid(string value)
+        //{
+        //    var values = value.Split(new[] { '\n', '\t', ' ' });
+
+
+        //    return base.ValueIsValid(value);
+        //}
 
         /* PRIVATE METHODS */
 
-        private static bool _isABreaker(char c)
-        {
-            switch (c)
-            {
-                case '\n':
-                    return true;
-                case '\r':
-                    return true;
-                case ' ':
-                    return true;
-                default:
-                    return false;
-            }
-        }
+        //private static bool _isABreaker(char c)
+        //{
+        //    switch (c)
+        //    {
+        //        case '\n':
+        //            return true;
+        //        case '\r':
+        //            return true;
+        //        case ' ':
+        //            return true;
+        //        default:
+        //            return false;
+        //    }
+        //}
 
-        private static string _trimVariableTable(string data)
-        {
-            data = data.Trim(new char[4] { ' ', '\r', '\n', '\t' });
+        //private static string _trimVariableTable(string data)
+        //{
+        //    data = data.Trim(new char[4] { ' ', '\r', '\n', '\t' });
 
-            var i = 1;
+        //    var i = 1;
 
-            while (i < data.Length)
-            {
-                var c = data[i];
-                var prev = data[i - 1];
-                if (_isABreaker(c) && _isABreaker(prev))
-                {
-                    data = prev != '\n' ? data.Remove(i - 1, 1) : data.Remove(i, 1);
-                    i--;
-                }
-                i++;
-            }
-            return data;
-        }
+        //    while (i < data.Length)
+        //    {
+        //        var c = data[i];
+        //        var prev = data[i - 1];
+        //        if (_isABreaker(c) && _isABreaker(prev))
+        //        {
+        //            data = prev != '\n' ? data.Remove(i - 1, 1) : data.Remove(i, 1);
+        //            i--;
+        //        }
+        //        i++;
+        //    }
+        //    return data;
+        //}
     }
 }

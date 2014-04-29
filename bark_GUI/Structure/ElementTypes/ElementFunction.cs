@@ -4,39 +4,14 @@ namespace bark_GUI.Structure.ElementTypes
 {
     class ElementFunction : ElementType
     {
-        /* PUBLIC PROPRETIES */
-        public override string Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
-        public List<string> FunctionNames { get { return _functionNames; } }
-
-        /* PRIVATE VARIABLES */
-        readonly List<string> _functionNames;
+        public List<string> FunctionNames { get; private set; }
 
 
-
-
-        //Constructor
+        // Constructor
         public ElementFunction(List<string> functionNames)
         {
-            this._type = EType.Function;
-            this._functionNames = functionNames;
+            CurrentElementType = EType.Function;
+            FunctionNames = functionNames;
         }
-
-
-
-
-
-
-
-        /* PUBLIC METHODS */
-
-
-
-
-
-
     }
 }

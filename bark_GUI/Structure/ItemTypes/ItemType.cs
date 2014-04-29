@@ -1,6 +1,6 @@
 ﻿namespace bark_GUI.Structure.ItemTypes
 {
-    class ItemType
+    public class ItemType
     {
         /* INHERiTING VARIABLES */
         public string Name;

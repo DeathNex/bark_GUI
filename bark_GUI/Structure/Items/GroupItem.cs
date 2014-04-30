@@ -143,16 +143,15 @@ namespace bark_GUI.Structure.Items
         {
             // Get the data from the XML.
             if (XmlNode == null) return;
+
             var newXml = XmlNode.CloneNode(true);
+
+            // Check.
             Debug.Assert(Parent.XmlNode == XmlNode.ParentNode, "Inconsistency Between Parent 'Item' and Parent 'XmlNode'.");
-            var x = Parent.XmlNode.GetHashCode(); //DELETEME
-            var y = XmlNode.ParentNode.GetHashCode(); //DELETEME
+
             if (XmlNode.ParentNode != null)
                 XmlNode.ParentNode.InsertAfter(newXml, XmlNode);
-            Debug.Assert(newXml == XmlNode.NextSibling, "Inconsistency Caused by INSERTAFTER");
-            newXml.AppendChild(newXml.FirstChild);
-            var x2 = newXml.GetHashCode(); //DELETEME
-            var y2 = XmlNode.NextSibling.GetHashCode(); //DELETEME
+
             XmlParser.DrawInfo(newXml);
         }
 

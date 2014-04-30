@@ -52,7 +52,8 @@ v0.17
 +	User input validation.
 +	Variable table supression/deletion of empty rows fixed.
 +	Saving viewer separator's position and fixed to tree viewer.
-+	Changed Optional group items are shown without bold and mandatory group items with bold.
++	Changed Optional group items are shown without bold and required group items with bold.
++	Changed element viewer to always show required items, even if they don't have a value. (except empty group items)
 
 v0.16
 -----

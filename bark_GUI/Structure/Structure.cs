@@ -93,10 +93,12 @@ namespace bark_GUI.Structure
 
         public static ComplexType FindComplexType(string typeName) { return _complexTypes.FirstOrDefault(t => t.Name == typeName); }
 
-        // ElementItems require special treatment because duplicates exist.
-        public static Item FindItem(XmlNode xmlItem)    // CHECK: Xml dependency. Can be removed?
+        // Items require special treatment because duplicates exist.
+        // Returns the 'Structure' item that was loaded from XSD.
+        public static Item FindItem(XmlNode xmlItem)
         {
             const string errorMsg = "Structure - FindItem:\n - ";
+            Item result = null;
 
             if (xmlItem.Name == Root.Name) return Root;
 
@@ -105,12 +107,8 @@ namespace bark_GUI.Structure
             Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
                 "' in the Structure.\n     Please make sure the names are correct.");
 
-            // One result found, return it.
-            if (results.Count == 1)
-                return results[0];
-
-            // Multiple result found, use filters to further indentify the corrent result.
-            var result = FindItemWithFilters(xmlItem, results);
+            // If multiple results found, use filters to further indentify the correct result.
+            result = results.Count == 1 ? results[0] : FindItemWithFilters(xmlItem, results);
 
             // Check for error Filters were not sufficient or no results were found.
             Debug.Assert(result != null, errorMsg + "Filters were incapable of distinguishing a single item '"
@@ -126,6 +124,14 @@ namespace bark_GUI.Structure
         }
 
         #endregion
+
+        //// Returns a clone of the 'Structure' item that was loaded from XSD.
+        //public static Item CreateItem(XmlNode xmlItem)
+        //{
+        //    var item = FindItem(xmlItem);
+
+        //    item.
+        //}
 
         #region Remove
 

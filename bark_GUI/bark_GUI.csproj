@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\bark_GUI.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -73,6 +74,12 @@
     </Compile>
     <Compile Include="Forms\About\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dialogs\DiagramDataDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\DiagramDataDialog.Designer.cs">
+      <DependentUpon>DiagramDataDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Dialogs\InputBox.cs" />
     <Compile Include="Forms\Preferences\ControlPrefPath.cs">
@@ -177,6 +184,9 @@
     <EmbeddedResource Include="Forms\About\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dialogs\DiagramDataDialog.resx">
+      <DependentUpon>DiagramDataDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences\ControlPrefPath.resx">
       <DependentUpon>ControlPrefPath.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -227,6 +237,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

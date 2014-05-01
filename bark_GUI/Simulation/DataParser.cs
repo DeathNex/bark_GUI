@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace bark_GUI.Simulation
@@ -31,7 +33,9 @@ namespace bark_GUI.Simulation
                 return null;
             }
 
-            return lines;
+            // Ignore Empty Lines
+            var x = lines.Select(line => line.Trim()).Where(l => l.Trim().Length > 0).ToArray();
+            return x;
         }
     }
 }

@@ -13,29 +13,23 @@ namespace bark_GUI.XmlHandling
     static class XmlParser
     {
         #region Public Methods
+
         /// <summary> Recursive method that fills the element items with values (info).</summary>
         /// <param name="inXmlNode"> Which XML Node you wish to include in the elements. </param>
+        /// <param name="item"> The matching item to contain that XML Node. </param>
         public static void DrawInfo(XmlNode inXmlNode)
         {
-            Item item;
             const string errorMsg = "XmlHandling - XmlParser - DrawInfo:\n - ";
 
+            // Check.
             Debug.Assert(inXmlNode != null, errorMsg + "Given argument 'inXmlNode' was null.");
 
             try
             {
-                // Find the element item from our built Structure to connect it.
-                item = Structure.Structure.FindItem(inXmlNode);
+                var item = Structure.Structure.FindDataItem(inXmlNode);
 
                 // Check.
-                Debug.Assert(item != null, errorMsg + "Item " + inXmlNode.LocalName + " not found in structure.");
-
-                // Handle Multiples.
-                {
-                    var groupItem = item as GroupItem;
-                    if (groupItem != null && groupItem.IsMultiple)
-                        item = groupItem.DuplicateEmptyMultiple();
-                }
+                Debug.Assert(item != null, errorMsg + "Item " + inXmlNode.LocalName + " not found in children.");
 
                 // Set Item's XmlNode.
                 item.SetXmlNode(inXmlNode);
@@ -49,7 +43,7 @@ namespace bark_GUI.XmlHandling
                     // Add to the reference list if can be referenced to.
                     Structure.Structure.AddReference(item);
 
-                    // Iterate through the child nodes to draw their info using the appropriate method.
+                    // Iterate through the child xml nodes to draw their info using the appropriate method.
                     foreach (XmlNode xc in inXmlNode.ChildNodes)
                     {
                         switch (xc.Name)
@@ -68,6 +62,7 @@ namespace bark_GUI.XmlHandling
                                 break;
                             default:
                                 // Recursive call.
+                                // child item not current item
                                 DrawInfo(xc);
                                 break;
                         }
@@ -94,9 +89,6 @@ namespace bark_GUI.XmlHandling
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
 
             var elementItem = item as ElementItem;
-
-            if (item.Name == "temperature")
-                Debug.Print("### Element with multiple items hit!\n{0}", item);
 
             // Check elementItem.
             Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
@@ -131,9 +123,6 @@ namespace bark_GUI.XmlHandling
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
 
             var elementItem = item as ElementItem;
-
-            if (item.Name == "temperature")
-                Debug.Print("### Element with multiple items hit!\n{0}", item);
 
             // Check elementItem.
             Debug.Assert(elementItem != null, errorMsg + "Variable elementItem was null.");
@@ -175,6 +164,8 @@ namespace bark_GUI.XmlHandling
         // TODO: Handle functions.
         private static void DrawAFunction(XmlNode inXmlNode, Item item, XmlNode xc)
         {
+            // (THE ITEM PARAMETER MIGHT BE THE PARENT ITEM AND NOT THE CURRENT)
+            // (Check RECURSIVE DRAWINFO CALL FOR HOW-TO-USE)
             var fvalue = xc.FirstChild.Name;
 
             //const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";

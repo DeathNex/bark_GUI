@@ -12,29 +12,22 @@ namespace bark_GUI.Structure.Items
     public class ElementItem : Item
     {
         /* PUBLIC PROPERTIES */
+        // Current type (constant/variable/...) & value of this item.
         public ElementType SelectedType { get; set; }
 
         /* PRIVATE VARIABLES */
-        // The control that is shown on the windows form.
-        private ComplexType _complexType;
+        // All the possible values & types (constant/variable/...) that this element item can have.
+        private readonly ComplexType _complexType;
 
 
 
-
-        #region Constructors
-
+        // Constructor
         /// <summary> Creates a child ElementItem from the XSD file. </summary>
         /// <param name="xsdNode"> The XmlNode from the XSD Functions file that represents this item. </param>
-        /// <param name="parent"> The parent of this Node. </param>
-        /// <param name="isFunction"> [Optional] Note that this is a Function. </param>
+        /// <param name="parent"> The parent of this item. </param>
+        /// <param name="isFunction"> [Optional] Note if this is a Function. </param>
         public ElementItem(XmlNode xsdNode, GroupItem parent, bool isFunction = false)
             : base(xsdNode, parent, isFunction)
-        {
-            CreateElementItem(xsdNode, isFunction);
-        }
-        
-        //Utility Function for Constructors (XSD)
-        private void CreateElementItem(XmlNode xsdNode, bool isFunction)
         {
             // Check
             Debug.Assert(XsdParser.HasAttributes(xsdNode), "XSD Node '" + Name + "' had no attributes.");
@@ -56,13 +49,7 @@ namespace bark_GUI.Structure.Items
 
             // Create this item's control
             CreateGeneralControl(_complexType);
-            
-            //Include this in the Structure
-            if (!isFunction)
-                Structure.Add(this);
         }
-
-        #endregion
 
 
 

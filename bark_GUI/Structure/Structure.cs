@@ -9,17 +9,18 @@ namespace bark_GUI.Structure
 {
     static class Structure
     {
-        /* PUBLIC PROPERTIES */
-        public static GroupItem Root { get; private set; }
-
-        public static List<Item> Items { get; private set; }
-
-        public static List<ElementItem> ElementItems { get; private set; }
-
-        public static List<GroupItem> GroupItems { get; private set; }
-
+        // Public Variables
+        public static GroupItem DataRootItem { get; set; }
 
         /* PRIVATE VARIABLES */
+        private static GroupItem _root;
+
+        private static List<Item> _items;
+
+        private static List<ElementItem> _elementItems;
+
+        private static List<GroupItem> _groupItems;
+
         private static List<Unit> _units;
 
         private static List<ItemType> _types;
@@ -32,7 +33,7 @@ namespace bark_GUI.Structure
 
         private static List<GroupItem> _functions;
 
-        #region Public Initiliazation Methods
+        #region Public Initialization Methods
 
         public static void InitializeTypes()
         {
@@ -43,9 +44,9 @@ namespace bark_GUI.Structure
             _complexTypes = new List<ComplexType>();
             _referenceLists = new Dictionary<string, List<Item>>();
             _functions = new List<GroupItem>();
-            Items = new List<Item>();
-            ElementItems = new List<ElementItem>();
-            GroupItems = new List<GroupItem>();
+            _items = new List<Item>();
+            _elementItems = new List<ElementItem>();
+            _groupItems = new List<GroupItem>();
 
             // These types pre-exist in the XSD. (primitive types)
             Add(new SimpleType("xs:string", BasicType.String));
@@ -58,7 +59,15 @@ namespace bark_GUI.Structure
             Add(new SimpleType("decimal_positive", BasicType.Decimal, 0, decimal.MaxValue));
         }
 
-        public static void SetRoot(GroupItem newRoot) { Root = newRoot; }
+        public static void SetRoot(GroupItem newRoot)
+        {
+            _root = newRoot;
+
+            foreach (var innerChild in newRoot.InnerChildren)
+            {
+                Add(innerChild);
+            }
+        }
 
         #endregion
 
@@ -73,9 +82,26 @@ namespace bark_GUI.Structure
 
         public static void Add(ComplexType type) { _types.Add(type); _complexTypes.Add(type); }
 
-        public static void Add(ElementItem eItem) { ElementItems.Add(eItem); Items.Add(eItem); }
-
-        public static void Add(GroupItem gItem) { if (gItem.IsFunction) _functions.Add(gItem); else { GroupItems.Add(gItem); Items.Add(gItem); } }
+        public static void Add(Item item)
+        {
+            if (item.IsElementItem)
+            {
+                _items.Add(item);
+                _elementItems.Add((ElementItem)item);
+            }
+            else if (item.IsGroupItem)
+            {
+                if (!item.IsFunction)
+                {
+                    _items.Add(item);
+                    _groupItems.Add((GroupItem)item);
+                }
+                else
+                {
+                    _functions.Add((GroupItem)item);
+                }
+            }
+        }
 
         public static void AddReferenceList(string name) { _referenceLists[name] = new List<Item>(); }
 
@@ -93,16 +119,60 @@ namespace bark_GUI.Structure
 
         public static ComplexType FindComplexType(string typeName) { return _complexTypes.FirstOrDefault(t => t.Name == typeName); }
 
-        // Items require special treatment because duplicates exist.
-        // Returns the 'Structure' item that was loaded from XSD.
-        public static Item FindItem(XmlNode xmlItem)
+        // Returns a list of references on that element name as a string for controls to show.
+        public static List<string> FindReferenceListOptions(string name)
         {
-            const string errorMsg = "Structure - FindItem:\n - ";
+            return !_referenceLists.ContainsKey(name) ? null : _referenceLists[name].Select(item => item.NewName ?? item.Name).ToList();
+        }
+
+        // Items require special treatment because duplicates exist.
+        // Returns the 'Data' item that was created after XML.
+        public static Item FindDataItem(XmlNode xmlItem)
+        {
+            const string errorMsg = "Structure - FindDataItem:\n - ";
             Item result = null;
 
-            if (xmlItem.Name == Root.Name) return Root;
+            if (xmlItem.Name == DataRootItem.Name) return DataRootItem;
 
-            var results = Items.Where(i => i.Name == xmlItem.Name).ToList();
+            var results = DataRootItem.InnerChildren.Where(item => item.Name == xmlItem.Name).ToList();
+
+            Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
+                "' in the DataRootItem.\n     Please make sure the names are correct.");
+
+            // If multiple results found, use filters to further indentify the correct result.
+            result = results.Count == 1 ? results[0] : FindItemWithFilters(xmlItem, results);
+
+            // Check for error Filters were not sufficient or no results were found.
+            Debug.Assert(result != null, errorMsg + "Filters were incapable of distinguishing a single item '"
+                    + xmlItem.Name + "' in the DataRootItem.\n     Please make sure no exact duplicates exist.");
+
+            return result;
+        }
+
+        #endregion
+
+        // Returns a clone of the 'Structure' item that was loaded from XSD.
+        public static Item CreateItem(XmlNode xmlItem)
+        {
+            var item = FindStructureItem(xmlItem);
+
+            return item.DuplicateStructure();
+        }
+
+
+        #endregion
+
+
+        // Items require special treatment because duplicates exist.
+        // Returns the 'Structure' item that was loaded from XSD.
+        internal static Item FindStructureItem(XmlNode xmlItem)
+        {
+            const string errorMsg = "Structure - FindStructureItem:\n - ";
+            Item result = null;
+
+            if (xmlItem.Name == _root.Name) return _root;
+
+            var results = _items.Where(i => i.Name == xmlItem.Name).ToList();
 
             Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
                 "' in the Structure.\n     Please make sure the names are correct.");
@@ -117,46 +187,8 @@ namespace bark_GUI.Structure
             return result;
         }
 
-        // Returns a list of references on that element name as a string for controls to show.
-        public static List<string> FindReferenceListOptions(string name)
-        {
-            return !_referenceLists.ContainsKey(name) ? null : _referenceLists[name].Select(item => item.NewName ?? item.Name).ToList();
-        }
-
-        #endregion
-
-        //// Returns a clone of the 'Structure' item that was loaded from XSD.
-        //public static Item CreateItem(XmlNode xmlItem)
-        //{
-        //    var item = FindItem(xmlItem);
-
-        //    item.
-        //}
-
-        #region Remove
-
-        public static void Remove(Item item)
-        {
-            if (_referenceLists.ContainsKey(item.Name) && _referenceLists[item.Name].Contains(item))
-                _referenceLists[item.Name].Remove(item);
-
-            if (!item.IsFunction)
-            {
-                Items.Remove(item);
-
-                if (item.IsElementItem)
-                    ElementItems.Remove((ElementItem)item);
-                else
-                    GroupItems.Remove((GroupItem)item);
-            }
-        }
-
-        #endregion
-
-        #endregion
-
-
         #region Private Find Item With Filter Methods
+
         private static Item FindItemWithFilters(XmlNode xmlItem, List<Item> results)
         {
             var risingXmlItem = xmlItem;

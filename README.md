@@ -47,6 +47,19 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.18
+-----
++	Split Structure from Items with data. Structure now contains items' structure without XmlNodes.
+		One DataRootItem created. Updated the whole project to work with this change. (bugs still exist)
++	Created .dat file DataParser.
++	Created data Titles Selection Form/Dialog for axis' from .dat files before the chart creation.
++	Loading properly the data from .dat files and graphical representation of these data
+		in a chart by ZedGraph. Limited to 10 Y-Axis' values.
++	Proper error handling in each case of invalid data.
++	Updated ZedGraph library to the latest build (5.15).
++	Removed 4th number from Assembly Version. (Menu>About)
+
+
 v0.17
 -----
 +	User input validation.

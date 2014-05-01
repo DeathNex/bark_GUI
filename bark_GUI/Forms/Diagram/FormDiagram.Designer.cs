@@ -28,34 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDiagram));
-            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
+            this.diagram = new ZedGraph.ZedGraphControl();
             this.SuspendLayout();
             // 
-            // zedGraphControl1
+            // diagram
             // 
-            this.zedGraphControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.zedGraphControl1.Location = new System.Drawing.Point(0, 0);
-            this.zedGraphControl1.Name = "zedGraphControl1";
-            this.zedGraphControl1.ScrollGrace = 0D;
-            this.zedGraphControl1.ScrollMaxX = 0D;
-            this.zedGraphControl1.ScrollMaxY = 0D;
-            this.zedGraphControl1.ScrollMaxY2 = 0D;
-            this.zedGraphControl1.ScrollMinX = 0D;
-            this.zedGraphControl1.ScrollMinY = 0D;
-            this.zedGraphControl1.ScrollMinY2 = 0D;
-            this.zedGraphControl1.Size = new System.Drawing.Size(877, 673);
-            this.zedGraphControl1.TabIndex = 0;
+            this.diagram.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diagram.Location = new System.Drawing.Point(0, 0);
+            this.diagram.Name = "diagram";
+            this.diagram.ScrollGrace = 0D;
+            this.diagram.ScrollMaxX = 0D;
+            this.diagram.ScrollMaxY = 0D;
+            this.diagram.ScrollMaxY2 = 0D;
+            this.diagram.ScrollMinX = 0D;
+            this.diagram.ScrollMinY = 0D;
+            this.diagram.ScrollMinY2 = 0D;
+            this.diagram.Size = new System.Drawing.Size(964, 641);
+            this.diagram.TabIndex = 0;
             // 
             // FormDiagram
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(877, 673);
-            this.Controls.Add(this.zedGraphControl1);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.ClientSize = new System.Drawing.Size(964, 641);
+            this.Controls.Add(this.diagram);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormDiagram";
-            this.Text = "FormDiagram";
+            this.Text = "Diagram";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormDiagram_FormClosed);
             this.ResumeLayout(false);
 
@@ -63,7 +67,7 @@
 
         #endregion
 
-        private ZedGraph.ZedGraphControl zedGraphControl1;
+        private ZedGraph.ZedGraphControl diagram;
     }
 }
 

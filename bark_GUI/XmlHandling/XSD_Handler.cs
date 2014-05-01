@@ -134,7 +134,7 @@ namespace bark_GUI.XmlHandling
                     // Load elements.
                     foreach (XmlNode xNode in _xsdFunctions.DocumentElement.ChildNodes)
                         if (xNode.LocalName == "element")
-                            Structure.Structure.Add(new GroupItem(xNode, true));
+                            Structure.Structure.Add(new GroupItem(xNode, null, true));
                 }
             }
             catch (XmlException e)

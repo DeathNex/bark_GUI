@@ -8,6 +8,8 @@ using System.Xml.Schema;
 using System.Windows.Forms;
 using System.IO;
 using bark_GUI.Properties;
+using bark_GUI.Structure.Items;
+
 #endregion
 
 namespace bark_GUI.XmlHandling
@@ -67,19 +69,23 @@ namespace bark_GUI.XmlHandling
 
             try
             {
-                //Validate the XML against the XSD file
+                // Validate the XML against the XSD file.
                 if (!_ValidateXML(pathXml))
                     throw new Exception("Could not validate XML file.");
 
-                //Load the XML superfically just to make sure it can be loaded & to get the XSD paths
+                // Load the XML superfically just to make sure it can be loaded & to get the XSD paths.
                 if (!_LoadXml(pathXml))
                     throw new Exception("Could not load XML file.");
 
-                //Load the XSD & build the basic Structure
+                // Load the XSD & build the basic Structure.
                 if (!_xsdHandler.Load(_getXsdPathOf(_xmlDocument, pathXml)))
                     throw new Exception("Could not load XSD files.");
 
-                //Draw all the information from the XML file
+                // Find the root item from our built Structure to create it for data representation.
+                Structure.Structure.DataRootItem =
+                    (GroupItem)Structure.Structure.CreateItem(_xmlDocument.DocumentElement);
+
+                // Draw all the information from the XML file
                 XmlParser.DrawInfo(_xmlDocument.DocumentElement);
             }
             catch (XmlException xmlEx)

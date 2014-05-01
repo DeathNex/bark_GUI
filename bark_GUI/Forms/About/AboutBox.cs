@@ -11,7 +11,7 @@ namespace bark_GUI
             InitializeComponent();
             Text = String.Format("About {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = String.Format("Version {0}", AssemblyVersion.Substring(0,AssemblyVersion.LastIndexOf('.')));
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
 

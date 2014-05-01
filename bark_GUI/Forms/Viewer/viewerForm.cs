@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using bark_GUI.CustomControls;
 using bark_GUI.Forms.Dialogs;
+using bark_GUI.Simulation;
 using bark_GUI.Structure.Items;
 using bark_GUI.XmlHandling;
 using bark_GUI.Properties;
@@ -305,16 +307,62 @@ namespace bark_GUI
         {
             statusMain.Text = "Simulation Begin...";
 
-            if (Settings.Default.PathCurrentFile != string.Empty)
+            // Check.
+            if (string.IsNullOrEmpty(Settings.Default.PathCurrentFile))
             {
-                _saveFile();
-                // TODO: Validate path before executing.
-                Process.Start(Settings.Default.PathBarkExe + "\\bark.exe", '\"' + Settings.Default.PathCurrentFile + '\"');
-                Program.FormDiagram1 = new FormDiagram();
-                Program.FormDiagram1.Show();
-            }
-            else
                 MessageBox.Show("No file loaded to simulate. Please first open a file.");
+                return;
+            }
+
+            // Save XML file.
+            _saveFile();
+
+            // Check.
+            if(!File.Exists(Settings.Default.PathBarkExe + "\\bark.exe") ||
+                !File.Exists(Settings.Default.PathCurrentFile))
+            {
+                MessageBox.Show("Filepath of bark.exe or current xml file was wrong. No file exists.");
+                return;
+            }
+
+            // Simulation.
+            Process.Start(Settings.Default.PathBarkExe + "\\bark.exe",
+                          '\"' + Settings.Default.PathCurrentFile + '\"');
+
+            // Read .dat file.
+            var dataPath = @"D:\Projects\bark_GUI\bark_GUI\bin\Debug\Samples\transparent.dat";
+            var data = DataParser.ReadData(dataPath);
+
+            // Check.
+            if (data == null || data.Length < 1) return;
+
+            // Use data from .dat file and prompt user to select x/y axis'.
+            string xAxis = "";
+            string[] yAxis = new string[1];
+
+            using (var form = new DiagramDataDialog(data[0].Split('\t')))
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    xAxis = form.XAxisSelected;
+                    yAxis = form.YAxisSelected;
+                }
+                else
+                    return;
+            }
+
+            // Check user selection.
+            if (string.IsNullOrEmpty(xAxis) || yAxis == null || yAxis.Length == 0)
+            {
+                MessageBox.Show("X-Axis or Y-Axis was not selected.");
+                return;
+            }
+
+            // Show diagram.
+            var filenameData = dataPath.Substring(dataPath.LastIndexOf('\\') + 1);
+            Program.FormDiagram1 = new FormDiagram(filenameData, xAxis, yAxis, data);
+            Program.FormDiagram1.Show();
 
             statusMain.Text = "Ready";
         }
@@ -364,15 +412,12 @@ namespace bark_GUI
         /// <summary> Show/Hide the appropriate elements in the elementViewer acording to the input XmlNode. </summary>
         private void _UpdateElementViewer()
         {
-            var tNode = treeViewer.SelectedNode;
-            GroupItem selectedRoot = null;
-
             // Check: The Viewer has been Initialized.
-            if (!_elementViewerIsInitialized || tNode == null) return;
+            if (!_elementViewerIsInitialized || treeViewer.SelectedNode == null) return;
 
             // Convert selected TreeNode to GroupItem
-            foreach (var groupItem in Structure.Structure.GroupItems.Where(g => g.Tnode == tNode))
-                selectedRoot = groupItem;
+            GroupItem treeRoot = (GroupItem)treeViewer.TopNode.Tag;
+            GroupItem selectedRoot = (GroupItem)treeViewer.SelectedNode.Tag;
 
             // Check.
             Debug.Assert(selectedRoot != null, "ViewerForm - UpdateElementViewer - Selected GroupItem could not match the TreeNode.");
@@ -392,7 +437,7 @@ namespace bark_GUI
             }
 
             //Show every element that is a child of the selected group, else hide.
-            UpdateElementViewerControls(selectedRoot, Structure.Structure.Root);
+            UpdateElementViewerControls(selectedRoot, treeRoot);
 
             // Continue drawing.
             elementViewer.ResumeLayout();
@@ -403,7 +448,7 @@ namespace bark_GUI
         {
             // Initialize nodes.
             treeViewer.Nodes.Clear();
-            treeViewer.Nodes.Add(Structure.Structure.Root.Tnode);
+            treeViewer.Nodes.Add(Structure.Structure.DataRootItem.Tnode);
             treeViewer.ExpandAll();
             treeViewer.SelectedNode = treeViewer.Nodes[0];
         }
@@ -415,7 +460,7 @@ namespace bark_GUI
             elementViewer.Controls.Clear();
 
             // Iterate through the Group Items and append their children in the Viewer.
-            PopulateElementViewer(Structure.Structure.Root, elementViewer);
+            PopulateElementViewer(Structure.Structure.DataRootItem, elementViewer);
 
             _elementViewerIsInitialized = true;
         }
@@ -552,15 +597,11 @@ namespace bark_GUI
 
         private void AddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var groupItem = ((GroupItem)_activeNode.Tag).DuplicateEmptyMultiple();
-
-            var newName = InputBox.ShowDialog(("New Name for " + groupItem.Name), "Add");
+            var newName = InputBox.ShowDialog(("New Name for " + ((Item)_activeNode.Tag).Name), "Add");
 
             // Validation
             if (!string.IsNullOrEmpty(newName))
-                groupItem.NewName = newName;
-            else
-                groupItem.Remove();
+                ((Item)_activeNode.Tag).Duplicate(newName);
 
             _InitializeElementViewer();
             _UpdateElementViewer();
@@ -568,17 +609,23 @@ namespace bark_GUI
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((GroupItem)_activeNode.Tag).DuplicateDeep();
+            var newName = InputBox.ShowDialog(("New Name for " + ((Item)_activeNode.Tag).Name), "Duplicate",
+                ((Item)_activeNode.Tag).NewName + " New");
+
+            // Validation
+            if (!string.IsNullOrEmpty(newName))
+                ((Item)_activeNode.Tag).Duplicate(newName, true);
+
             _InitializeElementViewer();
             _UpdateElementViewer();
         }
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var groupItem = ((GroupItem)_activeNode.Tag);
-            var newName = InputBox.ShowDialog(("New Name for " + groupItem.Name), "Rename", groupItem.NewName);
+            var item = ((Item)_activeNode.Tag);
+            var newName = InputBox.ShowDialog(("New Name for " + item.Name), "Rename", item.NewName);
 
-            groupItem.NewName = newName;
+            item.NewName = newName;
 
             _InitializeElementViewer();
             _UpdateElementViewer();
@@ -596,22 +643,19 @@ namespace bark_GUI
             var groupItemParent = ((GroupItem)_activeNode.Tag);
 
             // Get first child that can have Right-Click actions.
+            //!!! TODO: Change first child that already exists to:
+            //!!!       first child from Structure/XSD. (in case all materials/layers are deleted)
             var childItem = groupItemParent.Children.First(child =>
                 child.IsGroupItem && ((GroupItem)child).HasRightClickActions);
 
             // Check.
-            if(childItem == null) return;
+            if (childItem == null) return;
 
-            // Create new childItem.
-            var newChild = ((GroupItem)childItem).DuplicateEmptyMultiple();
-
-            var newName = InputBox.ShowDialog(("New Name for " + newChild.Name), "Add");
+            var newName = InputBox.ShowDialog(("New Name for " + childItem.Name), "Add");
 
             // Validation
             if (!string.IsNullOrEmpty(newName))
-                newChild.NewName = newName;
-            else
-                newChild.Remove();
+                childItem.Duplicate(newName, true);
 
             _InitializeElementViewer();
             _UpdateElementViewer();

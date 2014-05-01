@@ -164,20 +164,20 @@ namespace bark_GUI.XmlHandling
         /// Creates all the children of the given item and returns them as a list of items.
         ///  Includes inner children too (recursive through GroupItem constructors).
         /// </summary>
-        /// <param name="inXmlNode"> The given item's XmlNode to create it's children. </param>
+        /// <param name="inXsdNode"> The given item's XmlNode to create it's children. </param>
         /// <param name="parent"> The parent of the given item's XmlNode. </param>
         /// <param name="isFunction"> Keep track of function items. </param>
         /// <returns></returns>
-        public static List<Item> CreateChildren(XmlNode inXmlNode, GroupItem parent, bool isFunction)
+        public static List<Item> CreateChildren(XmlNode inXsdNode, GroupItem parent, bool isFunction)
         {
             List<Item> list = null;
 
             // Check.
-            if (!inXmlNode.HasChildNodes) return null;
+            if (!inXsdNode.HasChildNodes) return null;
 
-            list = new List<Item>(inXmlNode.ChildNodes.Count);
+            list = new List<Item>(inXsdNode.ChildNodes.Count);
 
-            foreach (XmlNode x in inXmlNode.ChildNodes)
+            foreach (XmlNode x in inXsdNode.ChildNodes)
             {
                 switch (x.LocalName)
                 {

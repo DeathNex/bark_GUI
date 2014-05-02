@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using bark_GUI.Structure.ItemTypes;
+using bark_GUI.Structure.Items;
 
 namespace bark_GUI.CustomControls
 {

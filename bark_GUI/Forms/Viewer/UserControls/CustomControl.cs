@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using bark_GUI.Structure.ItemTypes;
+using bark_GUI.Structure.Items;
 
 namespace bark_GUI.CustomControls
 {

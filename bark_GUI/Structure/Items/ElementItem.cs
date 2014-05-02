@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml;
 using bark_GUI.CustomControls;
 using bark_GUI.Structure.ElementTypes;
@@ -9,6 +10,8 @@ using bark_GUI.XmlHandling;
 
 namespace bark_GUI.Structure.Items
 {
+    public delegate bool ValueValidator(string value);
+
     public class ElementItem : Item
     {
         /* PUBLIC PROPERTIES */
@@ -78,7 +81,33 @@ namespace bark_GUI.Structure.Items
             }
         }
 
+        public bool ValidateAndSave(string value)
+        {
+            var isValid = SelectedType.ValueIsValid(value);
 
+            if (!isValid) return false;
+
+            // Save value
+            SelectedType.Value = value;
+            var xmlNodeValueElementName = SelectedType.CurrentElementType.ToString();
+
+            if (SelectedType.CurrentElementType != EType.Reference)
+            {
+                foreach (XmlNode childNode in XmlNode.ChildNodes.Cast<XmlNode>().Where(
+                    child => child.LocalName.ToUpper() == xmlNodeValueElementName.ToUpper()))
+                {
+                    childNode.InnerText = value;
+                    break;
+                }
+            }
+            else
+            {
+                Debug.Assert(XmlNode.Attributes != null, "XML Item is 'reference' but has no attributes.");
+                XmlNode.Attributes["reference"].Value = value;
+            }
+
+            return true;
+        }
 
         /* PRIVATE METHODS */
 
@@ -159,9 +188,9 @@ namespace bark_GUI.Structure.Items
 
 
             // Create the Controls for this ElementItem with the gathered information.
-            Control = new GeneralControl(XmlNode, Name, IsRequired, Help, list,
+            Control = new GeneralControl(Name, IsRequired, Help, list,
                 typeOptions, unitOptions, xUnitOptions, functionOptions, keyOptions,
-                defaultValues, defaultUnitValue, defaultXUnitValue, valueValidators);
+                defaultValues, defaultUnitValue, defaultXUnitValue, ValidateAndSave);
         }
     }
 }

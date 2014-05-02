@@ -64,7 +64,7 @@ namespace bark_GUI.Structure.Items
             Children = XsdParser.CreateChildren(xsdNode, this, isFunction);
 
             // Create the Controls for this ElementItem with the gathered information
-            Control = new GeneralControl(XmlNode, Name, IsRequired, Help);
+            Control = new GeneralControl(Name, IsRequired, Help);
         }
 
 

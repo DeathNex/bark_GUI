@@ -3,8 +3,6 @@ using bark_GUI.Structure.ElementTypes;
 
 namespace bark_GUI.Structure.ItemTypes
 {
-    public delegate bool ValueValidator(string value);
-
     class ComplexType : ItemType
     {
         /* PUBLIC PROPERTIES */

@@ -2,7 +2,7 @@
 <case xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="XSDValidator.xsd">
   <simulation>
     <start_time unit="s">
-      <constant>0</constant>
+      <constant>12</constant>
     </start_time>
     <end_time unit="s">
       <constant>3600</constant>
@@ -25,6 +25,40 @@
         </phase>
         <conductivity unit="W/mK">
           <constant>0.034</constant>
+        </conductivity>
+        <heat_capacity unit="J/kgK">
+          <constant>657.</constant>
+        </heat_capacity>
+        <density unit="kg/m3">
+          <constant>35.</constant>
+        </density>
+        <emissivity unit="-">
+          <constant>0.</constant>
+        </emissivity>
+      </material>
+      <material name="polysterene New">
+        <phase>
+          <keyword>solid</keyword>
+        </phase>
+        <conductivity unit="W/mK">
+          <constant>0.033</constant>
+        </conductivity>
+        <heat_capacity unit="J/kgK">
+          <constant>657.</constant>
+        </heat_capacity>
+        <density unit="kg/m3">
+          <constant>35.</constant>
+        </density>
+        <emissivity unit="-">
+          <constant>0.</constant>
+        </emissivity>
+      </material>
+      <material name="polysterene New New">
+        <phase>
+          <keyword>solid</keyword>
+        </phase>
+        <conductivity unit="W/mK">
+          <constant>0.033</constant>
         </conductivity>
         <heat_capacity unit="J/kgK">
           <constant>657.</constant>

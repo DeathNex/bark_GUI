@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using bark_GUI.Structure.ItemTypes;
+using bark_GUI.Structure.Items;
 
 namespace bark_GUI.CustomControls
 {
@@ -50,29 +50,29 @@ namespace bark_GUI.CustomControls
         /// <param name="xUnitOptions"> What options to show in the x_unit dropdown. (Used in Variable only) </param>
         /// <param name="funcOptions"> What options to show in the functions dropdown. (Used in Function only) </param>
         /// <param name="keyOptions"> What options to show in the keywords dropdown. (Used in Keywords only) </param>
-        public GeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
+        public GeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions,
-            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, Dictionary<CustomControlType, ValueValidator> valueValidators)
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, ValueValidator valueValidator)
         {
-            CreateGeneralControl(tag, name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions,
-                funcOptions, keyOptions, defaultValues, defaultUnit, defaultXUnit, valueValidators);
+            CreateGeneralControl(name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions,
+                funcOptions, keyOptions, defaultValues, defaultUnit, defaultXUnit, valueValidator);
         }
         /// <summary> Create a custom group control. </summary>
         /// <param name="tag"> The XML Element to apply changes backwards and allow save. </param>
         /// <param name="name"> The name of the group. (Mandatory) </param>
         /// <param name="isRequired"> If the element is optional or mandatory. (Optional) </param>
         /// <param name="help"> Some help text if exists. (Optional) </param>
-        public GeneralControl(object tag, string name, bool isRequired, string help = null)
+        public GeneralControl(string name, bool isRequired, string help = null)
         {
             List<CustomControlType> controlTypes = new List<CustomControlType>(1) { CustomControlType.Group };
-            CreateGeneralControl(tag, name, isRequired, help, controlTypes, null, null, null, null, null, null, null, null, null);
+            CreateGeneralControl(name, isRequired, help, controlTypes, null, null, null, null, null, null, null, null, null);
         }
 
-        private void CreateGeneralControl(object tag, string name, bool isRequired, string help, List<CustomControlType> controlTypes,
+        private void CreateGeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions,
-            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, Dictionary<CustomControlType, ValueValidator> valueValidators)
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, ValueValidator valueValidator)
         {
             _customControls = new List<CustomControl>();
 
@@ -92,8 +92,8 @@ namespace bark_GUI.CustomControls
                     case CustomControlType.Constant:
                         if (typeOptions != null && typeOptions.Contains("Constant") && unitOptions != null)
                         {
-                            _controlConstant = new ControlConstant(name, typeOptions, unitOptions, isRequired, help, this)
-                            {Tag = tag};
+                            _controlConstant = new ControlConstant(
+                                name, typeOptions, unitOptions, isRequired, help, this);
 
                             // Set default values.
                             if (defaultValues.ContainsKey(CustomControlType.Constant))
@@ -101,8 +101,7 @@ namespace bark_GUI.CustomControls
                             _controlConstant.DefaultUnit = defaultUnit;
 
                             // Set Value Validators.
-                            if (valueValidators.ContainsKey(CustomControlType.Constant))
-                                _controlConstant.Validator = valueValidators[CustomControlType.Constant];
+                            _controlConstant.Validator = valueValidator;
 
                             _customControls.Add(_controlConstant);
                         }
@@ -110,8 +109,8 @@ namespace bark_GUI.CustomControls
                     case CustomControlType.Variable:
                         if (typeOptions != null && typeOptions.Contains("Variable") && unitOptions != null)// && xUnitOptions != null)
                         {
-                            _controlVariable = new ControlVariable(name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this)
-                            { Tag = tag };
+                            _controlVariable = new ControlVariable(
+                                name, typeOptions, unitOptions, xUnitOptions, isRequired, help, this);
 
                             // Set default values.
                             if (defaultValues.ContainsKey(CustomControlType.Variable))
@@ -120,8 +119,7 @@ namespace bark_GUI.CustomControls
                             _controlVariable.DefaultXUnit = defaultXUnit;
 
                             // Set Value Validators.
-                            if (valueValidators.ContainsKey(CustomControlType.Variable))
-                                _controlVariable.Validator = valueValidators[CustomControlType.Variable];
+                            _controlVariable.Validator = valueValidator;
 
                             _customControls.Add(_controlVariable);
                         }
@@ -129,42 +127,39 @@ namespace bark_GUI.CustomControls
                     case CustomControlType.Function:
                         if (typeOptions != null && typeOptions.Contains("Function") && funcOptions != null)
                         {
-                            _controlFunction = new ControlFunction(name, typeOptions, funcOptions, isRequired, help, this)
-                            { Tag = tag };
+                            _controlFunction = new ControlFunction(
+                                name, typeOptions, funcOptions, isRequired, help, this);
 
                             // Set default values.
                             if (defaultValues.ContainsKey(CustomControlType.Function))
                                 _controlFunction.DefaultValue = defaultValues[CustomControlType.Function];
 
                             // Set Value Validators.
-                            if (valueValidators.ContainsKey(CustomControlType.Function))
-                                _controlFunction.Validator = valueValidators[CustomControlType.Function];
+                            _controlFunction.Validator = valueValidator;
 
                             _customControls.Add(_controlFunction);
                         }
                         break;
                     case CustomControlType.Group:
-                        _controlGroup = new ControlGroup(name, isRequired, this) {Tag = tag};
+                        _controlGroup = new ControlGroup(name, isRequired, this);
                         _customControls.Add(_controlGroup);
                         break;
                     case CustomControlType.Reference:
-                        _controlReference = new ControlReference(name, isRequired, help, this) {Tag = tag};
+                        _controlReference = new ControlReference(name, isRequired, help, this);
                         _customControls.Add(_controlReference);
 
                             // Set Value Validators.
-                        if (valueValidators.ContainsKey(CustomControlType.Reference))
-                            _controlReference.Validator = valueValidators[CustomControlType.Reference];
+                        _controlReference.Validator = valueValidator;
                         break;
                     case CustomControlType.Keyword:
-                        _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this) {Tag = tag};
+                        _controlKeyword = new ControlKeyword(name, keyOptions, isRequired, help, this);
 
                         // Set default values.
                         if (defaultValues.ContainsKey(CustomControlType.Keyword))
                             _controlKeyword.DefaultValue = defaultValues[CustomControlType.Keyword];
 
                             // Set Value Validators.
-                        if (valueValidators.ContainsKey(CustomControlType.Keyword))
-                            _controlKeyword.Validator = valueValidators[CustomControlType.Keyword];
+                        _controlKeyword.Validator = valueValidator;
 
                         _customControls.Add(_controlKeyword);
                         break;

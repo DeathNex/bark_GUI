@@ -1,13 +1,9 @@
-﻿#region using
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using bark_GUI.Structure.ItemTypes;
-
-#endregion
+using bark_GUI.Structure.Items;
 
 namespace bark_GUI.CustomControls
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -21,6 +22,8 @@ namespace bark_GUI
         private const string Title = "Viewer";
 
         private bool _elementViewerIsInitialized = false;
+
+        private Dictionary<string, string> _elementNames;
 
 
         #region Constructors
@@ -318,7 +321,7 @@ namespace bark_GUI
             _saveFile();
 
             // Check.
-            if(!File.Exists(Settings.Default.PathBarkExe + "\\bark.exe") ||
+            if (!File.Exists(Settings.Default.PathBarkExe + "\\bark.exe") ||
                 !File.Exists(Settings.Default.PathCurrentFile))
             {
                 MessageBox.Show("Filepath of bark.exe or current xml file was wrong. No file exists.");
@@ -600,8 +603,13 @@ namespace bark_GUI
             var newName = InputBox.ShowDialog(("New Name for " + ((Item)_activeNode.Tag).Name), "Add");
 
             // Validation
-            if (!string.IsNullOrEmpty(newName))
-                ((Item)_activeNode.Tag).Duplicate(newName);
+            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
+            if (nameExists)
+                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
+            if (string.IsNullOrEmpty(newName) || nameExists)
+                return;
+
+            ((Item)_activeNode.Tag).Duplicate(newName);
 
             _InitializeElementViewer();
             _UpdateElementViewer();
@@ -613,8 +621,13 @@ namespace bark_GUI
                 ((Item)_activeNode.Tag).NewName + " New");
 
             // Validation
-            if (!string.IsNullOrEmpty(newName))
-                ((Item)_activeNode.Tag).Duplicate(newName, true);
+            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
+            if (nameExists)
+                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
+            if (string.IsNullOrEmpty(newName) || nameExists)
+                return;
+
+            ((Item)_activeNode.Tag).Duplicate(newName, true);
 
             _InitializeElementViewer();
             _UpdateElementViewer();
@@ -625,6 +638,13 @@ namespace bark_GUI
             var item = ((Item)_activeNode.Tag);
             var newName = InputBox.ShowDialog(("New Name for " + item.Name), "Rename", item.NewName);
 
+            // Validation
+            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
+            if (nameExists)
+                MessageBox.Show("Item could not be renamed.\nThe name " + newName + " already exists.");
+            if (string.IsNullOrEmpty(newName) || nameExists)
+                return;
+
             item.NewName = newName;
 
             _InitializeElementViewer();
@@ -633,7 +653,7 @@ namespace bark_GUI
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((GroupItem)_activeNode.Tag).Remove();
+            ((Item)_activeNode.Tag).Remove();
             _InitializeElementViewer();
             _UpdateElementViewer();
         }
@@ -654,8 +674,13 @@ namespace bark_GUI
             var newName = InputBox.ShowDialog(("New Name for " + childItem.Name), "Add");
 
             // Validation
-            if (!string.IsNullOrEmpty(newName))
-                childItem.Duplicate(newName, true);
+            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
+            if (nameExists)
+                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
+            if (string.IsNullOrEmpty(newName) || nameExists)
+                return;
+
+            childItem.Duplicate(newName, true);
 
             _InitializeElementViewer();
             _UpdateElementViewer();

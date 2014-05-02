@@ -47,6 +47,11 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.19
+-----
++	Added NewName user input validation. The NewName must be unique.
++	Fixed 'Save' data to XML. (Still has bugs due to XmlNode variable)
+
 v0.18
 -----
 +	Split Structure from Items with data. Structure now contains items' structure without XmlNodes.

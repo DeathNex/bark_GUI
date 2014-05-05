@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
@@ -13,7 +14,7 @@ namespace bark_GUI.Structure
         public static GroupItem DataRootItem { get; set; }
 
         /* PRIVATE VARIABLES */
-        private static GroupItem _root;
+        public static GroupItem StructureRoot { get; private set; }
 
         private static List<Item> _items;
 
@@ -31,7 +32,7 @@ namespace bark_GUI.Structure
 
         private static Dictionary<string, List<Item>> _referenceLists;
 
-        private static List<GroupItem> _functions;
+        private static Dictionary<string, GroupItem> _functions;
 
         #region Public Initialization Methods
 
@@ -43,7 +44,7 @@ namespace bark_GUI.Structure
             _simpleTypes = new List<SimpleType>();
             _complexTypes = new List<ComplexType>();
             _referenceLists = new Dictionary<string, List<Item>>();
-            _functions = new List<GroupItem>();
+            _functions = new Dictionary<string, GroupItem>();
             _items = new List<Item>();
             _elementItems = new List<ElementItem>();
             _groupItems = new List<GroupItem>();
@@ -61,7 +62,7 @@ namespace bark_GUI.Structure
 
         public static void SetRoot(GroupItem newRoot)
         {
-            _root = newRoot;
+            StructureRoot = newRoot;
 
             foreach (var innerChild in newRoot.InnerChildren)
             {
@@ -98,22 +99,20 @@ namespace bark_GUI.Structure
                 }
                 else
                 {
-                    _functions.Add((GroupItem)item);
+                    _functions.Add(item.Name, (GroupItem)item);
                 }
             }
         }
 
         public static void AddReferenceList(string name) { _referenceLists[name] = new List<Item>(); }
 
-        public static void AddReference(Item item){if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Add(item); }
+        public static void AddReference(Item item) { if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Add(item); }
         #endregion
 
         #region Find
         // These methods are used during the Info Population on the already created Structure. (When loading the XML)
 
         public static Unit FindUnit(string unitName) { return _units.FirstOrDefault(u => u.Name == unitName); }
-
-        public static ItemType FindType(string typeName) { return _types.FirstOrDefault(t => t.Name == typeName); }
 
         public static SimpleType FindSimpleType(string typeName) { return _simpleTypes.FirstOrDefault(t => t.Name == typeName); }
 
@@ -125,6 +124,15 @@ namespace bark_GUI.Structure
             return !_referenceLists.ContainsKey(name) ? null : _referenceLists[name].Select(item => item.NewName ?? item.Name).ToList();
         }
 
+        // Returns a list of references on that element name as a string for controls to show.
+        public static GroupItem FindFunction(string name)
+        {
+            // Check
+            if (!_functions.ContainsKey(name)) return null;
+
+            return _functions[name];
+        }
+
         // Items require special treatment because duplicates exist.
         // Returns the 'Data' item that was created after XML.
         public static Item FindDataItem(XmlNode xmlItem)
@@ -132,6 +140,10 @@ namespace bark_GUI.Structure
             const string errorMsg = "Structure - FindDataItem:\n - ";
             Item result = null;
 
+            // Searched null?
+            if (xmlItem == null || xmlItem.NodeType == XmlNodeType.Document) return null;
+
+            // Searched is DataRootItem?
             if (xmlItem.Name == DataRootItem.Name) return DataRootItem;
 
             var results = DataRootItem.InnerChildren.Where(item => item.Name == xmlItem.Name).ToList();
@@ -139,6 +151,14 @@ namespace bark_GUI.Structure
             Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
                 "' in the DataRootItem.\n     Please make sure the names are correct.");
 
+            // Handle Multiple GroupItems.
+            if (xmlItem.Attributes != null && xmlItem.Attributes["name"] != null)
+            {
+                // Check if the multiple item already exists. Unique exception (not C# error) is the case
+                // where the item in the results is multiple but has no newName value. That means that it
+                // doesn't exist yet.
+                return results.FirstOrDefault(item => item.IsGroupItem && (item.NewName == xmlItem.Attributes["name"].Value || item.NewName == null));
+            }
             // If multiple results found, use filters to further indentify the correct result.
             result = results.Count == 1 ? results[0] : FindItemWithFilters(xmlItem, results);
 
@@ -155,9 +175,57 @@ namespace bark_GUI.Structure
         public static Item CreateItem(XmlNode xmlItem)
         {
             var item = FindStructureItem(xmlItem);
+            Debug.Assert(item != null, "Find Structure Item failed in CreateItem.");
+            var parentResult = FindDataItem(xmlItem.ParentNode);
+            var parent = parentResult != null ? (GroupItem)parentResult : null;
+            var newItem = item.DuplicateStructure();
 
-            return item.DuplicateStructure();
+            // Check parent's existance.
+            if (parent == null && xmlItem.ParentNode != null && xmlItem.ParentNode.NodeType != XmlNodeType.Document)
+                throw new Exception("Could not create Item 'cause no XmlNode.Parent was found.");
+
+
+            // Add this item to parent's children
+            if (parent != null)
+            {
+                var position = parent.Children.IndexOf(item);
+
+                // Find the correct position for this item.
+                // (to keep the order of the XML and not the XSD + extra of the XML at the end)
+                // If this step is skipped every subsequent multiple item will be appended in the end of the Structure and
+                // the Viewer(s).
+
+                if (position >= 0)
+                {
+                    do
+                    {
+                        position++;
+                    } while (position < parent.Children.Count && parent.Children[position].Name == item.Name);
+                }
+
+                // If no such child already exists, just place it, else insert it.
+                if (position >= 0 && position < parent.Children.Count) parent.Children.Insert(position, newItem);
+                else parent.Children.Add(newItem);
+            }
+
+
+            newItem.SetParent(parent);
+
+            return newItem;
         }
+
+        public static ComplexType CreateComplexType(string typeName)
+        {
+            var complexType = FindComplexType(typeName);
+
+            Debug.Assert(complexType != null, "FindComplexType failed!");
+
+            var newComplexType = complexType.DuplicateStructure();
+
+            return newComplexType;
+        }
+
+        public static void RemoveReference(Item item) { if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Remove(item); }
 
 
         #endregion
@@ -170,7 +238,9 @@ namespace bark_GUI.Structure
             const string errorMsg = "Structure - FindStructureItem:\n - ";
             Item result = null;
 
-            if (xmlItem.Name == _root.Name) return _root;
+            if (xmlItem == null) return null;
+
+            if (xmlItem.Name == StructureRoot.Name) return StructureRoot;
 
             var results = _items.Where(i => i.Name == xmlItem.Name).ToList();
 
@@ -198,28 +268,31 @@ namespace bark_GUI.Structure
 
             // 1. Check custom name.
             filteredResults = FindItemWithNewNameFilter(risingXmlItem, results);
-            if (filteredResults.Count == 1) return filteredResults[0];
+            if (filteredResults != null && filteredResults.Count == 1) return filteredResults[0];
 
             // 2. Check parent existance.
             filteredResults = FindItemWithParentExistanceFilter(risingXmlItem, results);
-            if (filteredResults.Count == 1) return filteredResults[0];
+            if (filteredResults != null && filteredResults.Count == 1) return filteredResults[0];
+
             // If no parent exists, the search cannot continue.
-            if (filteredResults.Count <= 0) return null;
+            if (filteredResults != null && filteredResults.Count <= 0) return null;
+            // Continue the search with elements that have a parent.
+            results = filteredResults;
 
             // 3. Check parent name.
             filteredResults = FindItemWithParentNameFilter(risingXmlItem, results);
-            if (filteredResults.Count == 1) return filteredResults[0];
+            if (filteredResults != null && filteredResults.Count == 1) return filteredResults[0];
 
             // 4. Check parent custom name.
             filteredResults = FindItemWithParentCustomNameFilter(risingXmlItem, results);
 
-            if (filteredResults.Count == 1) return filteredResults[0];
+            if (filteredResults != null && filteredResults.Count == 1) return filteredResults[0];
 
             // Rise in parent.
             var newXmlItem = xmlItem.ParentNode;
             var newResults = results.Select(t => t.Parent).Distinct().Cast<Item>().ToList();
 
-            Debug.Assert(newResults.Count>0, "Filters were incapable of distinguishing a single item '"
+            Debug.Assert(newResults.Count > 0, "Filters were incapable of distinguishing a single item '"
                     + xmlItem.Name + "' in the Structure.\n     Please make sure no exact duplicates exist.");
 
             var finalResult = FindItemWithFilters(newXmlItem, newResults);
@@ -275,6 +348,5 @@ namespace bark_GUI.Structure
             return resultsFiltered;
         }
         #endregion
-
     }
 }

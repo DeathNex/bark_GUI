@@ -10,7 +10,6 @@ using bark_GUI.XmlHandling;
 
 namespace bark_GUI.Structure.Items
 {
-    public delegate bool ValueValidator(string value);
 
     public class ElementItem : Item
     {
@@ -36,16 +35,10 @@ namespace bark_GUI.Structure.Items
             Debug.Assert(XsdParser.HasAttributes(xsdNode), "XSD Node '" + Name + "' had no attributes.");
             Debug.Assert(XsdParser.HasType(xsdNode), "XSD Node '" + Name + "' had no type.");
 
-            var itemType = Structure.FindType(XsdParser.GetType(xsdNode));
-
-            // Ingore simple types.
-            if (itemType.IsSimpleType()) return;
-
-            _complexType = itemType as ComplexType;
+            _complexType = Structure.CreateComplexType(XsdParser.GetType(xsdNode));
 
             // Check
-            Debug.Assert(_complexType != null, "itemType.IsSimpleType() Failed!\n\n" +
-                                                "Alternative: Structure.FindType(xsdNode) Failed!");
+            Debug.Assert(_complexType != null, "Alternative: Structure.FindComplexType(xsdNode) Failed!");
 
             // Set the (default) selected type.
             SelectType(_complexType);
@@ -81,32 +74,71 @@ namespace bark_GUI.Structure.Items
             }
         }
 
+        public void SelectType(string type)
+        {
+            switch (type)
+            {
+                case "constant":
+                    SelectedType = _complexType.Constant;
+                    break;
+                case "variable":
+                    SelectedType = _complexType.Variable;
+                    break;
+                case "function":
+                    SelectedType = _complexType.Function;
+                    break;
+                case "keyword":
+                    SelectedType = _complexType.Keyword;
+                    break;
+                case "reference":
+                    SelectedType = _complexType.Reference;
+                    break;
+            }
+        }
+
         public bool ValidateAndSave(string value)
         {
-            var isValid = SelectedType.ValueIsValid(value);
+            // Validate
+            if (SelectedType.CurrentElementType != EType.Function)
+            {
+                var isValid = SelectedType.ValueIsValid(value);
 
-            if (!isValid) return false;
+                if (!isValid) return false;
+            }
 
             // Save value
             SelectedType.Value = value;
-            var xmlNodeValueElementName = SelectedType.CurrentElementType.ToString();
-
-            if (SelectedType.CurrentElementType != EType.Reference)
-            {
-                foreach (XmlNode childNode in XmlNode.ChildNodes.Cast<XmlNode>().Where(
-                    child => child.LocalName.ToUpper() == xmlNodeValueElementName.ToUpper()))
-                {
-                    childNode.InnerText = value;
-                    break;
-                }
-            }
-            else
-            {
-                Debug.Assert(XmlNode.Attributes != null, "XML Item is 'reference' but has no attributes.");
-                XmlNode.Attributes["reference"].Value = value;
-            }
 
             return true;
+        }
+
+        public void UnitChange(string value)
+        {
+            // Save unit value
+            if (SelectedType.CurrentElementType == EType.Constant)
+            {
+                ((ElementConstant)SelectedType).Unit.Select(value);
+            }
+            if (SelectedType.CurrentElementType == EType.Variable)
+            {
+                ((ElementVariable)SelectedType).Unit.Select(value);
+            }
+        }
+
+        public void XUnitChange(string value)
+        {
+            if (SelectedType.CurrentElementType == EType.Variable)
+            {
+                ((ElementVariable)SelectedType).XUnit.Select(value);
+            }
+        }
+
+        public void SaveVariable(string value)
+        {
+            if(SelectedType.CurrentElementType != EType.Variable) return;
+
+            // Save value
+            SelectedType.Value = value;
         }
 
         /* PRIVATE METHODS */
@@ -137,7 +169,6 @@ namespace bark_GUI.Structure.Items
             List<string> xUnitOptions = null;                       //Variable
             List<string> functionOptions = null;                    //Function
             List<string> keyOptions = null;                         //Keyword
-            var valueValidators = new Dictionary<CustomControlType, ValueValidator>();
             // Reference Options cannot be gathered during XSD Load.//Reference
 
             // Default values
@@ -159,7 +190,6 @@ namespace bark_GUI.Structure.Items
                 list.Add(CustomControlType.Constant);
                 defaultValues[CustomControlType.Constant] = complexType.Constant.DefaultValue;
                 defaultUnitValue = complexType.Constant.DefaultUnit;
-                valueValidators[CustomControlType.Constant] = complexType.Constant.ValueIsValid;
             }
             if (complexType.Variable != null)
             {
@@ -167,30 +197,27 @@ namespace bark_GUI.Structure.Items
                 defaultValues[CustomControlType.Variable] = complexType.Variable.DefaultValue;
                 defaultUnitValue = complexType.Variable.DefaultUnit;
                 defaultXUnitValue = complexType.Variable.DefaultXUnit;
-                valueValidators[CustomControlType.Variable] = complexType.Variable.ValueIsValid;
             }
             if (complexType.Function != null)
             {
                 list.Add(CustomControlType.Function);
-                valueValidators[CustomControlType.Function] = complexType.Function.ValueIsValid;
             }
             if (complexType.Keyword != null)
             {
                 list.Add(CustomControlType.Keyword);
                 defaultValues[CustomControlType.Keyword] = complexType.Keyword.DefaultValue;
-                valueValidators[CustomControlType.Keyword] = complexType.Keyword.ValueIsValid;
             }
             if (complexType.Reference != null)
             {
                 list.Add(CustomControlType.Reference);
-                valueValidators[CustomControlType.Reference] = complexType.Reference.ValueIsValid;
             }
 
 
             // Create the Controls for this ElementItem with the gathered information.
             Control = new GeneralControl(Name, IsRequired, Help, list,
                 typeOptions, unitOptions, xUnitOptions, functionOptions, keyOptions,
-                defaultValues, defaultUnitValue, defaultXUnitValue, ValidateAndSave);
+                defaultValues, defaultUnitValue, defaultXUnitValue,
+                ValidateAndSave, SaveVariable, SelectType, UnitChange, XUnitChange);
         }
     }
 }

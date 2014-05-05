@@ -21,6 +21,7 @@ namespace bark_GUI.Forms.Dialogs
                 };
             cancel.Click += (sender, e) =>
                 {
+                    textBox.Clear();
                     prompt.DialogResult = DialogResult.Cancel;
                     prompt.Close();
                 };

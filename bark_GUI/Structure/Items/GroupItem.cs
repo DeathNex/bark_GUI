@@ -56,9 +56,9 @@ namespace bark_GUI.Structure.Items
             HasRightClickActions = XsdParser.HasRightClickActions(xsdNode);
 
             // Create the TreeNode of TreeViewer.
-            Tnode = new TreeNode(Name) { Tag = this, ToolTipText = Help };
-            if (parent != null)
-                parent.Tnode.Nodes.Add(Tnode);
+            Tnode = new TreeNode(Name) {Tag = this, ToolTipText = Help};
+
+            SetParent(parent);
 
             // Children
             Children = XsdParser.CreateChildren(xsdNode, this, isFunction);
@@ -69,7 +69,7 @@ namespace bark_GUI.Structure.Items
 
 
         #region Public Methods
-        
+
         public override void Remove()
         {
             Item child;

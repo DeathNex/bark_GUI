@@ -6,10 +6,10 @@ namespace bark_GUI.Structure
     {
         /* PUBLIC VARIABLES */
         public string Name;
+        public string Selected;
 
         /* PRIVATE VARIABLES */
         readonly List<string> _options;
-        string _selected;
 
         //Constructor
         public Unit(string name, List<string> options)
@@ -30,7 +30,12 @@ namespace bark_GUI.Structure
 
 
 
-        public void Select(string option) { _selected = option; }
-        public List<string> GetOptions() { return _options; }
+        public void Select(string option) { Selected = option; }
+        public List<string> GetOptions() { return new List<string>(_options); }
+
+        public Unit DuplicateStructure()
+        {
+            return new Unit(Name, GetOptions());
+        }
     }
 }

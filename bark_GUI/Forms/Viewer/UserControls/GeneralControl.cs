@@ -1,14 +1,24 @@
 ﻿using System.Collections.Generic;
-using bark_GUI.Structure.Items;
 
 namespace bark_GUI.CustomControls
 {
     public enum CustomControlType { Constant, Variable, Function, Group, Reference, Keyword }
 
+    public delegate bool ValueValidator(string value);
+
+    public delegate void SaveVariable(string value);
+
+    public delegate void TypeChange(string typeName);
+
+    public delegate void UnitChange(string unit);
+
+    public delegate void XUnitChange(string xUnit);
+
     public class GeneralControl
     {
-        //Public Variables
-        public string Name {
+        // Public Variables
+        public string Name
+        {
             get { return _name; }
             set
             {
@@ -23,7 +33,7 @@ namespace bark_GUI.CustomControls
         public CustomControl CurrentControl;
 
 
-        //Private Variables
+        // Private Variables
         private string _name;
         private List<CustomControl> _customControls;
 
@@ -33,6 +43,8 @@ namespace bark_GUI.CustomControls
         ControlGroup _controlGroup;
         ControlReference _controlReference;
         ControlKeyword _controlKeyword;
+
+        private TypeChange _updateType;
 
         #region Constructors
 
@@ -53,10 +65,12 @@ namespace bark_GUI.CustomControls
         public GeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions,
-            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, ValueValidator valueValidator)
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit,
+            ValueValidator valueValidator, SaveVariable saveVariableTable, TypeChange typeChange, UnitChange unitChange, XUnitChange xUnitChange)
         {
             CreateGeneralControl(name, isRequired, help, controlTypes, typeOptions, unitOptions, xUnitOptions,
-                funcOptions, keyOptions, defaultValues, defaultUnit, defaultXUnit, valueValidator);
+                funcOptions, keyOptions, defaultValues, defaultUnit, defaultXUnit,
+                valueValidator, saveVariableTable, typeChange, unitChange, xUnitChange);
         }
         /// <summary> Create a custom group control. </summary>
         /// <param name="tag"> The XML Element to apply changes backwards and allow save. </param>
@@ -66,13 +80,14 @@ namespace bark_GUI.CustomControls
         public GeneralControl(string name, bool isRequired, string help = null)
         {
             List<CustomControlType> controlTypes = new List<CustomControlType>(1) { CustomControlType.Group };
-            CreateGeneralControl(name, isRequired, help, controlTypes, null, null, null, null, null, null, null, null, null);
+            CreateGeneralControl(name, isRequired, help, controlTypes, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
 
         private void CreateGeneralControl(string name, bool isRequired, string help, List<CustomControlType> controlTypes,
             List<string> typeOptions, List<string> unitOptions, List<string> xUnitOptions,
             List<string> funcOptions, List<string> keyOptions,
-            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit, ValueValidator valueValidator)
+            Dictionary<CustomControlType, string> defaultValues, string defaultUnit, string defaultXUnit,
+            ValueValidator valueValidator, SaveVariable saveVariableTable, TypeChange typeChange, UnitChange unitChange, XUnitChange xUnitChange)
         {
             _customControls = new List<CustomControl>();
 
@@ -84,6 +99,7 @@ namespace bark_GUI.CustomControls
             Name = name;
             IsRequired = isRequired;
             Help = help ?? "";
+            _updateType = typeChange;
 
             // Create Controls and connect the XML Element - Object with the control via Tag.
             foreach (var type in controlTypes)
@@ -100,8 +116,10 @@ namespace bark_GUI.CustomControls
                                 _controlConstant.DefaultValue = defaultValues[CustomControlType.Constant];
                             _controlConstant.DefaultUnit = defaultUnit;
 
-                            // Set Value Validators.
+                            // Set Value Validator.
                             _controlConstant.Validator = valueValidator;
+
+                            _controlConstant.UnitChange = unitChange;
 
                             _customControls.Add(_controlConstant);
                         }
@@ -120,6 +138,10 @@ namespace bark_GUI.CustomControls
 
                             // Set Value Validators.
                             _controlVariable.Validator = valueValidator;
+                            _controlVariable.SaveVariableTable = saveVariableTable;
+
+                            _controlVariable.UnitChange = unitChange;
+                            _controlVariable.XUnitChange = xUnitChange;
 
                             _customControls.Add(_controlVariable);
                         }
@@ -148,7 +170,7 @@ namespace bark_GUI.CustomControls
                         _controlReference = new ControlReference(name, isRequired, help, this);
                         _customControls.Add(_controlReference);
 
-                            // Set Value Validators.
+                        // Set Value Validators.
                         _controlReference.Validator = valueValidator;
                         break;
                     case CustomControlType.Keyword:
@@ -158,7 +180,7 @@ namespace bark_GUI.CustomControls
                         if (defaultValues.ContainsKey(CustomControlType.Keyword))
                             _controlKeyword.DefaultValue = defaultValues[CustomControlType.Keyword];
 
-                            // Set Value Validators.
+                        // Set Value Validators.
                         _controlKeyword.Validator = valueValidator;
 
                         _customControls.Add(_controlKeyword);
@@ -205,16 +227,19 @@ namespace bark_GUI.CustomControls
                     if (CurrentControl == _controlConstant)
                         return;
                     newMe = _controlConstant;
+                    _updateType("constant");
                     break;
                 case CustomControlType.Variable:
                     if (CurrentControl == _controlVariable)
                         return;
                     newMe = _controlVariable;
+                    _updateType("variable");
                     break;
                 case CustomControlType.Function:
                     if (CurrentControl == _controlFunction)
                         return;
                     newMe = _controlFunction;
+                    _updateType("function");
                     break;
                 case CustomControlType.Group:
                     if (CurrentControl == _controlGroup)
@@ -225,11 +250,13 @@ namespace bark_GUI.CustomControls
                     if (CurrentControl == _controlReference)
                         return;
                     newMe = _controlReference;
+                    _updateType("reference");
                     break;
                 case CustomControlType.Keyword:
                     if (CurrentControl == _controlKeyword)
                         return;
                     newMe = _controlKeyword;
+                    _updateType("keyword");
                     break;
             }
             viewer.SuspendLayout();
@@ -240,7 +267,7 @@ namespace bark_GUI.CustomControls
             CurrentControl.Focus();
             viewer.ResumeLayout();
         }
-        
+
         // Selects the current/active custom control.
         public void Select(CustomControlType customControlType)
         {
@@ -276,7 +303,7 @@ namespace bark_GUI.CustomControls
         public void Remove()
         {
             foreach (var control in _customControls)
-            {   
+            {
                 control.Remove();
             }
         }

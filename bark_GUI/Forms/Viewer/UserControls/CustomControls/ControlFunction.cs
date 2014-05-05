@@ -70,10 +70,9 @@ namespace bark_GUI.CustomControls
 
         private void comboBoxFunc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tag != null)
-            {
-                //(Tag as XmlNode).FirstChild.FirstChild.Name = comboBoxFunc.SelectedItem.ToString();
-            }
+            // SimpleType Validation & Save
+            if (Validator != null)
+                Validator(comboBoxFunc.Text.Trim());
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

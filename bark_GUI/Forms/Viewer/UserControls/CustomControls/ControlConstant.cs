@@ -14,6 +14,8 @@ namespace bark_GUI.CustomControls
             set { _defaultUnit = value; SetUnit(value); }
         }
 
+        public UnitChange UnitChange;
+
         // Private Variables
         private string _defaultUnit;
 
@@ -119,23 +121,18 @@ namespace bark_GUI.CustomControls
                 textBoxValue.ForeColor = Color.Red;
                 return;
             }
-
-            // Check.
-            if (Tag == null) return;
-
-            // Update the XML Element inside the XML Document.
-            ((XmlNode) Tag).FirstChild.FirstChild.Value = value;
         }
 
         private void comboBoxUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Check.
-            if (Tag == null) return;
+            if (comboBoxUnit.SelectedItem == null) return;
 
-            // Update the XML Element inside the XML Document.
-            var attributes = ((XmlNode) Tag).Attributes;
-            if (attributes != null)
-                attributes["unit"].Value = comboBoxUnit.SelectedText.Trim();
+            var value = comboBoxUnit.SelectedItem.ToString().Trim();
+
+            if (string.IsNullOrEmpty(value)) return;
+
+            if (UnitChange != null)
+                UnitChange(value);
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

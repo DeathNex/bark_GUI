@@ -32,9 +32,17 @@ namespace bark_GUI.CustomControls
 
 
         /* PUBLIC METHODS */
+        public string GetValue()
+        {
+            if (comboBoxValue.Items.Count > 0 && comboBoxValue.SelectedItem != null)
+                return comboBoxValue.SelectedItem.ToString();
+            return null;
+        }
+
         public override void SetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return;
+
             // Because this method can be called even before the reference control has any options,
             // check if this option exists. If it doesn't save it temporarily to set it later.
             if (comboBoxValue.Items.Count > 0 && comboBoxValue.Items.Contains(value)) comboBoxValue.Text = value;
@@ -43,7 +51,11 @@ namespace bark_GUI.CustomControls
 
         public void SetOptions(List<string> options)
         {
-            comboBoxValue.Items.Clear();
+            // Clear previous values and 
+            if (comboBoxValue.Items.Count > 0)
+            {
+                comboBoxValue.Items.Clear();
+            }
 
             // Because this method can be called after the reference control was already set to a value,
             // check if a temporary saved value exists. If it does exist, use it.
@@ -78,12 +90,15 @@ namespace bark_GUI.CustomControls
 
 
 
-        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxValue_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tag == null) return;
-            var attributes = ((XmlNode) Tag).Attributes;
-            if (attributes != null)
-                attributes["reference"].Value = comboBoxValue.SelectedItem.ToString();  //TODO: Remove Xml Dependency.
+            // Check if the control exists and has a value.
+            if (comboBoxValue == null || comboBoxValue.SelectedItem == null ||
+                string.IsNullOrEmpty(comboBoxValue.Text)) return;
+
+            // SimpleType Validation & Save
+            if (Validator != null)
+                Validator(comboBoxValue.Text.Trim());
         }
     }
 }

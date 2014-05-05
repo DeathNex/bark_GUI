@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -22,9 +21,6 @@ namespace bark_GUI
         private const string Title = "Viewer";
 
         private bool _elementViewerIsInitialized = false;
-
-        private Dictionary<string, string> _elementNames;
-
 
         #region Constructors
         public ViewerForm()
@@ -211,7 +207,7 @@ namespace bark_GUI
             var path = Settings.Default.PathSamples + '\\' + Settings.Default.XSDValidatorName;
 
             //Change the action status label
-            statusMain.Text = "Loading XML...";
+            statusMain.Text = "Creating XML...";
 
             _closeFile();
 
@@ -600,62 +596,46 @@ namespace bark_GUI
 
         private void AddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var newName = InputBox.ShowDialog(("New Name for " + ((Item)_activeNode.Tag).Name), "Add");
+            var item = (Item)_activeNode.Tag;
 
-            // Validation
-            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
-            if (nameExists)
-                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
-            if (string.IsNullOrEmpty(newName) || nameExists)
-                return;
+            var newName = Rename(item);
 
-            ((Item)_activeNode.Tag).Duplicate(newName);
+            // Check.
+            if (string.IsNullOrEmpty(newName)) return;
 
-            _InitializeElementViewer();
-            _UpdateElementViewer();
+            item.Duplicate(newName);
+
+            RefreshViewers();
         }
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var newName = InputBox.ShowDialog(("New Name for " + ((Item)_activeNode.Tag).Name), "Duplicate",
-                ((Item)_activeNode.Tag).NewName + " New");
+            var item = (Item)_activeNode.Tag;
 
-            // Validation
-            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
-            if (nameExists)
-                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
-            if (string.IsNullOrEmpty(newName) || nameExists)
-                return;
+            var newName = Rename(item);
 
-            ((Item)_activeNode.Tag).Duplicate(newName, true);
+            // Check.
+            if (string.IsNullOrEmpty(newName)) return;
 
-            _InitializeElementViewer();
-            _UpdateElementViewer();
+            item.Duplicate(newName, true);
+
+            RefreshViewers();
         }
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var item = ((Item)_activeNode.Tag);
-            var newName = InputBox.ShowDialog(("New Name for " + item.Name), "Rename", item.NewName);
 
-            // Validation
-            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
-            if (nameExists)
-                MessageBox.Show("Item could not be renamed.\nThe name " + newName + " already exists.");
-            if (string.IsNullOrEmpty(newName) || nameExists)
-                return;
+            Rename(item);
 
-            item.NewName = newName;
-
-            _InitializeElementViewer();
-            _UpdateElementViewer();
+            RefreshViewers();
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ((Item)_activeNode.Tag).Remove();
-            _InitializeElementViewer();
-            _UpdateElementViewer();
+
+            RefreshViewers();
         }
 
         private void AddParentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -668,24 +648,61 @@ namespace bark_GUI
             var childItem = groupItemParent.Children.First(child =>
                 child.IsGroupItem && ((GroupItem)child).HasRightClickActions);
 
+            var newName = Rename(childItem);
+
             // Check.
-            if (childItem == null) return;
-
-            var newName = InputBox.ShowDialog(("New Name for " + childItem.Name), "Add");
-
-            // Validation
-            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child => child.NewName == newName);
-            if (nameExists)
-                MessageBox.Show("Item could not be created.\nThe name " + newName + " already exists.");
-            if (string.IsNullOrEmpty(newName) || nameExists)
-                return;
+            if (string.IsNullOrEmpty(newName)) return;
 
             childItem.Duplicate(newName, true);
 
+            RefreshViewers();
+        }
+
+        private string Rename(Item item, bool rename = true)
+        {
+            if (item == null) return null;
+
+            var title = rename ? "Rename" : "New Name";
+            var errorMsg = rename ? "Item could not be renamed." : "Item could not be named.";
+            var oldName = item.NewName;
+            var newName = InputBox.ShowDialog(("New Name for " + item.Name), title, oldName);
+
+            // Validation
+            var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child =>
+                item.Name == child.Name && child.NewName == newName);
+            if (!string.IsNullOrEmpty(newName) && nameExists)
+                MessageBox.Show(errorMsg + "\nThe name " + newName + " already exists.");
+            if (string.IsNullOrEmpty(newName) || nameExists)
+                return "";
+
+            item.NewName = newName;
+
+            UpdateReferencesWithRename(elementViewer, oldName, newName);
+
+            return newName;
+        }
+
+        private void RefreshViewers()
+        {
             _InitializeElementViewer();
             _UpdateElementViewer();
         }
 
+        private void UpdateReferencesWithRename(Control parent, string oldName, string newName)
+        {
+            // Update ReferenceControls selection.
+            foreach (var control in parent.Controls)
+            {
+                if (control is ControlReference)
+                {
+                    var refControl = ((ControlReference)control);
+                    if (refControl.GetValue() == oldName)
+                        refControl.SetValue(newName);
+                }
+                else if (control is ControlGroup)
+                    UpdateReferencesWithRename(((ControlGroup)control).GetPanel(), oldName, newName);
+            }
+        }
         #endregion
 
     }

@@ -21,7 +21,7 @@ namespace bark_GUI.Structure.ItemTypes
 
             foreach (var element in elements)
             {
-                if(element == null) continue;
+                if (element == null) continue;
                 switch (element.CurrentElementType)
                 {
                     case EType.Constant:
@@ -78,6 +78,26 @@ namespace bark_GUI.Structure.ItemTypes
         public List<string> GetKeywordOptions()
         {
             return Keyword != null ? Keyword.KeywordOptions : null;
+        }
+
+        public ComplexType DuplicateStructure()
+        {
+            var newElements = new List<ElementType>();
+
+            if (Constant != null)
+                newElements.Add(Constant.DuplicateStructure());
+            if (Variable != null)
+                newElements.Add(Variable.DuplicateStructure());
+            if (Function != null)
+                newElements.Add(Function.DuplicateStructure());
+            if (Keyword != null)
+                newElements.Add(Keyword.DuplicateStructure());
+            if (Reference != null)
+                newElements.Add(Reference.DuplicateStructure());
+
+            var newComplexType = new ComplexType(Name, newElements);
+
+            return newComplexType;
         }
     }
 }

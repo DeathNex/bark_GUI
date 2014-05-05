@@ -67,7 +67,7 @@ namespace bark_GUI.Structure.ItemTypes
 
 
         /* PUBLIC METHODS */
-        public List<string> GetOptions() { return _options; }
+        public List<string> GetOptions() { return new List<string>(_options); }
 
         public bool IsValid(string inputData)
         {

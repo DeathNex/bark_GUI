@@ -19,5 +19,16 @@ namespace bark_GUI.Structure.ElementTypes
             SimpleType = simpleType;
             DefaultValue = defaultValue;
         }
+
+
+
+
+
+        public ElementKeyword DuplicateStructure()
+        {
+            var newElement = new ElementKeyword(SimpleType, DefaultValue);
+
+            return newElement;
+        }
     }
 }

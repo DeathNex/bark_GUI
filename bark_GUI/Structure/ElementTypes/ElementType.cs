@@ -11,7 +11,7 @@ namespace bark_GUI.Structure.ElementTypes
         public EType CurrentElementType { get; protected set; }
 
         // Inheriting variables.
-        protected SimpleType SimpleType { get; set; }
+        public SimpleType SimpleType { get; protected set; }
 
         public bool ValueIsValid(string value) { return SimpleType.IsValid(value); }
     }

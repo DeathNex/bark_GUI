@@ -10,5 +10,13 @@ namespace bark_GUI.Structure.ElementTypes
             CurrentElementType = EType.Reference;
             SimpleType = simpleType;
         }
+
+
+        public ElementReference DuplicateStructure()
+        {
+            var newElement = new ElementReference(SimpleType);
+
+            return newElement;
+        }
     }
 }

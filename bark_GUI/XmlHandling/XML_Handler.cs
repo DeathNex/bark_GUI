@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Windows.Forms;
 using System.IO;
@@ -20,7 +21,7 @@ namespace bark_GUI.XmlHandling
 
         private XmlDocument _xmlDocument;
 
-        private XmlDocument _lastSavedXmlDocument;
+        private XElement _lastSavedXml;
 
         private readonly XsdHandler _xsdHandler;
 
@@ -47,6 +48,11 @@ namespace bark_GUI.XmlHandling
 
             if (!_xsdHandler.Load(xsdFilepath))
                 throw new Exception("Could not load XSD files.");
+
+
+            // Find the root item from our built Structure to create it for data representation.
+            Structure.Structure.DataRootItem =
+                (GroupItem)(Structure.Structure.StructureRoot).DuplicateStructure();
 
             return true;
         }
@@ -109,12 +115,18 @@ namespace bark_GUI.XmlHandling
             // Check for empty path.
             if (string.IsNullOrEmpty(filepath)) return;
 
+            // Modify root element to meet the required conditions for XSD Validation.
+            var rootElement = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
+            XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
+            rootElement.Add(new XAttribute(XNamespace.Xmlns + "xsi", xsi));
+            rootElement.Add(new XAttribute(xsi+"noNamespaceSchemaLocation", Settings.Default.XSDValidatorName));
+
             // Write the current XML Document to file.
             try
             {
                 using (var xWriter = XmlWriter.Create(filepath, new XmlWriterSettings { Indent = true }))
                 {
-                    _xmlDocument.Save(xWriter);
+                    rootElement.Save(xWriter);
                 }
             }
             catch (Exception e)
@@ -123,7 +135,7 @@ namespace bark_GUI.XmlHandling
             }
 
             // Keep the last saved XML Document for 'Dirty file' comparison.
-            _lastSavedXmlDocument = (XmlDocument)_xmlDocument.Clone();
+            _lastSavedXml = rootElement;
         }
 
         public bool HasDirtyFiles()
@@ -148,7 +160,7 @@ namespace bark_GUI.XmlHandling
             {
                 _xmlDocument = new XmlDocument();
                 _xmlDocument.Load(filepath);
-                _lastSavedXmlDocument = (XmlDocument)_xmlDocument.Clone();
+                _lastSavedXml = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
             }
             catch
             {

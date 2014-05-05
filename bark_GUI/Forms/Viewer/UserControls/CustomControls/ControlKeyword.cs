@@ -47,19 +47,15 @@ namespace bark_GUI.CustomControls
             return valueIsNew;
         }
 
-
-
-
-
-
-        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxValue_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tag != null)
-            {
-                var attributes = ((XmlNode)Tag).Attributes;
-                if (attributes != null)
-                    attributes["reference"].Value = comboBoxValue.SelectedItem.ToString();  //TODO: Remove Xml Dependency.
-            }
+            // SimpleType Validation & Save
+            if (Validator != null)
+                Validator(comboBoxValue.Text.Trim());
         }
+
+
+
+
     }
 }

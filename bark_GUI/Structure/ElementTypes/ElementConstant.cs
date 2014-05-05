@@ -25,6 +25,14 @@ namespace bark_GUI.Structure.ElementTypes
 
 
         /* PUBLIC METHODS */
-        public void SetUnit(Unit unit, string defaultUnit) { this.Unit = unit; this.DefaultUnit = defaultUnit; Unit.Select(DefaultUnit); }
+        public void SetUnit(Unit unit, string defaultUnit) { Unit = unit; DefaultUnit = defaultUnit; Unit.Select(DefaultUnit); }
+
+        public ElementConstant DuplicateStructure()
+        {
+            var newElement = new ElementConstant(SimpleType, DefaultValue);
+            newElement.SetUnit(Unit.DuplicateStructure(), DefaultUnit);
+
+            return newElement;
+        }
     }
 }

@@ -25,6 +25,15 @@ namespace bark_GUI.CustomControls
             set { control_variable_table.Validator = value; }
         }
 
+        public SaveVariable SaveVariableTable
+        {
+            get { return control_variable_table.SaveVariableTable; }
+            set { control_variable_table.SaveVariableTable = value; }
+        }
+
+        public UnitChange UnitChange;
+        public XUnitChange XUnitChange;
+
         // Private Variables
         private string _defaultUnit;
         private string _defaultXUnit;
@@ -99,18 +108,26 @@ namespace bark_GUI.CustomControls
 
         private void comboBoxUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tag == null) return;
-            var attributes = ((XmlNode) Tag).Attributes;
-            if (attributes != null)
-                attributes["unit"].Value = comboBoxUnit.SelectedText;  //TODO: Remove Xml Dependency.
+            if (comboBoxUnit.SelectedItem == null) return;
+
+            var value = comboBoxUnit.SelectedItem.ToString().Trim();
+
+            if (string.IsNullOrEmpty(value)) return;
+
+            if (XUnitChange != null)
+                XUnitChange(value);
         }
         private void comboBoxUnit2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Tag == null) return;
-            XmlNode xmlNode = Tag as XmlNode;
-            if (xmlNode != null)
-                if (xmlNode.Attributes != null)
-                    xmlNode.Attributes["x_unit"].Value = comboBoxUnit2.SelectedText;  //TODO: Remove Xml Dependency.
+
+            if (comboBoxUnit2.SelectedItem == null) return;
+
+            var value = comboBoxUnit2.SelectedItem.ToString().Trim();
+
+            if (string.IsNullOrEmpty(value)) return;
+
+            if (UnitChange != null)
+                UnitChange(value);
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

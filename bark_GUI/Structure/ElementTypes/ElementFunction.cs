@@ -12,6 +12,15 @@ namespace bark_GUI.Structure.ElementTypes
         {
             CurrentElementType = EType.Function;
             FunctionNames = functionNames;
+            Value = FunctionNames[0];
+        }
+
+
+        public ElementFunction DuplicateStructure()
+        {
+            var newElement = new ElementFunction(new List<string>(FunctionNames));
+
+            return newElement;
         }
     }
 }

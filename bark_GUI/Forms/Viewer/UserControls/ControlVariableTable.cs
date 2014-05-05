@@ -15,6 +15,8 @@ namespace bark_GUI.CustomControls
 
         public ValueValidator Validator;
 
+        public SaveVariable SaveVariableTable;
+
         public bool IsRequired;
 
 
@@ -87,6 +89,11 @@ namespace bark_GUI.CustomControls
                 {
                     while (reader < data.Length && !_isABreaker(data[reader]))
                     {
+                        if (_textBoxArray[i, j] == null)
+                        {
+                            _addEmpty();
+                            _addEmpty();
+                        }
                         _textBoxArray[i, j].Text += data[reader];
                         reader++;
                     }
@@ -150,17 +157,18 @@ namespace bark_GUI.CustomControls
 
             for (var i = 0; i < rows; i++)
             {
+                result += '\n';
                 for (var j = 0; j < ArrayColumns; j++)
                 {
                     if (_textBoxArray[i, j] == null) { stop = true; break; }
 
-                    result += _textBoxArray[i, j].Text.Trim() + '\t';
+                    result += _textBoxArray[i, j].Text.Trim() + ' ';
                 }
-                result = result.TrimEnd('\t');
+                result = result.TrimEnd();
 
                 if (stop) break;
-                result += '\n';
             }
+            result += '\n';
 
             return result;
         }
@@ -249,8 +257,11 @@ namespace bark_GUI.CustomControls
         private void _removeRow()
         {
             for (int j = ArrayColumns - 1; j >= 0; j--)
+            {
                 table.Controls.Remove(_textBoxArray[_lastIndex - 1, j]);
-            table.RowStyles.RemoveAt(_lastIndex - 1);
+                _textBoxArray[_lastIndex -1,j] = null;
+            }
+            //table.RowStyles.RemoveAt(_lastIndex - 1);
             _lastIndex--;
             LastJ = 0;
         }
@@ -380,7 +391,7 @@ namespace bark_GUI.CustomControls
             }
 
             // Check if there are just 2 empty text boxes, then the array is valid.
-            if (emptyTextBoxes == 2)
+            if (emptyTextBoxes <= 2)
             {
                 foreach (var textBox in _textBoxArray)
                     if (textBox != null)
@@ -400,102 +411,9 @@ namespace bark_GUI.CustomControls
             // Check if the text boxes are not valid, don't save anything.
             if (!arrayIsValid) return;
 
-
-            if (Tag != null)
-            {
-                string s;
-                string prefix = null;
-                string suffix = null;
-                string value = null;
-                string additions = "";
-                TextBox t = sender as TextBox;
-                string newValue = t.Text.Trim();
-                int tIndex = t.Parent.Controls.GetChildIndex(t);
-                int breakCounter = 0;
-                int oldValueStart = 0;
-                int oldValueLength = 0;
-
-                //Get the correct strings
-                s = (Tag as XmlNode).FirstChild.FirstChild.Value;
-
-                //Get the position of the desired old value in the XmlNode
-                foreach (char c in s)
-                {
-                    if (breakCounter >= tIndex)
-                    {
-                        if (_isABreaker(c))
-                            break;
-                        oldValueLength++;
-                    }
-                    else
-                    {
-                        if (_isABreaker(c))
-                            breakCounter++;
-                        oldValueStart++;
-                    }
-                }
-
-                /* Wrong Cases
-                 * oldValueStart = 0 [no prefix]
-                 * oldValueLength = 0 [Add, Add*]
-                 * oldValueStart = max [Add, Add*] [no suffix]
-                 * 
-                 */
-                bool newValueIsEmpty = newValue == string.Empty;
-                bool isAtTheEnd = (oldValueStart >= s.Length - 1) || ((oldValueStart >= s.Length - 2) && (s.EndsWith("\n") || s.EndsWith(" ")));
-                bool oldValueExists = oldValueLength > 0;
-                bool itemIsAtFirstPos = oldValueStart <= 0;
-
-                //Don't break the table structure by placing zeros
-                if (newValueIsEmpty && !isAtTheEnd)
-                    newValue = "0";
-
-                //Break the string to the desired parts
-                if (!itemIsAtFirstPos)
-                    prefix = s.Substring(0, oldValueStart);
-                if (oldValueExists)
-                    value = s.Substring(oldValueStart, oldValueLength);
-                if (!isAtTheEnd)
-                    suffix = s.Substring(oldValueStart + oldValueLength);
-                else
-                {
-                    if (!newValueIsEmpty)
-                    {
-                        for (int i = 0; i < tIndex - breakCounter; i++)
-                            if (i % ArrayColumns > 0)
-                                additions += "\n0";
-                            else
-                                additions += " 0";
-                        if (additions.Length > 1)
-                            additions = additions.Remove(additions.Length - 1);
-                    }
-                    else
-                        suffix = null;
-                }
-
-                //Reassemble with the new value
-                s = string.Format(prefix + additions + newValue + suffix);
-
-
-                /* OLD WAY DELETEME
-                //Clear the old value
-                if (oldValueLength > 0)
-                    s = s.Remove(oldValueStart + (oldValueLength - 1));
-
-                //Insert the new value
-                if (oldValueStart == s.Length) //if the value is at the end of the string
-                {
-                    if (s.LastIndexOf('\n') > s.LastIndexOf(' ')) //Add a row/column
-                        s = string.Format(s + ' ' + newValue);
-                    else
-                        s = string.Format(s + '\n' + newValue);
-                }
-                else
-                    s = s.Insert(oldValueStart, newValue);*/
-
-                //Save the result on the XmlNode value
-                (Tag as XmlNode).FirstChild.FirstChild.Value = s;
-            }
+            // Save variable table.
+            if (SaveVariableTable != null)
+                SaveVariableTable(GetValue());
         }
 
         private void textBox_KeyDown(object sender, KeyEventArgs e)
@@ -507,6 +425,5 @@ namespace bark_GUI.CustomControls
             }
         }
         #endregion
-
     }
 }

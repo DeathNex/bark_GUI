@@ -43,7 +43,7 @@
             this.comboBoxValue.Name = "comboBoxValue";
             this.comboBoxValue.Size = new System.Drawing.Size(199, 24);
             this.comboBoxValue.TabIndex = 10;
-            this.comboBoxValue.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
+            this.comboBoxValue.SelectedIndexChanged += new System.EventHandler(this.comboBoxValue_SelectedIndexChanged);
             // 
             // labelName
             // 

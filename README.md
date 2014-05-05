@@ -4,20 +4,23 @@
 ---------------
 
 ##NEXT TODO##
-- [ ] Load & read .dat files.
-- [ ] Graphical representation of data loaded from .dat files on charts.
+- [x] Load & read .dat files.
+- [x] Graphical representation of data loaded from .dat files on charts.
+- [ ] Fix Right-Click Actions.
+- [ ] Fix New XML file.
 
 ##PRIMARY TODO##
 - [x] Load XSD files and build the structure accordingly.
 - [x] Load XML files and place the data on the loaded structure items.
 - [x] Edit XML files and their data.
-- [ ] Handle type change (control replace without losing data)
+- [x] Handle type change (control replace without losing data)
       [x] 1. Create Control of that type with the correct data (XSD);
       [x] 2. Place it where this control was;
-      [ ] 3. Update the _XmlDocument;
+      [x] 3. Update the _XmlDocument;
 	  [x] 4. Remove this (control);
 - [ ] Handle Tree structure changes & update _XmlDocument
-- [ ] Save and create XML files.
+- [x] Save XML files.
+- [ ] Create XML files.
 - [x] User actions on certain items: Add, Delete, Rename, Duplicate (Material, Layer and others)
 
 ##SECONDARY TODO##
@@ -25,23 +28,13 @@
 - [ ] Implement dirty files for save.
 - [ ] Handle Functions (wallsun.brk)
 - [ ] try-catch dangerous code (like file handling, Tags, casts, null references)
-- [x] create 'help', tooltips & stuff via XML
-- [x] Preferences> 'directory' search buttons
-- [x] Flow/Resize controls.
-- [ ] Open XML files that are invalid (against an XSD)
-- [ ] Το θέμα είναι τι κάνει το GUI από εκεί και πέρα. Γενικώς αν υπάρχει δυνατότητα να διορθωθεί το σφάλμα
-	 εντός του GUI, τότε να φορτώσει το αρχείο, αλλιώς δεν το φορτώνει κι υποδεικνύει στον χρήστη
-	 να το διορθώσει εξωτερικά (δεν με πειράζει κι αυτό). Να το δούμε στην πράξη.
 - [ ] Properly handle the XMLHandler XSD & XML load errors in the try-catch. It doesnt always have to be a messagebox.
-- [ ] Θα ήταν πιο βολικό στο variable τα ξεχωριστά κουτάκια να φαίνονται ως πίνακας,
-	 έτσι ώστε ο χρήστης να μπορεί να κάνει copy paste μόνο ένα μέρος του πίνακα
-	 (π.χ. λίγες γραμμές ή μία στήλη). Επίσης copy paste ορισμένα κελιά από το bark_GUI στο bark_GUI.
-- [x] Το scroll bar του variable να έρθει πιο δεξιά, για να ευθυγραμμιστεί η δεύτερη στήλη με τις μονάδες.
 
 ##POLISHING##
 - [ ] Update UML Diagrams.
 - [ ] Element view: Τα optional labels να φαίνονται με διαφορετικό χρώμα.
 - [ ] Check if any XmlNode.FirstChild careless use still remains.
+- [ ] Check comments of type 'TODO', 'CHECK', '!!!', '???', etc.
 
 
 #bark_GUI CHANGELOG#
@@ -50,7 +43,14 @@
 v0.19
 -----
 +	Added NewName user input validation. The NewName must be unique.
-+	Fixed 'Save' data to XML. (Still has bugs due to XmlNode variable)
++	Fixed 'Save' data to XML.
++	Removed XmlNode from project.
++	Implemented ConvertToXml(Item) method in XmlParser.
++	Fixed reference lists updating on controls.
++	Saving handles properly Units, XUnits, References and Keywords.
++	Fixed Variable Table GetValue bugs.
++	Fixed some broken links.
++	Code cleanup.
 
 v0.18
 -----

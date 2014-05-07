@@ -7,6 +7,12 @@ namespace bark_GUI.CustomControls
 {
     public partial class ControlVariable : CustomControl
     {
+        public override string Value
+        {
+            get { return control_variable_table.GetValue(); }
+            set { control_variable_table.Fill(value); }
+        }
+
         // Public Variables
         public string DefaultUnit
         {
@@ -33,6 +39,11 @@ namespace bark_GUI.CustomControls
 
         public UnitChange UnitChange;
         public XUnitChange XUnitChange;
+
+        public override bool IsValid {
+            get { return control_variable_table.IsValid; }
+            protected set { control_variable_table.IsValid = value; }
+        }
 
         // Private Variables
         private string _defaultUnit;
@@ -99,6 +110,12 @@ namespace bark_GUI.CustomControls
                                (comboBoxUnit.Text != DefaultXUnit);
 
             return valueIsNew || unitIsNew || xUnitIsNew;
+        }
+        public override void UpdateValues()
+        {
+            control_variable_table.UpdateValues();
+            comboBoxUnit_SelectedIndexChanged(null, null);
+            comboBoxUnit2_SelectedIndexChanged(null, null);
         }
 
 

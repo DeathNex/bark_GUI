@@ -59,7 +59,7 @@
                 <xs:complexType>
                   <xs:sequence>
                     <!--InnerElement D2 <material>-->
-                    <xs:element name="material" minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="material" minOccurs="1" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:all>
 
@@ -112,11 +112,11 @@
                 <xs:complexType>
                   <xs:sequence>
 
-                    <xs:element name="latitude" type="angle" minOccurs="0" />
-                    <xs:element name="longitude" type="angle" minOccurs="0" />
-                    <xs:element name="orientation" type="angle" minOccurs="0" />
-                    <xs:element name="date" type="dateMonth" minOccurs="0" />
-                    <xs:element name="time" type="dateTime" minOccurs="0" />
+                    <xs:element name="latitude" type="angle" minOccurs="1" />
+                    <xs:element name="longitude" type="angle" minOccurs="1" />
+                    <xs:element name="orientation" type="angle" minOccurs="1" />
+                    <xs:element name="date" type="dateMonth" minOccurs="1" />
+                    <xs:element name="time" type="dateTime" minOccurs="1" />
 
                   </xs:sequence>
                   <xs:attribute name="name" type="xs:string" default="Unknown" />
@@ -131,7 +131,7 @@
                   <xs:choice>
 
                     <!--InnerElement D2 <layer>-->
-                    <xs:element name="layer" minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="layer" minOccurs="1" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:sequence>
                           <!--InnerElement D3 <geometry>-->

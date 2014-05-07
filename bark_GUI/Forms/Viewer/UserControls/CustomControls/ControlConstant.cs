@@ -9,7 +9,14 @@ namespace bark_GUI.CustomControls
     public partial class ControlConstant : CustomControl
     {
         // Public Variables
-        public string DefaultUnit {
+        public override string Value
+        {
+            get { return textBoxValue.Text.Trim(); }
+            set { textBoxValue.Text = value; }
+        }
+
+        public string DefaultUnit
+        {
             get { return _defaultUnit; }
             set { _defaultUnit = value; SetUnit(value); }
         }
@@ -22,7 +29,7 @@ namespace bark_GUI.CustomControls
         // Constructor
         public ControlConstant(string name, List<string> typeOptions, List<string> unitOptions,
             bool isRequired, string help, GeneralControl generalControl)
-            :base(name, isRequired, help, generalControl)
+            : base(name, isRequired, help, generalControl)
         {
             InitializeComponent();
 
@@ -43,14 +50,14 @@ namespace bark_GUI.CustomControls
             // Visual candy.
             if (typeOptions.Count == 1)
                 comboBoxType.Enabled = false;
-            
+
             // Set unit.
             foreach (string s in unitOptions)
-                    comboBoxUnit.Items.Add(s);
-                comboBoxUnit.SelectedIndex = 0;
-                if (unitOptions.Count == 1)
-                    comboBoxUnit.Enabled = false;
-            
+                comboBoxUnit.Items.Add(s);
+            comboBoxUnit.SelectedIndex = 0;
+            if (unitOptions.Count == 1)
+                comboBoxUnit.Enabled = false;
+
             // Set help
             if (!string.IsNullOrEmpty(help))
                 toolTipHelp.SetToolTip(labelName, help);
@@ -66,7 +73,7 @@ namespace bark_GUI.CustomControls
 
 
         /* PUBLIC METHODS */
-        public override void SetValue(string value) { if(!string.IsNullOrEmpty(value)) textBoxValue.Text = value; }
+        public override void SetValue(string value) { if (!string.IsNullOrEmpty(value)) textBoxValue.Text = value; }
         public override void SetUnit(string unit) { if (!string.IsNullOrEmpty(unit)) comboBoxUnit.Text = unit; }
         // Set the Control's name for the Element Viewer.
         public override void SetControlName(string name) { Name = name; labelName.Text = name; }
@@ -83,6 +90,11 @@ namespace bark_GUI.CustomControls
             // Return true if ANYTHING changed.
             return valueIsNew || unitIsNew;
         }
+        public override void UpdateValues()
+        {
+            textBoxValue_TextChanged(null, null);
+            comboBoxUnit_SelectedIndexChanged(null, null);
+        }
 
 
 
@@ -95,7 +107,6 @@ namespace bark_GUI.CustomControls
         private void textBoxValue_TextChanged(object sender, EventArgs e)
         {
             var value = textBoxValue.Text.Trim();
-            var isValid = true;
 
             //// Fix value. (starting zeros)
             //var fixedValue = value.TrimStart(new char[1] { '0' });
@@ -114,9 +125,9 @@ namespace bark_GUI.CustomControls
 
             // SimpleType Validation
             if (Validator != null)
-                isValid = Validator(value);
+                IsValid = Validator(value);
 
-            if (!isValid)
+            if (!IsValid)
             {
                 textBoxValue.ForeColor = Color.Red;
                 return;

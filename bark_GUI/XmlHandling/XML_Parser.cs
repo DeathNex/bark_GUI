@@ -98,7 +98,11 @@ namespace bark_GUI.XmlHandling
                     content.Add(new XAttribute("name", groupItem.NewName));
 
                 // Create children XmlElements.
-                content.AddRange(groupItem.Children.Select(ConvertToXml));
+                var children = groupItem.Children.Select(ConvertToXml).ToList();
+
+                content.AddRange(children);
+
+                if (content.Count < 1 || content.All(child => child == null)) return null;
 
                 // Create XmlElement.
                 element = new XElement(groupItem.Name, content.ToArray());
@@ -108,6 +112,9 @@ namespace bark_GUI.XmlHandling
             {
                 var elementItem = (ElementItem)item;
                 var elementValue = elementItem.SelectedType.Value ?? "";
+
+                if (string.IsNullOrEmpty(elementValue))
+                    return null;
 
                 // Create XmlAttributes and get the element value.
                 switch (elementItem.SelectedType.CurrentElementType)
@@ -134,10 +141,13 @@ namespace bark_GUI.XmlHandling
                         var functionElement = ConvertToXml(functionItem);
 
                         // !!! TODO: Change/Remove this when functions are handled properly.
-                        foreach (var childConstant in functionElement.Descendants("constant"))
-                            childConstant.Value = "0";
+                        if (functionElement != null)
+                        {
+                            foreach (var childConstant in functionElement.Descendants("constant"))
+                                childConstant.Value = "0";
 
-                        content.Add(new XElement("function", functionElement));
+                            content.Add(new XElement("function", functionElement));
+                        }
                         break;
                     case EType.Keyword:
                         content.Add(new XElement("keyword", elementValue));
@@ -152,6 +162,26 @@ namespace bark_GUI.XmlHandling
             }
 
             return element;
+        }
+
+        public static bool IsElementItem(XmlNode xmlNode)
+        {
+            if (xmlNode == null) return false;
+
+            if (xmlNode.HasChildNodes)
+            {
+                if ((from XmlNode child in xmlNode.ChildNodes select child.LocalName).Any(x => x == "constant" || x == "variable" || x == "keyword" || x == "function"))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (xmlNode.Attributes != null && xmlNode.Attributes.Count > 0 && xmlNode.Attributes["reference"] != null)
+                    return true;
+            }
+
+            return false;
         }
 
         #endregion

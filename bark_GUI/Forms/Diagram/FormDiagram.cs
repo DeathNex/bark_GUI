@@ -78,6 +78,7 @@ namespace bark_GUI
                 diagram.GraphPane.AddCurve(yAxis[k], _xPoints, _yPoints[k], _lineColors[k], SymbolType.None);
             }
 
+            diagram.RestoreScale(diagram.GraphPane);
         }
 
         #region Private Initialization Methods

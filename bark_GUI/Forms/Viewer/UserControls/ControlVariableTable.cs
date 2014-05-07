@@ -19,10 +19,12 @@ namespace bark_GUI.CustomControls
 
         public bool IsRequired;
 
+        public bool IsValid;
+
 
         // Private Variables
 
-        private const int ArrayRowsMax = 300;
+        private const int ArrayRowsMax = 10000;
 
         private const int ArrayRowsMin = 1;
 
@@ -259,7 +261,7 @@ namespace bark_GUI.CustomControls
             for (int j = ArrayColumns - 1; j >= 0; j--)
             {
                 table.Controls.Remove(_textBoxArray[_lastIndex - 1, j]);
-                _textBoxArray[_lastIndex -1,j] = null;
+                _textBoxArray[_lastIndex - 1, j] = null;
             }
             //table.RowStyles.RemoveAt(_lastIndex - 1);
             _lastIndex--;
@@ -408,6 +410,8 @@ namespace bark_GUI.CustomControls
                     _textBoxArray[_lastIndex - 1, 1].ResetBackColor();
             }
 
+            IsValid = arrayIsValid;
+
             // Check if the text boxes are not valid, don't save anything.
             if (!arrayIsValid) return;
 
@@ -425,5 +429,7 @@ namespace bark_GUI.CustomControls
             }
         }
         #endregion
+
+        public void UpdateValues() { textBox_TextChanged(null, null); }
     }
 }

@@ -152,7 +152,7 @@ namespace bark_GUI.XmlHandling
 
             // Must be able to be created freely, infinite times and deleted freely, down to 0.
             if (xsdNode.Attributes["maxOccurs"].Value.Trim() == "unbounded" &&
-                xsdNode.Attributes["minOccurs"].Value.Trim() == "0")
+                (xsdNode.Attributes["minOccurs"].Value.Trim() == "1" || xsdNode.Attributes["minOccurs"].Value.Trim() == "0"))
                 return true;
 
             return false;

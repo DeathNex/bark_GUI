@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using bark_GUI.Structure.ItemTypes;
 using bark_GUI.Structure.Items;
+using bark_GUI.XmlHandling;
 
 namespace bark_GUI.Structure
 {
@@ -171,6 +173,8 @@ namespace bark_GUI.Structure
 
         #endregion
 
+        #region Create
+
         // Returns a clone of the 'Structure' item that was loaded from XSD.
         public static Item CreateItem(XmlNode xmlItem)
         {
@@ -214,6 +218,15 @@ namespace bark_GUI.Structure
             return newItem;
         }
 
+        // Overload converting XElement to XmlElement.
+        public static Item CreateItem(XElement xElement)
+        {
+            XmlDocument xD = new XmlDocument();
+            xD.LoadXml(xElement.ToString());
+
+            return CreateItem(xD.FirstChild);
+        }
+
         public static ComplexType CreateComplexType(string typeName)
         {
             var complexType = FindComplexType(typeName);
@@ -224,6 +237,8 @@ namespace bark_GUI.Structure
 
             return newComplexType;
         }
+
+        #endregion
 
         public static void RemoveReference(Item item) { if (_referenceLists.ContainsKey(item.Name)) _referenceLists[item.Name].Remove(item); }
 
@@ -242,7 +257,9 @@ namespace bark_GUI.Structure
 
             if (xmlItem.Name == StructureRoot.Name) return StructureRoot;
 
-            var results = _items.Where(i => i.Name == xmlItem.Name).ToList();
+            var isElementItem = XmlParser.IsElementItem(xmlItem);
+
+            var results = _items.Where(i => (i.Name == xmlItem.Name) && (i.IsElementItem == isElementItem)).ToList();
 
             Debug.Assert(results.Count > 0, "No matches found for item '" + xmlItem.Name +
                 "' in the Structure.\n     Please make sure the names are correct.");

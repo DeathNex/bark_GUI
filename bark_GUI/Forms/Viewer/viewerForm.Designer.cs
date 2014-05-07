@@ -55,6 +55,7 @@ namespace bark_GUI
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearRecentListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,6 @@ namespace bark_GUI
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DuplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeNodeParentContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -142,6 +142,7 @@ namespace bark_GUI
             // 
             // treeViewer
             // 
+            this.treeViewer.AllowDrop = true;
             this.treeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewer.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.treeViewer.HideSelection = false;
@@ -151,8 +152,12 @@ namespace bark_GUI
             this.treeViewer.ShowNodeToolTips = true;
             this.treeViewer.Size = new System.Drawing.Size(256, 507);
             this.treeViewer.TabIndex = 0;
+            this.treeViewer.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeViewer_ItemDrag);
             this.treeViewer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewer_AfterSelect);
             this.treeViewer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewer_NodeMouseClick);
+            this.treeViewer.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeViewer_DragDrop);
+            this.treeViewer.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeViewer_DragEnter);
+            this.treeViewer.DragOver += new System.Windows.Forms.DragEventHandler(this.treeViewer_DragOver);
             // 
             // panelElementSelect
             // 
@@ -331,7 +336,8 @@ namespace bark_GUI
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem});
+            this.startToolStripMenuItem,
+            this.newGraphToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.editToolStripMenuItem.Text = "Simulation";
@@ -339,9 +345,16 @@ namespace bark_GUI
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // newGraphToolStripMenuItem
+            // 
+            this.newGraphToolStripMenuItem.Name = "newGraphToolStripMenuItem";
+            this.newGraphToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newGraphToolStripMenuItem.Text = "Create Graph";
+            this.newGraphToolStripMenuItem.Click += new System.EventHandler(this.createGraphToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -388,6 +401,7 @@ namespace bark_GUI
             // 
             // saveFileDialog
             // 
+            this.saveFileDialog.DefaultExt = "brk";
             this.saveFileDialog.Filter = "Bark Files|*.brk|XML Files|*.xml|All files|*.*";
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
@@ -395,37 +409,29 @@ namespace bark_GUI
             // 
             this.TreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddToolStripMenuItem,
-            this.DuplicateToolStripMenuItem,
             this.RenameToolStripMenuItem,
             this.DeleteToolStripMenuItem});
             this.TreeNodeContextMenuStrip.Name = "TreeNodeContextMenuStrip";
-            this.TreeNodeContextMenuStrip.Size = new System.Drawing.Size(125, 92);
+            this.TreeNodeContextMenuStrip.Size = new System.Drawing.Size(118, 70);
             // 
             // AddToolStripMenuItem
             // 
             this.AddToolStripMenuItem.Name = "AddToolStripMenuItem";
-            this.AddToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.AddToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.AddToolStripMenuItem.Text = "Add";
             this.AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
-            // 
-            // DuplicateToolStripMenuItem
-            // 
-            this.DuplicateToolStripMenuItem.Name = "DuplicateToolStripMenuItem";
-            this.DuplicateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.DuplicateToolStripMenuItem.Text = "Duplicate";
-            this.DuplicateToolStripMenuItem.Click += new System.EventHandler(this.DuplicateToolStripMenuItem_Click);
             // 
             // RenameToolStripMenuItem
             // 
             this.RenameToolStripMenuItem.Name = "RenameToolStripMenuItem";
-            this.RenameToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.RenameToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.RenameToolStripMenuItem.Text = "Rename";
             this.RenameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.DeleteToolStripMenuItem.Text = "Delete";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
@@ -517,10 +523,10 @@ namespace bark_GUI
         private System.Windows.Forms.CheckBox checkBoxTreeShowHidden;
         private ContextMenuStrip TreeNodeContextMenuStrip;
         private ToolStripMenuItem AddToolStripMenuItem;
-        private ToolStripMenuItem DuplicateToolStripMenuItem;
         private ToolStripMenuItem DeleteToolStripMenuItem;
         private ToolStripMenuItem RenameToolStripMenuItem;
         private ContextMenuStrip TreeNodeParentContextMenuStrip;
         private ToolStripMenuItem AddParentToolStripMenuItem;
+        private ToolStripMenuItem newGraphToolStripMenuItem;
     }
 }

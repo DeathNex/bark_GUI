@@ -10,7 +10,7 @@ namespace bark_GUI.Forms.Dialogs
         public string XAxisSelected { get; private set; }
         public string[] YAxisSelected { get; private set; }
 
-        public DiagramDataDialog(string[] titles)
+        public DiagramDataDialog(string[] titles, string lastSimulationDate = "")
         {
             InitializeComponent();
 
@@ -18,6 +18,15 @@ namespace bark_GUI.Forms.Dialogs
             {
                 xAxisDropdownList.Items.Add(title.Trim());
                 yAxisListView.Items.Add(title.Trim());
+            }
+
+            if (string.IsNullOrEmpty(lastSimulationDate))
+            {
+                panelInfo.Hide();
+            }
+            else
+            {
+                labelSimulationTime.Text = lastSimulationDate;
             }
         }
 

@@ -4,12 +4,12 @@
 ---------------
 
 ##NEXT TODO##
-- [x] Load & read .dat files.
-- [x] Graphical representation of data loaded from .dat files on charts.
-- [ ] Fix Right-Click Actions.
-- [ ] Fix New XML file.
 
 ##PRIMARY TODO##
+- [x] Load & read .dat files.
+- [x] Graphical representation of data loaded from .dat files on charts.
+- [x] Fix Right-Click Actions.
+- [x] Fix New XML file.
 - [x] Load XSD files and build the structure accordingly.
 - [x] Load XML files and place the data on the loaded structure items.
 - [x] Edit XML files and their data.
@@ -18,14 +18,14 @@
       [x] 2. Place it where this control was;
       [x] 3. Update the _XmlDocument;
 	  [x] 4. Remove this (control);
-- [ ] Handle Tree structure changes & update _XmlDocument
+- [x] Handle Tree structure changes & update _XmlDocument
 - [x] Save XML files.
-- [ ] Create XML files.
+- [x] Create XML files.
 - [x] User actions on certain items: Add, Delete, Rename, Duplicate (Material, Layer and others)
 
 ##SECONDARY TODO##
 - [x] Group items in the element Viewer for better visual representation.
-- [ ] Implement dirty files for save.
+- [x] Implement dirty files for save.
 - [ ] Handle Functions (wallsun.brk)
 - [ ] try-catch dangerous code (like file handling, Tags, casts, null references)
 - [ ] Properly handle the XMLHandler XSD & XML load errors in the try-catch. It doesnt always have to be a messagebox.
@@ -39,6 +39,30 @@
 
 #bark_GUI CHANGELOG#
 --------------------
+
+v0.20
+-----
++	Implemented new file using an empty XML template. (Cannot dynamically create a new xml file from xsd)
++	Fixed Right-Click action 'Add' and removed 'Duplicate'.
++	Empty element items are not created in the xml file.
++	Added validation of xml values before saving.
++	Changed 'coordinates' child elements in XSD to be required if the parent element exists.
++	Reworked 'About'.
++	Fixed Dirty File checking for save.
++	Fixed minor SaveAs dialog issues.
++	Added focus textbox on item name/rename.
++	Fixed a bug on rename-cancel.
++	Generated XML is now indented with tabs instead of 2 spaces.
++	Added restriction on multiple items, at least one must exist. (fixes the parent 'Add' problem too)
++	Added logic on xml creation. If a group item is empty, don't create it at all.
++	Added logic on item values validation. If a group item is not required and
+		all it's children are empty, the group item valid.
++	Added Simulation>Create Graph action in the main menu. (Loaded xml file name with .dat extension inside Samples)
++	Added last simulation time (last time modified .dat file) in Axis' selection dialog.
++	Implemented move node (drag 'n drop) on tree viewer (with right-click actions).
++	Automatically zooms out on diagram creation.
++	Added XML file validation before save.
+
 
 v0.19
 -----

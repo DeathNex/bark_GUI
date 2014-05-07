@@ -5,6 +5,13 @@ namespace bark_GUI.CustomControls
 {
     public partial class ControlFunction : CustomControl
     {
+        public override string Value
+        {
+            get { return comboBoxFunc.Text.Trim(); }
+            set { comboBoxFunc.Text = value; }
+        }
+
+
         public ControlFunction(string name, ICollection<string> typeOptions, ICollection<string> refOptions,
             bool isRequired, string help, GeneralControl generalControl)
             :base(name, isRequired, help, generalControl)
@@ -57,6 +64,10 @@ namespace bark_GUI.CustomControls
             // Return true if value changed.
             return valueIsNew;
         }
+        public override void UpdateValues()
+        {
+            comboBoxFunc_SelectedIndexChanged(null, null);
+        }
 
 
 
@@ -72,7 +83,7 @@ namespace bark_GUI.CustomControls
         {
             // SimpleType Validation & Save
             if (Validator != null)
-                Validator(comboBoxFunc.Text.Trim());
+                IsValid = Validator(comboBoxFunc.Text.Trim());
         }
 
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)

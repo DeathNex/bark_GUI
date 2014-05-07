@@ -9,32 +9,27 @@ namespace bark_GUI
         public AboutBox()
         {
             InitializeComponent();
-            Text = String.Format("About {0}", AssemblyTitle);
-            labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format("Version {0}", AssemblyVersion.Substring(0,AssemblyVersion.LastIndexOf('.')));
-            labelCopyright.Text = AssemblyCopyright;
-            labelCompanyName.Text = AssemblyCompany;
 
-            var description = "";
-            description += "-------------------\n";
-            description += "Bark .....\n";
-            description += "\n";
-            description += "Λογισμικό Προσομοίωσης Φαινομένων Μετάδοσης Θερμότητας\n";
-            description += "-------------------\n";
-            description += "*             Μονοδιάστατος Επιλυτής Φαινομένων Μετάδοσης Θερμότητας\n";
-            description += "\n";
-            description += "TEI Λάρισας, Τμήμα Μηχανολογίας, Εργαστήριο Μετάδοσης Θερμότητας, www.heatlab.teilar.gr\n";
-            description += "-------------------\n";
-            description += "·         Γραφικό Περιβάλλον (bark_gui). Πτυχιακή εργασία Γιάννη Χαντζή, υπό την επίβλεψη του καθηγητή Όμηρου Ιατρέλλη.\n";
-            description += "\n";
-            description += "\n";
-            description += "ΤΕΙ Λάρισας, Τμήμα Πληροφορικής και Τηλεπικοινωνιών.\n";
-            description += "-------------------\n";
-            description += "Copyright  ... TEI Λάρισας\n";
-            description += "\n";
-            description += "Υπεύθυνος επικοινωνίας. Ονούφριος Χαραλάμπους onoufrios@teilar.gr\n";
+            var barkGuiText = "";
+            var barkText = "";
 
-            labelDescription.Text = description;
+            barkGuiText += AssemblyProduct + "\n\n";
+            barkGuiText += String.Format("Version: {0}\n\n", AssemblyVersion.Substring(0, AssemblyVersion.LastIndexOf('.')));
+            barkGuiText += "Γραφικό Περιβάλλον (Bark_GUI). Πτυχιακή εργασία Γιάννη Χαντζή, υπό την επίβλεψη του καθηγητή Όμηρου Ιατρέλλη.\n\n";
+            barkGuiText += "Τμήμα Μηχανικών Πληροφορικής Τ.Ε.\n\n";
+            barkGuiText += "Επικοινωνία: JohnChantz@gmail.com\n\n";
+
+            barkText += "bark (Solver)\n\n";
+            barkText += "Λογισμικό Προσομοίωσης Φαινομένων Μετάδοσης Θερμότητας\n\n";
+            barkText += "Τμήμα Μηχανολογίας - Μηχανικών Τ.Ε.\n\n";
+            barkText += "Επικοινωνία: Εργαστήριο Μετάδοσης Θερμότητας, www.heatlab.teilar.gr\n";
+            barkText += "Υπεύθυνος επικοινωνίας. Ονούφριος Χαραλάμπους onoufrios@teilar.gr";
+
+            var copyright = "Copyright 2014 TEI Θεσσαλίας";
+
+            labelGUI.Text = barkGuiText;
+            labelBark.Text = barkText;
+            labelCopyright.Text = copyright;
         }
 
         #region Assembly Attribute Accessors

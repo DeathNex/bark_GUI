@@ -76,7 +76,7 @@ namespace bark_GUI.XmlHandling
             try
             {
                 // Validate the XML against the XSD file.
-                if (!_ValidateXML(pathXml))
+                if (!_ValidateXml(pathXml))
                     throw new Exception("Could not validate XML file.");
 
                 // Load the XML superfically just to make sure it can be loaded & to get the XSD paths.
@@ -93,6 +93,8 @@ namespace bark_GUI.XmlHandling
 
                 // Draw all the information from the XML file
                 XmlParser.DrawInfo(_xmlDocument.DocumentElement);
+
+                _lastSavedXml = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
             }
             catch (XmlException xmlEx)
             {
@@ -110,10 +112,25 @@ namespace bark_GUI.XmlHandling
         #endregion
 
         #region Save Files
-        public void Save(string filepath)
+        public bool Save(string filepath)
         {
+            // Save on temporary file and validate it before saving.
+            var tmpFile = Settings.Default.PathSamples + "\\tmp.brk";
+
+            var tmpLastSavedXml = _lastSavedXml;
+            Save(tmpFile);
+            _lastSavedXml = tmpLastSavedXml;
+
+            if (!_ValidateXml(tmpFile))
+            {
+                File.Delete(tmpFile);
+                return false;
+            }
+            File.Delete(tmpFile);
+
+
             // Check for empty path.
-            if (string.IsNullOrEmpty(filepath)) return;
+            if (string.IsNullOrEmpty(filepath)) return false;
 
             // Modify root element to meet the required conditions for XSD Validation.
             var rootElement = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
@@ -124,7 +141,8 @@ namespace bark_GUI.XmlHandling
             // Write the current XML Document to file.
             try
             {
-                using (var xWriter = XmlWriter.Create(filepath, new XmlWriterSettings { Indent = true }))
+                using (var xWriter = XmlWriter.Create(filepath, new XmlWriterSettings
+                { Indent = true, IndentChars = "\t" }))
                 {
                     rootElement.Save(xWriter);
                 }
@@ -135,16 +153,21 @@ namespace bark_GUI.XmlHandling
             }
 
             // Keep the last saved XML Document for 'Dirty file' comparison.
-            _lastSavedXml = rootElement;
+            _lastSavedXml = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
+
+            return true;
         }
 
         public bool HasDirtyFiles()
         {
-            Debug.WriteLine("Method HasDirtyFiles not Implemented!");
+            var currentXml = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
+
+            if (currentXml == null || _lastSavedXml == null) return false;
+
+            if (currentXml.ToString() != _lastSavedXml.ToString())
+                return true;
 
             return false;
-
-            //Compare the data from tree with the _XmlDocument & if any action was made on any element
 
         }
         #endregion
@@ -160,7 +183,6 @@ namespace bark_GUI.XmlHandling
             {
                 _xmlDocument = new XmlDocument();
                 _xmlDocument.Load(filepath);
-                _lastSavedXml = XmlParser.ConvertToXml(Structure.Structure.DataRootItem);
             }
             catch
             {
@@ -219,7 +241,7 @@ namespace bark_GUI.XmlHandling
         /// <summary> Validates an XML file against the XSD schema.
         /// The XSD schema's path is included in the XML file.</summary>
         /// <param name="filePath">The XML file's path.</param>
-        private bool _ValidateXML(string filePath)
+        private bool _ValidateXml(string filePath)
         {
             // Set the validation settings.
             XmlReaderSettings settings = new XmlReaderSettings();

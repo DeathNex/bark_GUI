@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 
 namespace bark_GUI.CustomControls
 {
     public partial class ControlKeyword : CustomControl
     {
+        public override string Value
+        {
+            get { return comboBoxValue.Text.Trim(); }
+            set { comboBoxValue.Text = value; }
+        }
+
         public ControlKeyword(string name, IEnumerable<string> options, bool isRequired, string help, GeneralControl generalControl)
             : base(name, isRequired, help, generalControl)
         {
@@ -46,12 +51,16 @@ namespace bark_GUI.CustomControls
             // Return true if value changed.
             return valueIsNew;
         }
+        public override void UpdateValues()
+        {
+            comboBoxValue_SelectedIndexChanged(null, null);
+        }
 
         private void comboBoxValue_SelectedIndexChanged(object sender, EventArgs e)
         {
             // SimpleType Validation & Save
             if (Validator != null)
-                Validator(comboBoxValue.Text.Trim());
+                IsValid = Validator(comboBoxValue.Text.Trim());
         }
 
 

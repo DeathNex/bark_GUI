@@ -11,13 +11,17 @@ namespace bark_GUI.CustomControls
         public string DefaultValue
         {
             get { return _defaultValue; }
-            set { _defaultValue = value; SetValue(value); } 
+            set { _defaultValue = value; SetValue(value); }
         }
 
         public string Help { get; set; }
 
         // Inheriting Variables
         public virtual bool IsRequired { get; set; }
+
+        public virtual bool IsValid { get; protected set; }
+
+        public virtual string Value { get; set; }
 
         //Protected Variables
         protected GeneralControl GeneralControl;
@@ -73,6 +77,7 @@ namespace bark_GUI.CustomControls
         public virtual void SetX_Unit(string xUnit) { }
         public virtual void SetControlName(string name) { }
         public virtual bool HasNewValue() { return false; }
+        public virtual void UpdateValues() { }
         public void Remove()
         {
             if (Parent != null && Parent.Controls.Contains(this))

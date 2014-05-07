@@ -98,6 +98,9 @@ namespace bark_GUI.Structure.Items
 
         public bool ValidateAndSave(string value)
         {
+            // Save value
+            SelectedType.Value = value;
+
             // Validate
             if (SelectedType.CurrentElementType != EType.Function)
             {
@@ -105,9 +108,6 @@ namespace bark_GUI.Structure.Items
 
                 if (!isValid) return false;
             }
-
-            // Save value
-            SelectedType.Value = value;
 
             return true;
         }

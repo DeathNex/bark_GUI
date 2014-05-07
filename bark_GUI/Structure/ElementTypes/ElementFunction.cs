@@ -12,7 +12,7 @@ namespace bark_GUI.Structure.ElementTypes
         {
             CurrentElementType = EType.Function;
             FunctionNames = functionNames;
-            Value = FunctionNames[0];
+            //Value = FunctionNames[0];
         }
 
 

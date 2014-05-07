@@ -164,6 +164,8 @@ namespace bark_GUI
         {
             _SimulationStart();
         }
+        //Simulation Create Graph
+        private void createGraphToolStripMenuItem_Click(object sender, EventArgs e) { _CreateGraph(); }
         /* Options */
         //Options Clear Recent List
         private void clearRecentListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -204,69 +206,125 @@ namespace bark_GUI
         #region Action Methods
         private void _newFile()
         {
-            var path = Settings.Default.PathSamples + '\\' + Settings.Default.XSDValidatorName;
+            var pathNewFile = Settings.Default.PathSamples + '\\' + Settings.Default.PathNew;
 
-            //Change the action status label
-            statusMain.Text = "Creating XML...";
+            _loadFile(pathNewFile);
 
-            _closeFile();
 
-            _elementViewerIsInitialized = false;
+            //var path = Settings.Default.PathSamples + '\\' + Settings.Default.XSDValidatorName;
 
-            //Set the new current file path
-            Settings.Default.PathCurrentFile = null;
+            //if (!_closeFile()) return;
 
-            //Load the XML file
-            if (!_xmlHandler.New(path))
-            {
-                statusMain.Text = "Error";
-                return;
-            }
+            ////Change the action status label
+            //statusMain.Text = "Creating XML...";
 
-            //Load the viewers
-            _InitializeTreeViewer();
-            _InitializeElementViewer();
+            //_elementViewerIsInitialized = false;
 
-            //Update Status label at the bottom of the window
-            Text = "*Unsaved*";
-            statusMain.Text = "Ready";
+            ////Set the new current file path
+            //Settings.Default.PathCurrentFile = null;
+
+            ////Load the XML file
+            //if (!_xmlHandler.New(path))
+            //{
+            //    statusMain.Text = "Error";
+            //    return;
+            //}
+
+            ////Load the viewers
+            //_InitializeTreeViewer();
+            //_InitializeElementViewer();
+
+            ////Update Status label at the bottom of the window
+            //Text = "*Unsaved*";
+            //statusMain.Text = "Ready";
         }
 
         private void _saveFile() { _saveAsFile(Settings.Default.PathCurrentFile); }
 
-        private void _saveAsFile(string filepath) { _xmlHandler.Save(filepath); }
+        private void _saveAsFile(string filepath)
+        {
+            if (!AllControlsAreValid())
+            {
+                MessageBox.Show(
+                    "One or more values are not valid (Red Color).\n" +
+                    "Please fill the controls with proper values before saving.");
+                return;
+            }
+
+            // If called from 'Save' on a new document, call 'save as'.
+            if (string.IsNullOrEmpty(filepath))
+            {
+                saveFileDialog.ShowDialog();
+                return;
+            }
+
+            var success = _xmlHandler.Save(filepath);
+
+            if(!success) return;
+
+            Settings.Default.PathCurrentFile = filepath;
+            Text = _getFileNameOf(filepath) + " - " + Title;
+        }
 
         private void _loadFile(string filepath)
         {
+            if (!_closeFile()) return;
+
             //Change the action status label
             statusMain.Text = "Loading XML...";
 
-            _closeFile();
-
             _elementViewerIsInitialized = false;
 
-            //Set the new current file path
-            Settings.Default.PathCurrentFile = filepath;
+            var pathNewFile = Settings.Default.PathSamples + '\\' + Settings.Default.PathNew;
 
-            //Load the XML file
-            if (_xmlHandler.Load())
+            // Load file
+            if (filepath != pathNewFile)
             {
-                //Load the viewers
-                _InitializeTreeViewer();
-                _InitializeElementViewer();
+                //Set the new current file path
+                Settings.Default.PathCurrentFile = filepath;
 
-                //Add to the recent files list
-                _AddToRecent(filepath);
-                Settings.Default.Save();
+                //Load the XML file
+                if (_xmlHandler.Load())
+                {
+                    //Load the viewers
+                    _InitializeTreeViewer();
+                    _InitializeElementViewer();
 
-                //Update Status label at the bottom of the window
-                Text = _getFileNameOf(Settings.Default.PathCurrentFile) + " - " + Title;
-                statusMain.Text = "Ready";
+                    //Add to the recent files list
+                    _AddToRecent(filepath);
+                    Settings.Default.Save();
+
+                    //Update Status label at the bottom of the window
+                    Text = _getFileNameOf(Settings.Default.PathCurrentFile) + " - " + Title;
+                    statusMain.Text = "Ready";
+                }
+                else
+                {
+                    _UpdateRecent();
+                    statusMain.Text = "Error";
+                }
             }
             else
             {
-                _UpdateRecent();
-                statusMain.Text = "Error";
+                // Create New File.
+
+                //Set the new current file path
+                Settings.Default.PathCurrentFile = "";
+
+                //Load the XML file
+                if (_xmlHandler.Load(pathNewFile))
+                {
+                    //Load the viewers
+                    _InitializeTreeViewer();
+                    _InitializeElementViewer();
+
+                    Text = "*New*" + " - " + Title;
+                    statusMain.Text = "Ready";
+                }
+                else
+                {
+                    statusMain.Text = "Error";
+                }
             }
         }
 
@@ -328,8 +386,31 @@ namespace bark_GUI
             Process.Start(Settings.Default.PathBarkExe + "\\bark.exe",
                           '\"' + Settings.Default.PathCurrentFile + '\"');
 
-            // Read .dat file.
+            statusMain.Text = "Ready";
+        }
+
+        private void _CreateGraph()
+        {
             var dataPath = @"D:\Projects\bark_GUI\bark_GUI\bin\Debug\Samples\transparent.dat";
+            var dataFileName = _getFileNameOf(Settings.Default.PathCurrentFile).Split('.')[0];
+            dataPath = Settings.Default.PathSamples + '\\' + dataFileName + ".dat";
+
+            // Check.
+            if (string.IsNullOrEmpty(Settings.Default.PathCurrentFile))
+            {
+                MessageBox.Show("No file loaded to create graph from. Please first open a file.");
+                return;
+            }
+
+            // Check.
+            if (!File.Exists(dataPath))
+            {
+                MessageBox.Show("No data file found for " + dataFileName +
+                    ".\nStart the simulation before creating a graph.");
+                return;
+            }
+
+            // Read .dat file.
             var data = DataParser.ReadData(dataPath);
 
             // Check.
@@ -338,8 +419,10 @@ namespace bark_GUI
             // Use data from .dat file and prompt user to select x/y axis'.
             string xAxis = "";
             string[] yAxis = new string[1];
+            var date = File.GetLastWriteTime(dataPath);
+            var lastSimulationDate = string.Format("{0}:{1} at {2}/{3}/{4}", date.Hour, date.Minute, date.Day, date.Month, date.Year);
 
-            using (var form = new DiagramDataDialog(data[0].Split('\t')))
+            using (var form = new DiagramDataDialog(data[0].Split('\t'), lastSimulationDate))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -362,8 +445,6 @@ namespace bark_GUI
             var filenameData = dataPath.Substring(dataPath.LastIndexOf('\\') + 1);
             Program.FormDiagram1 = new FormDiagram(filenameData, xAxis, yAxis, data);
             Program.FormDiagram1.Show();
-
-            statusMain.Text = "Ready";
         }
 
         private void _PreferencesShow()
@@ -375,6 +456,9 @@ namespace bark_GUI
 
             statusMain.Text = "Ready";
         }
+
+        private bool AllControlsAreValid()
+        { return elementViewer.Controls.OfType<CustomControl>().All(control1 => control1.IsValid); }
 
         /// <summary> Adds the file to the recent list. </summary>
         /// <param name="filePath"> The file's path. </param>
@@ -549,7 +633,7 @@ namespace bark_GUI
             if ((item.IsElementItem) && (selectedRoot.InnerChildren.Contains(item) ||
                 selectedRoot == item))
             {
-                if (item.IsRequired || (showAll || item.Control.HasValue))
+                if (item.IsRequired || (showAll || item.Control.HasNewValue))
                     show = true;
             }
             // Show the Group if it has any children Element and that child has a value or show all option is enabled.
@@ -596,44 +680,33 @@ namespace bark_GUI
 
         private void AddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var item = (Item)_activeNode.Tag;
-
-            var newName = Rename(item);
-
-            // Check.
-            if (string.IsNullOrEmpty(newName)) return;
-
-            item.Duplicate(newName);
-
-            RefreshViewers();
-        }
-
-        private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var item = (Item)_activeNode.Tag;
-
-            var newName = Rename(item);
-
-            // Check.
-            if (string.IsNullOrEmpty(newName)) return;
-
-            item.Duplicate(newName, true);
-
-            RefreshViewers();
+            AddItem((Item)_activeNode.Tag);
         }
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var item = ((Item)_activeNode.Tag);
 
-            Rename(item);
+            var newName = Rename(item);
+
+            if (string.IsNullOrEmpty(newName)) return;
 
             RefreshViewers();
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((Item)_activeNode.Tag).Remove();
+            var item = ((Item)_activeNode.Tag);
+
+            // Make sure this isn't the last item.
+            if (item.Parent != null && item.Parent.Children.Select(i =>
+                i.IsElementItem == item.IsElementItem && i.Name == item.Name).Count() <= 1)
+            {
+                MessageBox.Show(item.NewName + " cannot be deleted.\nAt least one " + item.Name + " is required.");
+                return;
+            }
+
+            item.Remove();
 
             RefreshViewers();
         }
@@ -642,42 +715,64 @@ namespace bark_GUI
         {
             var groupItemParent = ((GroupItem)_activeNode.Tag);
 
+            // Condition: At least one 'multiple' child already exists to create a new one.
+            // To be release from the above condition you need to:
+            // Change the 'first child that already exists' part to 'first child of that type from Structure/XSD'.
+
             // Get first child that can have Right-Click actions.
-            //!!! TODO: Change first child that already exists to:
-            //!!!       first child from Structure/XSD. (in case all materials/layers are deleted)
             var childItem = groupItemParent.Children.First(child =>
                 child.IsGroupItem && ((GroupItem)child).HasRightClickActions);
 
-            var newName = Rename(childItem);
+            AddItem(childItem);
+        }
+
+        private void AddItem(Item item)
+        {
+            var newName = GetNewName(item);
 
             // Check.
             if (string.IsNullOrEmpty(newName)) return;
 
-            childItem.Duplicate(newName, true);
+            //var xml = XmlParser.ConvertToXml(item);
+
+            //var newItem = Structure.Structure.CreateItem(xml);
+
+            item.Duplicate(newName);
+
+            //newItem.NewName = newName;
 
             RefreshViewers();
         }
 
-        private string Rename(Item item, bool rename = true)
+        private string Rename(Item item)
         {
             if (item == null) return null;
 
-            var title = rename ? "Rename" : "New Name";
-            var errorMsg = rename ? "Item could not be renamed." : "Item could not be named.";
             var oldName = item.NewName;
-            var newName = InputBox.ShowDialog(("New Name for " + item.Name), title, oldName);
+            var newName = GetNewName(item, item.NewName);
+
+            if (string.IsNullOrEmpty(newName)) return null;
+
+            item.NewName = newName;
+
+            UpdateReferencesWithRename(elementViewer, oldName, newName);
+
+            return newName;
+        }
+
+        private string GetNewName(Item item, string oldName = "")
+        {
+            if (item == null) return null;
+
+            var newName = InputBox.ShowDialog(("New Name for " + item.Name), "New Name", oldName);
 
             // Validation
             var nameExists = Structure.Structure.DataRootItem.InnerChildren.Any(child =>
                 item.Name == child.Name && child.NewName == newName);
             if (!string.IsNullOrEmpty(newName) && nameExists)
-                MessageBox.Show(errorMsg + "\nThe name " + newName + " already exists.");
+                MessageBox.Show("Item could not be named.\nThe name " + newName + " already exists.");
             if (string.IsNullOrEmpty(newName) || nameExists)
                 return "";
-
-            item.NewName = newName;
-
-            UpdateReferencesWithRename(elementViewer, oldName, newName);
 
             return newName;
         }
@@ -703,6 +798,95 @@ namespace bark_GUI
                     UpdateReferencesWithRename(((ControlGroup)control).GetPanel(), oldName, newName);
             }
         }
+        #endregion
+
+        #region DragNDrop TreeViewer
+
+        private void treeViewer_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeViewer_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void treeViewer_DragDrop(object sender, DragEventArgs e)
+        {
+            // Check data is correct.
+            if (!e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false)) return;
+
+            TreeNode node = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+            int newIndex = -1;
+
+            // Get target (Drop on Node).
+            Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
+            TreeNode targetNode = ((TreeView)sender).GetNodeAt(pt);
+
+            // Get target index for insertion.
+            newIndex = targetNode.Index;
+
+            // Move (Remove & Add/Insert) Node.
+            if (newIndex < targetNode.Parent.Nodes.Count)
+            {
+                // Move TreeNode
+                node.Remove();
+                targetNode.Parent.Nodes.Insert(newIndex, node);
+
+                // Move Item
+                var item = ((GroupItem)node.Tag);
+                var parent = item.Parent;
+                parent.Children.Remove(item);
+                parent.Children.Insert(newIndex, item);
+            }
+            else
+            {
+                // Move TreeNode
+                node.Remove();
+                targetNode.Parent.Nodes.Add(node);
+
+                // Move Item
+                var item = ((GroupItem)node.Tag);
+                var parent = item.Parent;
+                parent.Children.Remove(item);
+                parent.Children.Add(item);
+            }
+        }
+
+        private void treeViewer_DragOver(object sender, DragEventArgs e)
+        {
+            // Check data is correct.
+            if (!e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false)) return;
+
+            TreeNode node = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+
+            // Check item CAN be moved.
+            if (node == null || node.Parent == null || node.Parent.Nodes.Count <= 1)
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            // Check target item can be used for move.
+
+            // Get target (Drop on Node).
+            Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
+            TreeNode targetNode = ((TreeView)sender).GetNodeAt(pt);
+
+            // Check target node exists, drag drop is inside the treeview,
+            // their parent is mutual (move inside parent only), is group item and has right click actions.
+            if (targetNode == null || targetNode == node || targetNode.TreeView != node.TreeView ||
+                targetNode.Parent != node.Parent || !(node.Tag is GroupItem) || !((GroupItem)node.Tag).HasRightClickActions ||
+                !(targetNode.Tag is GroupItem) || !((GroupItem)targetNode.Tag).HasRightClickActions)
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            e.Effect = DragDropEffects.Move;
+        }
+
         #endregion
 
     }

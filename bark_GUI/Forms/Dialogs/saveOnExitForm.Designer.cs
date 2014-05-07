@@ -37,9 +37,9 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(212, 117);
+            this.buttonCancel.Location = new System.Drawing.Point(285, 70);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(87, 27);
+            this.buttonCancel.Size = new System.Drawing.Size(87, 29);
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -48,9 +48,9 @@
             // buttonNo
             // 
             this.buttonNo.DialogResult = System.Windows.Forms.DialogResult.No;
-            this.buttonNo.Location = new System.Drawing.Point(105, 117);
+            this.buttonNo.Location = new System.Drawing.Point(105, 71);
             this.buttonNo.Name = "buttonNo";
-            this.buttonNo.Size = new System.Drawing.Size(87, 27);
+            this.buttonNo.Size = new System.Drawing.Size(87, 29);
             this.buttonNo.TabIndex = 2;
             this.buttonNo.Text = "No";
             this.buttonNo.UseVisualStyleBackColor = true;
@@ -58,41 +58,42 @@
             // buttonYes
             // 
             this.buttonYes.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.buttonYes.Location = new System.Drawing.Point(12, 117);
+            this.buttonYes.Location = new System.Drawing.Point(12, 71);
             this.buttonYes.Name = "buttonYes";
-            this.buttonYes.Size = new System.Drawing.Size(87, 27);
+            this.buttonYes.Size = new System.Drawing.Size(87, 29);
             this.buttonYes.TabIndex = 0;
             this.buttonYes.Text = "Yes";
             this.buttonYes.UseVisualStyleBackColor = true;
             // 
             // label
             // 
-            this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label.Location = new System.Drawing.Point(14, 10);
+            this.label.Location = new System.Drawing.Point(14, 11);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(281, 92);
+            this.label.Size = new System.Drawing.Size(289, 45);
             this.label.TabIndex = 3;
-            this.label.Text = "There are unsaved changes that will be lost. Do you wish to Save these changes?";
+            this.label.Text = "There are unsaved changes that will be lost. - Do you wish to Save these changes?" +
+    "";
             // 
-            // saveOnExitForm
+            // SaveOnExitForm
             // 
             this.AcceptButton = this.buttonYes;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(307, 156);
+            this.ClientSize = new System.Drawing.Size(384, 111);
             this.ControlBox = false;
             this.Controls.Add(this.label);
             this.Controls.Add(this.buttonYes);
             this.Controls.Add(this.buttonNo);
             this.Controls.Add(this.buttonCancel);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.Font = new System.Drawing.Font("Arial", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "saveOnExitForm";
+            this.Name = "SaveOnExitForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unsaved Changes";
             this.TopMost = true;

@@ -165,5 +165,17 @@ namespace bark_GUI.Properties {
                 this["WindowSeparatorPosition"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NewXmlFile.brk")]
+        public string PathNew {
+            get {
+                return ((string)(this["PathNew"]));
+            }
+            set {
+                this["PathNew"] = value;
+            }
+        }
     }
 }

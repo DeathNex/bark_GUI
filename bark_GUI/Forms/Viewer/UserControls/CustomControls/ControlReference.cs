@@ -6,6 +6,12 @@ namespace bark_GUI.CustomControls
 {
     public partial class ControlReference : CustomControl
     {
+        public override string Value
+        {
+            get { return comboBoxValue.Text.Trim(); }
+            set { comboBoxValue.Text = value; }
+        }
+
         // This variable is used in the 'SetValue' and 'SetOptions' methods.
         // Because the SetValue can be called before the SetOptions, so a temporary save is required.
         private string _tmpSetValue = "";
@@ -84,6 +90,10 @@ namespace bark_GUI.CustomControls
             // Return true if value changed.
             return valueIsNew;
         }
+        public override void UpdateValues()
+        {
+            comboBoxValue_SelectedIndexChanged(null, null);
+        }
 
 
 
@@ -98,7 +108,7 @@ namespace bark_GUI.CustomControls
 
             // SimpleType Validation & Save
             if (Validator != null)
-                Validator(comboBoxValue.Text.Trim());
+                IsValid = Validator(comboBoxValue.Text.Trim());
         }
     }
 }

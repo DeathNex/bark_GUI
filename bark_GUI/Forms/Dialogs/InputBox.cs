@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 
 namespace bark_GUI.Forms.Dialogs
 {
@@ -30,8 +31,10 @@ namespace bark_GUI.Forms.Dialogs
             prompt.Controls.Add(cancel);
             prompt.Controls.Add(textLabel);
             prompt.Controls.Add(textBox);
+            prompt.ActiveControl = textBox;
 
             var result = prompt.ShowDialog();
+            
 
             return result == DialogResult.OK ? textBox.Text.Trim() : null;
         }

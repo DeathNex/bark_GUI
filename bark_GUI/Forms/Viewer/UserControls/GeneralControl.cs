@@ -28,7 +28,7 @@ namespace bark_GUI.CustomControls
             }
         }
         public bool IsRequired;
-        public bool HasValue { get { return CurrentControl.HasNewValue(); } }
+        public bool HasNewValue { get { return CurrentControl.HasNewValue(); } }
         public string Help;
         public CustomControl CurrentControl;
 
@@ -209,6 +209,12 @@ namespace bark_GUI.CustomControls
                 case CustomControlType.Keyword:
                     CurrentControl = _controlKeyword;
                     break;
+            }
+
+            // Update Items' values (default).
+            foreach (var control in _customControls)
+            {
+                control.UpdateValues();
             }
         }
 

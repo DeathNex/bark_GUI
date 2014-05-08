@@ -117,16 +117,20 @@ namespace bark_GUI.XmlHandling
             // Save on temporary file and validate it before saving.
             var tmpFile = Settings.Default.PathSamples + "\\tmp.brk";
 
-            var tmpLastSavedXml = _lastSavedXml;
-            Save(tmpFile);
-            _lastSavedXml = tmpLastSavedXml;
-
-            if (!_ValidateXml(tmpFile))
+            // Avoid infinite loop
+            if (tmpFile != filepath)
             {
+                var tmpLastSavedXml = _lastSavedXml;
+                Save(tmpFile);
+                _lastSavedXml = tmpLastSavedXml;
+
+                if (!_ValidateXml(tmpFile))
+                {
+                    File.Delete(tmpFile);
+                    return false;
+                }
                 File.Delete(tmpFile);
-                return false;
             }
-            File.Delete(tmpFile);
 
 
             // Check for empty path.

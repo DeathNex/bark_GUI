@@ -517,7 +517,7 @@ namespace bark_GUI
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearRecentListToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
-        private System.Windows.Forms.FlowLayoutPanel elementViewer;
+        public System.Windows.Forms.FlowLayoutPanel elementViewer;
         private System.Windows.Forms.Label labelSelected;
         private System.Windows.Forms.Panel panelElementSelect;
         private System.Windows.Forms.CheckBox checkBoxTreeShowHidden;

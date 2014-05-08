@@ -18,7 +18,7 @@ namespace bark_GUI.CustomControls
                     // IsValid logic.
                     if (control is ControlGroup)
                     {
-                        controlValuesAreValid = ((ControlGroup)control).IsValid;
+                        controlValuesAreValid = control.IsValid;
                     }
                     else
                     {

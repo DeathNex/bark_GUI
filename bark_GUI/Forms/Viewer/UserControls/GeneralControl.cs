@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace bark_GUI.CustomControls
 {
@@ -212,10 +214,7 @@ namespace bark_GUI.CustomControls
             }
 
             // Update Items' values (default).
-            foreach (var control in _customControls)
-            {
-                control.UpdateValues();
-            }
+            CurrentControl.UpdateValues();
         }
 
         #endregion
@@ -223,7 +222,7 @@ namespace bark_GUI.CustomControls
         // When the user changes the type of an element (e.g. constant to variable) the control must be replaced.
         public void ReplaceWith(CustomControlType customControlType)
         {
-            System.Windows.Forms.Control viewer = CurrentControl.Parent;
+            System.Windows.Forms.Control parent = CurrentControl.Parent;
             CustomControl newMe = CurrentControl;
             CustomControl me = CurrentControl;
 
@@ -265,13 +264,25 @@ namespace bark_GUI.CustomControls
                     _updateType("keyword");
                     break;
             }
-            viewer.SuspendLayout();
-            viewer.Controls.Add(newMe);
-            viewer.Controls.SetChildIndex(newMe, viewer.Controls.GetChildIndex(me));
-            viewer.Controls.Remove(me);
+            parent.SuspendLayout();
+            parent.Controls.Add(newMe);
+            parent.Controls.SetChildIndex(newMe, parent.Controls.GetChildIndex(me));
+            parent.Controls.Remove(me);
             CurrentControl = newMe;
             CurrentControl.Focus();
-            viewer.ResumeLayout();
+            CurrentControl.UpdateValues();
+
+            parent.ResumeLayout();
+
+            //Scroll control into view
+            if (CurrentControl.ParentForm is ViewerForm)
+            {
+                var viewer = ((ViewerForm)CurrentControl.ParentForm).elementViewer;
+
+                viewer.VerticalScroll.Value = viewer.VerticalScroll.Maximum;
+                viewer.ScrollControlIntoView(CurrentControl);
+            }
+
         }
 
         // Selects the current/active custom control.

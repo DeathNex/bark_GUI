@@ -19,34 +19,6 @@
 	</simulation>
 	<setup>
 		<materials>
-			<material name="polysterene New">
-				<phase>
-					<keyword>solid</keyword>
-				</phase>
-				<conductivity unit="W/mK">
-					<constant>0.033</constant>
-				</conductivity>
-				<heat_capacity unit="J/kgK">
-					<constant>657.</constant>
-				</heat_capacity>
-				<density unit="kg/m3">
-					<constant>35.</constant>
-				</density>
-				<emissivity unit="-">
-					<constant>0.</constant>
-				</emissivity>
-				<solar_radiation>
-					<transmittance unit="-">
-						<constant>0.0</constant>
-					</transmittance>
-					<absorptivity unit="-">
-						<constant>1.0</constant>
-					</absorptivity>
-					<reflectivity unit="-">
-						<constant>0.0</constant>
-					</reflectivity>
-				</solar_radiation>
-			</material>
 			<material name="polysterene">
 				<phase>
 					<keyword>solid</keyword>
@@ -65,42 +37,17 @@
 				</emissivity>
 				<solar_radiation>
 					<transmittance unit="-">
-						<constant>0.0</constant>
+						<constant>0</constant>
 					</transmittance>
 					<absorptivity unit="-">
-						<constant>1.0</constant>
+						<constant>0</constant>
 					</absorptivity>
 					<reflectivity unit="-">
-						<constant>0.0</constant>
+						<constant>0</constant>
 					</reflectivity>
-				</solar_radiation>
-			</material>
-			<material name="polysterene New New">
-				<phase>
-					<keyword>solid</keyword>
-				</phase>
-				<conductivity unit="W/mK">
-					<constant>0.033</constant>
-				</conductivity>
-				<heat_capacity unit="J/kgK">
-					<constant>657.</constant>
-				</heat_capacity>
-				<density unit="kg/m3">
-					<constant>35.</constant>
-				</density>
-				<emissivity unit="-">
-					<constant>0.</constant>
-				</emissivity>
-				<solar_radiation>
-					<transmittance unit="-">
-						<constant>0.0</constant>
-					</transmittance>
-					<absorptivity unit="-">
-						<constant>1.0</constant>
-					</absorptivity>
-					<reflectivity unit="-">
-						<constant>0.0</constant>
-					</reflectivity>
+					<reference_thickness unit="m">
+						<constant>0</constant>
+					</reference_thickness>
 				</solar_radiation>
 			</material>
 		</materials>
@@ -117,19 +64,19 @@
 		</geometry>
 		<coordinates>
 			<latitude unit="deg">
-				<constant>0.0</constant>
+				<constant>0</constant>
 			</latitude>
 			<longitude unit="deg">
-				<constant>0.0</constant>
+				<constant>0</constant>
 			</longitude>
 			<orientation unit="deg">
-				<constant>0.0</constant>
+				<constant>0</constant>
 			</orientation>
 			<date unit="month">
 				<constant>1</constant>
 			</date>
 			<time unit="hour">
-				<constant>0</constant>
+				<constant>1</constant>
 			</time>
 		</coordinates>
 		<layers>
@@ -145,11 +92,10 @@
 		<boundaries>
 			<boundary name="internal">
 				<temperature x_unit="s" unit="K">
-					<variable>
- 0 277.
- 3600 300.
- 7200 320.
-				</variable>
+					<variable>0 277.
+3600 300.
+7200 320.
+ </variable>
 				</temperature>
 				<heat_transfer_coefficient unit="W/m2K">
 					<constant>8.1</constant>
@@ -160,12 +106,6 @@
 				<heat_flux unit="W/m2">
 					<constant>0.0</constant>
 				</heat_flux>
-				<infrared_irradiance unit="W/m2">
-					<constant>0.0</constant>
-				</infrared_irradiance>
-				<solar_irradiance unit="W/m2">
-					<constant>0.0</constant>
-				</solar_irradiance>
 			</boundary>
 			<boundary name="external">
 				<temperature unit="K">
@@ -181,10 +121,10 @@
 					<constant>0.0</constant>
 				</heat_flux>
 				<infrared_irradiance unit="W/m2">
-					<constant>0.0</constant>
+					<constant>0</constant>
 				</infrared_irradiance>
 				<solar_irradiance unit="W/m2">
-					<constant>0.0</constant>
+					<constant>0</constant>
 				</solar_irradiance>
 			</boundary>
 		</boundaries>

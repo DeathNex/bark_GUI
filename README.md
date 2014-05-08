@@ -1,44 +1,31 @@
 ﻿#bark_GUI#
 ----------
-#bark_GUI TODO#
----------------
 
 ##NEXT TODO##
-
-##PRIMARY TODO##
-- [x] Load & read .dat files.
-- [x] Graphical representation of data loaded from .dat files on charts.
-- [x] Fix Right-Click Actions.
-- [x] Fix New XML file.
-- [x] Load XSD files and build the structure accordingly.
-- [x] Load XML files and place the data on the loaded structure items.
-- [x] Edit XML files and their data.
-- [x] Handle type change (control replace without losing data)
-      [x] 1. Create Control of that type with the correct data (XSD);
-      [x] 2. Place it where this control was;
-      [x] 3. Update the _XmlDocument;
-	  [x] 4. Remove this (control);
-- [x] Handle Tree structure changes & update _XmlDocument
-- [x] Save XML files.
-- [x] Create XML files.
-- [x] User actions on certain items: Add, Delete, Rename, Duplicate (Material, Layer and others)
-
-##SECONDARY TODO##
-- [x] Group items in the element Viewer for better visual representation.
-- [x] Implement dirty files for save.
-- [ ] Handle Functions (wallsun.brk)
-- [ ] try-catch dangerous code (like file handling, Tags, casts, null references)
-- [ ] Properly handle the XMLHandler XSD & XML load errors in the try-catch. It doesnt always have to be a messagebox.
+- [x] Use data grid view instead of array of text boxes in variable.
+- [x] Check if big data is handled in GUI and in Simulation (Graph).
+- [ ] Fix bugs. (Function invalid? cannot save) (<constant>sinusoidal</constant>) at wallsun.brk
+- [ ] Handle/remove functions.
+- [ ] Fix loading more elements than it has to. (XSD default values kick in)
 
 ##POLISHING##
+- [ ] Make sure all sample files work correct.
 - [ ] Update UML Diagrams.
-- [ ] Element view: Τα optional labels να φαίνονται με διαφορετικό χρώμα.
-- [ ] Check if any XmlNode.FirstChild careless use still remains.
-- [ ] Check comments of type 'TODO', 'CHECK', '!!!', '???', etc.
+- [ ] Use Status Messages for time consuming actions.
+- [x] Check if any XmlNode.FirstChild careless use still remains.
+- [x] Check comments of type 'TODO', 'CHECK', '!!!', '???', etc.
 
 
 #bark_GUI CHANGELOG#
 --------------------
+
+v0.21
+-----
++	Replaced custom control variable table with DataGridView due to error when loading a lot of variable data.
++	Added scroll to current control in element viewer when a type change occurs.
++	Updated and expanded UML diagrams.
++	Prepared screenshots for thesis theory.
++	Fixed a minor bug with Simulation Start.
 
 v0.20
 -----

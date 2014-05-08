@@ -79,6 +79,7 @@ namespace bark_GUI
             }
 
             diagram.RestoreScale(diagram.GraphPane);
+            diagram.GraphPane.ZoomStack.Clear();
         }
 
         #region Private Initialization Methods

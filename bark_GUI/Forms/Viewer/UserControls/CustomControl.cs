@@ -17,7 +17,7 @@ namespace bark_GUI.CustomControls
         public string Help { get; set; }
 
         // Inheriting Variables
-        public virtual bool IsRequired { get; set; }
+        public bool IsRequired { get; set; }
 
         public virtual bool IsValid { get; protected set; }
 

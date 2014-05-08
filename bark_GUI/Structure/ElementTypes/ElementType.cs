@@ -6,7 +6,13 @@ namespace bark_GUI.Structure.ElementTypes
 
     public class ElementType
     {
-        public string Value { get; set; }
+        private string _value;
+        public string Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
         public string DefaultValue { get; set; }
         public EType CurrentElementType { get; protected set; }
 

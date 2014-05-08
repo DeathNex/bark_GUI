@@ -362,7 +362,13 @@ namespace bark_GUI
 
         private void _SimulationStart()
         {
-            statusMain.Text = "Simulation Begin...";
+            if (!AllControlsAreValid())
+            {
+                MessageBox.Show(
+                    "One or more values are not valid (Red Color).\n" +
+                    "Please fill the controls with proper values before saving.");
+                return;
+            }
 
             // Check.
             if (string.IsNullOrEmpty(Settings.Default.PathCurrentFile))
@@ -381,6 +387,8 @@ namespace bark_GUI
                 MessageBox.Show("Filepath of bark.exe or current xml file was wrong. No file exists.");
                 return;
             }
+
+            statusMain.Text = "Simulation Begin...";
 
             // Simulation.
             Process.Start(Settings.Default.PathBarkExe + "\\bark.exe",

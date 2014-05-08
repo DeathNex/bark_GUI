@@ -148,6 +148,7 @@ namespace bark_GUI.XmlHandling
 
                             content.Add(new XElement("function", functionElement));
                         }
+                        else return null;
                         break;
                     case EType.Keyword:
                         content.Add(new XElement("keyword", elementValue));

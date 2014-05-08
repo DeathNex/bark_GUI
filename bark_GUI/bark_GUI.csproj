@@ -138,12 +138,6 @@
     <Compile Include="Forms\Viewer\UserControls\CustomControls\ControlVariable.Designer.cs">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Viewer\UserControls\ControlVariableTable.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Viewer\UserControls\ControlVariableTable.Designer.cs">
-      <DependentUpon>ControlVariableTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Viewer\UserControls\CustomControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -209,9 +203,6 @@
     <EmbeddedResource Include="Forms\Viewer\UserControls\CustomControls\ControlVariable.resx">
       <DependentUpon>ControlVariable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Viewer\UserControls\ControlVariableTable.resx">
-      <DependentUpon>ControlVariableTable.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Diagram\FormDiagram.resx">
       <DependentUpon>FormDiagram.cs</DependentUpon>
     </EmbeddedResource>
@@ -237,6 +228,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

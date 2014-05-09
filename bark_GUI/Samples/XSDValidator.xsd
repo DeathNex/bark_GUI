@@ -5,6 +5,7 @@
   <xs:include schemaLocation="XSDValidatorFunctions.xsd"/>
   <xs:include schemaLocation="XSDValidatorSimpleTypes.xsd"/>
   
+  <!-- File last updated on Build Version 0.22 [09/05/2014] -->
 
   <!--SEARCH-TAGS:
   FIXHERE
@@ -15,6 +16,8 @@
   (END) InnerElement D(#) <name>
   (END) AttributeElement <name>
   Define <name>:
+  
+  MinOccurs = 0 ====> required = false
   -->
 
 
@@ -74,9 +77,9 @@
                             <xs:complexType>
                               <xs:all>
                                 <xs:element name="transmittance" type="transmittance" minOccurs="0" />
-                                <xs:element name="absorptivity" type="absorptivity" />                  <!-- CHECKHERE if required -->
-                                <xs:element name="reflectivity" type="reflectivity" />                   <!-- CHECKHERE if required -->
-                                <xs:element name="reference_thickness" type="space" minOccurs="0" />      <!-- CHECKHERE if new type is needed -->
+                                <xs:element name="absorptivity" type="absorptivity" />
+                                <xs:element name="reflectivity" type="reflectivity" />
+                                <xs:element name="reference_thickness" type="space" minOccurs="0" />
                               </xs:all>
                             </xs:complexType>
                           </xs:element>
@@ -139,7 +142,7 @@
                             <xs:complexType>
                               <xs:sequence>
 
-                                <xs:element name="thickness" type="space" />                                <!-- CHECKHERE type -->
+                                <xs:element name="thickness" type="space" />
 
                               </xs:sequence>
                             </xs:complexType>
@@ -174,8 +177,8 @@
                           <xs:element name="heat_transfer_coefficient" type="heat_transfer_coefficient" />
                           <xs:element name="velocity" type="velocity" />
                           <xs:element name="heat_flux" type="heat_flux" />
-                          <xs:element name="infrared_irradiance" type="heat_flux" minOccurs="0" />         <!-- CHECKHERE if new type is needed -->
-                          <xs:element name="solar_irradiance" type="heat_flux" minOccurs="0" />         <!-- CHECKHERE if new type is needed -->
+                          <xs:element name="infrared_irradiance" type="heat_flux" minOccurs="0" />
+                          <xs:element name="solar_irradiance" type="heat_flux" minOccurs="0" />
 
                         </xs:sequence>
                         <xs:attribute name="name" type="xs:string" default="Unknown" />
@@ -228,36 +231,7 @@
               </xs:element>
               <!--END InnerElement D1 <file>-->
 
-              <!--InnerElement D1 <graph>-->
-              <!-- FIXHERE -->
-              <xs:element name="graph" minOccurs="0">
-                <xs:complexType>
-                  <xs:sequence>
-
-                    <!--AttributeElement <filename>-->
-                    <xs:element name="filename">
-                      <xs:complexType>
-                        <xs:attribute name="name" type="xs:string"/>
-                        <xs:attribute name="filename" type="xs:string"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <!--AttributeElement <xvariable>-->
-                    <xs:element name="xvariable">
-                      <xs:complexType>
-                        <xs:attribute name="title" type="xs:string"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <!--AttributeElement <yvariable>-->
-                    <xs:element name="yvariable">
-                      <xs:complexType>
-                        <xs:attribute name="title" type="xs:string"/>
-                      </xs:complexType>
-                    </xs:element>
-
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <!--END InnerElement D1 <graph>-->
+              
             </xs:sequence>
           </xs:complexType>
         </xs:element>

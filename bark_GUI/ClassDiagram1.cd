@@ -1,70 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="bark_GUI.AboutBox" Collapsed="true">
-    <Position X="28.25" Y="25.25" Width="1.5" />
+    <Position X="29" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EIACAAgAACAACAUABACAAAADAAAAEIAAAAAAAACAAAA=</HashCode>
       <FileName>Forms\About\AboutBox.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.FormDiagram" Collapsed="true">
-    <Position X="22.25" Y="25.25" Width="1.5" />
+    <Position X="23" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAEQAAYCAAACCQEACAAAACAAAAAAABAAAAAEABAIA=</HashCode>
       <FileName>Forms\Diagram\FormDiagram.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.SaveOnExitForm" Collapsed="true">
-    <Position X="31.75" Y="26" Width="1.5" />
+    <Position X="32.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgACAAABAEAACABAACEAAAAAAAAAAAAAAAEAA=</HashCode>
       <FileName>Forms\Dialogs\SaveOnExitForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.ControlPrefPath" Collapsed="true">
-    <Position X="20" Y="25.5" Width="1.5" />
+    <Position X="20.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAEAACAAAAAEIACAAAACAAACAAQAAAAAAAAAABA=</HashCode>
       <FileName>Forms\Preferences\ControlPrefPath.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.PreferencesForm" Collapsed="true">
-    <Position X="26.25" Y="25.25" Width="1.5" />
+    <Position X="27" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAABAAIACABABCEIAAAAAAAACAAIABAAA=</HashCode>
       <FileName>Forms\Preferences\PreferencesForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.ViewerForm" Collapsed="true">
-    <Position X="27.25" Y="24.25" Width="1.5" />
+    <Position X="28" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>DISERwAwYyggIMRiBDa7xYmirEjCRItIAgAEhGAhgFQ=</HashCode>
       <FileName>Forms\Viewer\ViewerForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Program" Collapsed="true">
-    <Position X="27.25" Y="23.5" Width="1.5" />
+    <Position X="28" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABACAAEA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Forms.Dialogs.DiagramDataDialog" Collapsed="true">
-    <Position X="24" Y="26" Width="1.75" />
+    <Position X="24.75" Y="5.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQQAIAAACAAAAEAAgCAAECCBAIABAAQIAAAQAQAAAA=</HashCode>
       <FileName>Forms\Dialogs\DiagramDataDialog.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Forms.Dialogs.InputBox" Collapsed="true">
-    <Position X="30" Y="26.25" Width="1.5" />
+    <Position X="30.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Dialogs\InputBox.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.CustomControl" Collapsed="true">
-    <Position X="15.25" Y="29.5" Width="1.5" />
+    <Position X="16" Y="9" Width="1.5" />
     <Members>
       <Field Name="_defaultValue" Hidden="true" />
       <Method Name="ConvertToCustomControl_Type" Hidden="true" />
@@ -83,12 +83,12 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlConstant" Collapsed="true">
-    <Position X="16.75" Y="31" Width="1.5" />
+    <Position X="17.5" Y="10.5" Width="1.5" />
     <InheritanceLine Type="bark_GUI.CustomControls.CustomControl" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="30.191" />
-        <Point X="16" Y="31.375" />
-        <Point X="16.75" Y="31.375" />
+        <Point X="16.75" Y="9.691" />
+        <Point X="16.75" Y="10.875" />
+        <Point X="17.5" Y="10.875" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -97,42 +97,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlFunction" Collapsed="true">
-    <Position X="16.75" Y="32.5" Width="1.5" />
+    <Position X="17.5" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAASgAEgECAIAAKAAAAAACAABAgAAAgAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\CustomControls\ControlFunction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlGroup" Collapsed="true">
-    <Position X="16.75" Y="34.75" Width="1.5" />
+    <Position X="17.5" Y="14.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAQAIACAAQAAAgAiAAIACAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\CustomControls\ControlGroup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlKeyword" Collapsed="true">
-    <Position X="16.75" Y="33.25" Width="1.5" />
+    <Position X="17.5" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAADAASgAEgACAAAACgAAAAACAAAAgAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\CustomControls\ControlKeyword.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlReference" Collapsed="true">
-    <Position X="16.75" Y="34" Width="1.5" />
+    <Position X="17.5" Y="13.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAIDAASgAEgACAAAACgAAAAACAAAAgAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\CustomControls\ControlReference.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.ControlVariable" Collapsed="true">
-    <Position X="16.75" Y="31.75" Width="1.5" />
+    <Position X="17.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAQAAAgACKAASgAEgECQAQQCAAAwAALAAgIgCAQgAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\CustomControls\ControlVariable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.CustomControls.GeneralControl">
-    <Position X="11.75" Y="29.5" Width="2" />
+    <Position X="12.5" Y="9" Width="2" />
     <Members>
       <Field Name="_name" Hidden="true" />
       <Field Name="_updateType" Hidden="true" />
@@ -158,17 +158,13 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="bark_GUI.Properties.Resources" Collapsed="true">
-    <Position X="26" Y="36" Width="1.5" />
-    <Members>
-      <Field Name="resourceCulture" Hidden="true" />
-      <Field Name="resourceMan" Hidden="true" />
-    </Members>
+    <Position X="26.75" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAQAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Properties.Settings">
-    <Position X="27.75" Y="36" Width="2.25" />
+    <Position X="28.5" Y="15.5" Width="2.25" />
     <Members>
       <Field Name="defaultInstance" Hidden="true" />
       <Method Name="SettingChangingEventHandler" Hidden="true" />
@@ -181,14 +177,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Simulation.DataParser">
-    <Position X="33.75" Y="31.25" Width="1.5" />
+    <Position X="34.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Simulation\DataParser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementConstant">
-    <Position X="4.25" Y="40.5" Width="1.5" />
+    <Position X="5" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAgAAIAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Structure\ElementTypes\ElementConstant.cs</FileName>
@@ -198,28 +194,28 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementFunction">
-    <Position X="8.25" Y="40.5" Width="1.5" />
+    <Position X="9" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Structure\ElementTypes\ElementFunction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementKeyword">
-    <Position X="10.25" Y="40.5" Width="1.5" />
+    <Position X="11" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Structure\ElementTypes\ElementKeyword.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementReference">
-    <Position X="12.25" Y="40.5" Width="1.5" />
+    <Position X="13" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Structure\ElementTypes\ElementReference.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementType">
-    <Position X="12.5" Y="35" Width="1.75" />
+    <Position X="13.25" Y="14.5" Width="1.75" />
     <Members>
       <Field Name="_value" Hidden="true" />
     </Members>
@@ -229,19 +225,19 @@
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ElementTypes.ElementVariable">
-    <Position X="6.25" Y="40.5" Width="1.5" />
+    <Position X="7" Y="20" Width="1.5" />
     <AssociationLine Name="Unit" Type="bark_GUI.Structure.Unit" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.375" Y="43.146" />
-        <Point X="7.375" Y="45" />
-        <Point X="6.5" Y="45" />
+        <Point X="8.125" Y="22.646" />
+        <Point X="8.125" Y="24.5" />
+        <Point X="7.25" Y="24.5" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="XUnit" Type="bark_GUI.Structure.Unit" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.25" Y="43.146" />
-        <Point X="7.25" Y="44.62" />
-        <Point X="6.5" Y="44.62" />
+        <Point X="8" Y="22.646" />
+        <Point X="8" Y="24.12" />
+        <Point X="7.25" Y="24.12" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -254,7 +250,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.Items.ElementItem">
-    <Position X="8.25" Y="33.25" Width="1.5" />
+    <Position X="9" Y="12.75" Width="1.5" />
     <Members>
       <Method Name="ElementItem" Hidden="true" />
       <Method Name="SaveVariable" Hidden="true" />
@@ -263,9 +259,9 @@
     </Members>
     <AssociationLine Name="SelectedType" Type="bark_GUI.Structure.ElementTypes.ElementType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="9.75" Y="34.062" />
-        <Point X="13.312" Y="34.062" />
-        <Point X="13.312" Y="35" />
+        <Point X="10.5" Y="13.562" />
+        <Point X="14.062" Y="13.562" />
+        <Point X="14.062" Y="14.5" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -278,7 +274,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.Items.GroupItem">
-    <Position X="4.5" Y="28.5" Width="1.5" />
+    <Position X="5.25" Y="8" Width="1.5" />
     <Members>
       <Method Name="GroupItem" Hidden="true" />
       <Method Name="Remove" Hidden="true" />
@@ -292,7 +288,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.Items.Item">
-    <Position X="8.25" Y="28.5" Width="1.5" />
+    <Position X="9" Y="8" Width="1.5" />
     <Members>
       <Field Name="_count" Hidden="true" />
       <Field Name="_id" Hidden="true" />
@@ -307,33 +303,33 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.ItemTypes.ComplexType">
-    <Position X="8.25" Y="36.75" Width="1.75" />
+    <Position X="9" Y="16.25" Width="1.75" />
     <AssociationLine Name="Constant" Type="bark_GUI.Structure.ElementTypes.ElementConstant" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="8.25" Y="38.438" />
-        <Point X="5.656" Y="38.438" />
-        <Point X="5.656" Y="40.5" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Keyword" Type="bark_GUI.Structure.ElementTypes.ElementKeyword" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10" Y="38.5" />
-        <Point X="10.594" Y="38.5" />
-        <Point X="10.594" Y="40.5" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Reference" Type="bark_GUI.Structure.ElementTypes.ElementReference" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10" Y="38.438" />
-        <Point X="12.594" Y="38.438" />
-        <Point X="12.594" Y="40.5" />
+        <Point X="9" Y="17.938" />
+        <Point X="6.406" Y="17.938" />
+        <Point X="6.406" Y="20" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Variable" Type="bark_GUI.Structure.ElementTypes.ElementVariable" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="8.25" Y="38.5" />
-        <Point X="7.406" Y="38.5" />
-        <Point X="7.406" Y="40.5" />
+        <Point X="9" Y="18" />
+        <Point X="8.156" Y="18" />
+        <Point X="8.156" Y="20" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Keyword" Type="bark_GUI.Structure.ElementTypes.ElementKeyword" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="18" />
+        <Point X="11.344" Y="18" />
+        <Point X="11.344" Y="20" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Reference" Type="bark_GUI.Structure.ElementTypes.ElementReference" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="17.938" />
+        <Point X="13.344" Y="17.938" />
+        <Point X="13.344" Y="20" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -342,25 +338,25 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Constant" />
+      <Property Name="Variable" />
       <Property Name="Function" />
       <Property Name="Keyword" />
       <Property Name="Reference" />
-      <Property Name="Variable" />
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.ItemTypes.ItemType">
-    <Position X="2.5" Y="36.75" Width="1.5" />
+    <Position X="3.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAAgAAAAAAAAA=</HashCode>
       <FileName>Structure\ItemTypes\ItemType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.ItemTypes.SimpleType">
-    <Position X="2" Y="46.5" Width="2.25" />
+    <Position X="2.75" Y="26" Width="2.25" />
     <InheritanceLine Type="bark_GUI.Structure.ItemTypes.ItemType" FixedToPoint="true">
       <Path>
-        <Point X="3.25" Y="38.497" />
-        <Point X="3.25" Y="46.5" />
+        <Point X="4" Y="17.997" />
+        <Point X="4" Y="26" />
       </Path>
     </InheritanceLine>
     <AssociationLine Name="_restriction" Type="bark_GUI.Structure.ItemTypes.Restriction">
@@ -373,117 +369,117 @@
       <FileName>Structure\ItemTypes\SimpleType.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_basicType" />
       <Field Name="_restriction" />
+      <Field Name="_basicType" />
     </ShowAsAssociation>
   </Class>
   <Class Name="bark_GUI.Structure.Structure">
-    <Position X="35.5" Y="24.5" Width="2.75" />
+    <Position X="36.25" Y="4" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAJASFSAIABAACQAAAICQAgABBAoACACCIAAQAEIAIM=</HashCode>
       <FileName>Structure\Structure.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.Structure.Unit">
-    <Position X="4.75" Y="43.5" Width="1.75" />
+    <Position X="5.5" Y="23" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAQAAAAAAAEAAAIQAAAAAAAAAAAAAQAAAAAI=</HashCode>
       <FileName>Structure\Unit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.XmlHandling.XmlHandler">
-    <Position X="24.5" Y="29" Width="3" />
+    <Position X="25.25" Y="8.5" Width="3" />
     <TypeIdentifier>
       <HashCode>QQAAiIAAAIBAACDAFAAAAAAAAIAEAAKAAAAAAABAAAA=</HashCode>
       <FileName>XmlHandling\XML_Handler.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.XmlHandling.XmlParser">
-    <Position X="33.75" Y="28.25" Width="1.5" />
+    <Position X="34.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAAAAEAAgAQAAAAAAAAADAAAAAQAAIAABAAAAAAAA=</HashCode>
       <FileName>XmlHandling\XML_Parser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.XmlHandling.XsdHandler">
-    <Position X="27.75" Y="29" Width="3" />
+    <Position X="28.5" Y="8.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AhAAgAgAAgCAACAAgIAiAEAKAAEAABAAiAAAAAAAAAA=</HashCode>
       <FileName>XmlHandling\XSD_Handler.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="bark_GUI.XmlHandling.XsdParser">
-    <Position X="33.75" Y="24.25" Width="1.5" />
+    <Position X="34.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAgAQAgAAUAAAAAiAAAAAAECACAAgBAADAA=</HashCode>
       <FileName>XmlHandling\XSD_Parser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="bark_GUI.CustomControls.ICustomControl" Collapsed="true">
-    <Position X="16.75" Y="30.25" Width="1.5" />
+    <Position X="17.5" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAIAAAAIAAAAAQgAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\ICustomControl.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="bark_GUI.CustomControls.CustomControlType">
-    <Position X="16.5" Y="35.75" Width="1.75" />
+    <Position X="17.25" Y="15.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAECAAAAAAAAAAAAAAAIAAAAAAQgAAAQAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="bark_GUI.Structure.ElementTypes.EType">
-    <Position X="10.5" Y="35" Width="1.5" />
+    <Position X="11.25" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAAAAAAAAIAAAAAAQgAAAQAAAAAAAA=</HashCode>
       <FileName>Structure\ElementTypes\ElementType.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="bark_GUI.Structure.ItemTypes.Restriction">
-    <Position X="1.5" Y="49.25" Width="1.5" />
+    <Position X="2.25" Y="28.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAACAAAA=</HashCode>
       <FileName>Structure\ItemTypes\SimpleType.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="bark_GUI.Structure.ItemTypes.BasicType">
-    <Position X="3.25" Y="50.5" Width="1.5" />
+    <Position X="4" Y="30" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAAQAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Structure\ItemTypes\SimpleType.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Delegate Name="bark_GUI.CustomControls.ValueValidator" Collapsed="true">
-    <Position X="14.25" Y="31" Width="1.5" />
+    <Position X="15" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="bark_GUI.CustomControls.SaveVariable" Collapsed="true">
-    <Position X="14.25" Y="31.75" Width="1.5" />
+    <Position X="15" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="bark_GUI.CustomControls.TypeChange" Collapsed="true">
-    <Position X="14.25" Y="32.5" Width="1.5" />
+    <Position X="15" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="bark_GUI.CustomControls.UnitChange" Collapsed="true">
-    <Position X="14.25" Y="33.25" Width="1.5" />
+    <Position X="15" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="bark_GUI.CustomControls.XUnitChange" Collapsed="true">
-    <Position X="14.25" Y="34" Width="1.5" />
+    <Position X="15" Y="13.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Forms\Viewer\UserControls\GeneralControl.cs</FileName>

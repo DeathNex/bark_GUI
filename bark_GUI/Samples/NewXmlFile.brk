@@ -146,10 +146,5 @@
         <constant>1</constant>
       </space_step>
     </file>
-    <graph>
-      <filename name="name1" />
-      <xvariable />
-      <yvariable />
-    </graph>
   </output>
 </case>

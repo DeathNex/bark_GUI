@@ -1,0 +1,29 @@
+			<!--InnerElement D1 <graph>-->
+              <xs:element name="graph" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+
+                    <!--AttributeElement <filename>-->
+                    <xs:element name="filename">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string"/>
+                        <xs:attribute name="filename" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <!--AttributeElement <xvariable>-->
+                    <xs:element name="xvariable">
+                      <xs:complexType>
+                        <xs:attribute name="title" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <!--AttributeElement <yvariable>-->
+                    <xs:element name="yvariable">
+                      <xs:complexType>
+                        <xs:attribute name="title" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <!--END InnerElement D1 <graph>-->

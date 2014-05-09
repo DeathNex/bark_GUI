@@ -19,6 +19,12 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.22
+-----
++	Made proper use of status messages for user feedback in case of slow machines or problems.
++	Fixed a bug with controls not validating correctly in a specified case.
++	Removed 'Graph' element from the XSD and XML files.
+
 v0.21
 -----
 +	Replaced custom control variable table with DataGridView due to error when loading a lot of variable data.

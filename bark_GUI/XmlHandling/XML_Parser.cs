@@ -221,6 +221,7 @@ namespace bark_GUI.XmlHandling
             elementItem.Control.Select(CustomControlType.Constant);
             elementItem.Control.SetValue(eConstant.Value);
             elementItem.Control.SetUnit(inXmlNode.Attributes["unit"].Value.Trim());
+            elementItem.Control.CurrentControl.UpdateValues();
         }
 
         private static void DrawAVariable(XmlNode inXmlNode, Item item)
@@ -270,6 +271,7 @@ namespace bark_GUI.XmlHandling
             var xUnit = inXmlNode.Attributes["x_unit"];
             if (xUnit != null)
                 elementItem.Control.SetX_Unit(xUnit.Value.Trim());
+            elementItem.Control.CurrentControl.UpdateValues();
         }
 
         // TODO: Handle functions.
@@ -304,6 +306,7 @@ namespace bark_GUI.XmlHandling
             // Set the item's Control.
             elementItem.Control.Select(CustomControlType.Function);
             elementItem.Control.SetValue(fvalue);
+            elementItem.Control.CurrentControl.UpdateValues();
         }
 
         private static void DrawAKeyword(XmlNode inXmlNode, Item item)
@@ -336,6 +339,7 @@ namespace bark_GUI.XmlHandling
             // Set the item's Control.
             elementItem.Control.Select(CustomControlType.Keyword);
             elementItem.Control.SetValue(kvalue);
+            elementItem.Control.CurrentControl.UpdateValues();
         }
 
         private static void DrawAReference(XmlNode inXmlNode, Item item)
@@ -369,6 +373,7 @@ namespace bark_GUI.XmlHandling
             // Set the item's Control.
             elementItem.Control.Select(CustomControlType.Reference);
             elementItem.Control.SetValue(rvalue);
+            elementItem.Control.CurrentControl.UpdateValues();
         }
         #endregion
 

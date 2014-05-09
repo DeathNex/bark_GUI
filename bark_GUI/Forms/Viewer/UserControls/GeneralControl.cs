@@ -222,7 +222,7 @@ namespace bark_GUI.CustomControls
         // When the user changes the type of an element (e.g. constant to variable) the control must be replaced.
         public void ReplaceWith(CustomControlType customControlType)
         {
-            System.Windows.Forms.Control parent = CurrentControl.Parent;
+            Control parent = CurrentControl.Parent;
             CustomControl newMe = CurrentControl;
             CustomControl me = CurrentControl;
 

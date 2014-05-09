@@ -125,10 +125,7 @@ namespace bark_GUI.XmlHandling
                 _lastSavedXml = tmpLastSavedXml;
 
                 if (!_ValidateXml(tmpFile))
-                {
-                    File.Delete(tmpFile);
                     return false;
-                }
                 File.Delete(tmpFile);
             }
 

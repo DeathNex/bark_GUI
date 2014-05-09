@@ -19,7 +19,11 @@ namespace bark_GUI.CustomControls
         // Inheriting Variables
         public bool IsRequired { get; set; }
 
-        public virtual bool IsValid { get; protected set; }
+        public virtual bool IsValid
+        {
+            get { return _isValid; }
+            protected set { _isValid = value; }
+        }
 
         public virtual string Value { get; set; }
 
@@ -72,6 +76,7 @@ namespace bark_GUI.CustomControls
 
         /* INHERITING METHODS */
         public ValueValidator Validator;
+        private bool _isValid;
         public virtual void SetValue(string value) { }
         public virtual void SetUnit(string unit) { }
         public virtual void SetX_Unit(string xUnit) { }

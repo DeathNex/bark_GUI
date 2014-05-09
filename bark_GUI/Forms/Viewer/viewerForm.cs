@@ -209,45 +209,21 @@ namespace bark_GUI
             var pathNewFile = Settings.Default.PathSamples + '\\' + Settings.Default.PathNew;
 
             _loadFile(pathNewFile);
-
-
-            //var path = Settings.Default.PathSamples + '\\' + Settings.Default.XSDValidatorName;
-
-            //if (!_closeFile()) return;
-
-            ////Change the action status label
-            //statusMain.Text = "Creating XML...";
-
-            //_elementViewerIsInitialized = false;
-
-            ////Set the new current file path
-            //Settings.Default.PathCurrentFile = null;
-
-            ////Load the XML file
-            //if (!_xmlHandler.New(path))
-            //{
-            //    statusMain.Text = "Error";
-            //    return;
-            //}
-
-            ////Load the viewers
-            //_InitializeTreeViewer();
-            //_InitializeElementViewer();
-
-            ////Update Status label at the bottom of the window
-            //Text = "*Unsaved*";
-            //statusMain.Text = "Ready";
         }
 
         private void _saveFile() { _saveAsFile(Settings.Default.PathCurrentFile); }
 
         private void _saveAsFile(string filepath)
         {
+            // Change the action status label
+            statusMain.Text = "Saving...";
+
             if (!AllControlsAreValid())
             {
                 MessageBox.Show(
                     "One or more values are not valid (Red Color).\n" +
                     "Please fill the controls with proper values before saving.");
+                statusMain.Text = "Error";
                 return;
             }
 
@@ -260,17 +236,27 @@ namespace bark_GUI
 
             var success = _xmlHandler.Save(filepath);
 
-            if(!success) return;
+            if (!success)
+            {
+                statusMain.Text = "Error";
+                return;
+            }
 
+            // Set saved file path as the current file.
             Settings.Default.PathCurrentFile = filepath;
+
+            // Set Viewer title.
             Text = _getFileNameOf(filepath) + " - " + Title;
+
+            // Change the action status label
+            statusMain.Text = "Ready";
         }
 
         private void _loadFile(string filepath)
         {
             if (!_closeFile()) return;
 
-            //Change the action status label
+            // Change the action status label
             statusMain.Text = "Loading XML...";
 
             _elementViewerIsInitialized = false;
@@ -330,6 +316,9 @@ namespace bark_GUI
 
         private bool _closeFile()
         {
+            // Change the action status label
+            statusMain.Text = "Closing...";
+
             //Handle any dirty files
             if (_xmlHandler.HasDirtyFiles())
             {
@@ -340,17 +329,17 @@ namespace bark_GUI
                 switch (result)
                 {
                     case DialogResult.Cancel:
+                        statusMain.Text = "Canceled";
                         return false;
                     case DialogResult.No:
                         break;
                     case DialogResult.Yes:
-                        statusMain.Text = "Saving...";
                         _saveFile();
                         break;
                 }
             }
 
-            //Close
+            // Close
             treeViewer.Nodes.Clear();
             elementViewer.Controls.Clear();
             _xmlHandler.Clear();
@@ -362,6 +351,9 @@ namespace bark_GUI
 
         private void _SimulationStart()
         {
+            // Change the action status label
+            statusMain.Text = "Executing Simulation...";
+
             if (!AllControlsAreValid())
             {
                 MessageBox.Show(
@@ -388,7 +380,7 @@ namespace bark_GUI
                 return;
             }
 
-            statusMain.Text = "Simulation Begin...";
+            statusMain.Text = "Executing Simulation...";
 
             // Simulation.
             Process.Start(Settings.Default.PathBarkExe + "\\bark.exe",
@@ -399,14 +391,17 @@ namespace bark_GUI
 
         private void _CreateGraph()
         {
-            var dataPath = @"D:\Projects\bark_GUI\bark_GUI\bin\Debug\Samples\transparent.dat";
+            // Change the action status label
+            statusMain.Text = "Creating Graph...";
+
             var dataFileName = _getFileNameOf(Settings.Default.PathCurrentFile).Split('.')[0];
-            dataPath = Settings.Default.PathSamples + '\\' + dataFileName + ".dat";
+            var dataPath = Settings.Default.PathSamples + '\\' + dataFileName + ".dat";
 
             // Check.
             if (string.IsNullOrEmpty(Settings.Default.PathCurrentFile))
             {
                 MessageBox.Show("No file loaded to create graph from. Please first open a file.");
+                statusMain.Text = "Error";
                 return;
             }
 
@@ -415,6 +410,7 @@ namespace bark_GUI
             {
                 MessageBox.Show("No data file found for " + dataFileName +
                     ".\nStart the simulation before creating a graph.");
+                statusMain.Text = "Error";
                 return;
             }
 
@@ -422,7 +418,11 @@ namespace bark_GUI
             var data = DataParser.ReadData(dataPath);
 
             // Check.
-            if (data == null || data.Length < 1) return;
+            if (data == null || data.Length < 1)
+            {
+                statusMain.Text = "Error";
+                return;
+            }
 
             // Use data from .dat file and prompt user to select x/y axis'.
             string xAxis = "";
@@ -439,13 +439,17 @@ namespace bark_GUI
                     yAxis = form.YAxisSelected;
                 }
                 else
+                {
+                    statusMain.Text = "Canceled";
                     return;
+                }
             }
 
             // Check user selection.
             if (string.IsNullOrEmpty(xAxis) || yAxis == null || yAxis.Length == 0)
             {
                 MessageBox.Show("X-Axis or Y-Axis was not selected.");
+                statusMain.Text = "Error";
                 return;
             }
 
@@ -453,6 +457,8 @@ namespace bark_GUI
             var filenameData = dataPath.Substring(dataPath.LastIndexOf('\\') + 1);
             Program.FormDiagram1 = new FormDiagram(filenameData, xAxis, yAxis, data);
             Program.FormDiagram1.Show();
+
+            statusMain.Text = "Ready";
         }
 
         private void _PreferencesShow()
@@ -466,7 +472,7 @@ namespace bark_GUI
         }
 
         private bool AllControlsAreValid()
-        { return elementViewer.Controls.OfType<CustomControl>().All(control1 => control1.IsValid); }
+        { return elementViewer.Controls.OfType<CustomControl>().All(control => control.IsValid); }
 
         /// <summary> Adds the file to the recent list. </summary>
         /// <param name="filePath"> The file's path. </param>

@@ -19,7 +19,7 @@
 	</simulation>
 	<setup>
 		<materials>
-			<material name="polysterene">
+			<material name="polystyrene">
 				<phase>
 					<keyword>solid</keyword>
 				</phase>
@@ -37,17 +37,14 @@
 				</emissivity>
 				<solar_radiation>
 					<transmittance unit="-">
-						<constant>0</constant>
+						<constant>0.0</constant>
 					</transmittance>
 					<absorptivity unit="-">
-						<constant>0</constant>
+						<constant>1.0</constant>
 					</absorptivity>
 					<reflectivity unit="-">
-						<constant>0</constant>
+						<constant>0.0</constant>
 					</reflectivity>
-					<reference_thickness unit="m">
-						<constant>0</constant>
-					</reference_thickness>
 				</solar_radiation>
 			</material>
 		</materials>
@@ -64,19 +61,19 @@
 		</geometry>
 		<coordinates>
 			<latitude unit="deg">
-				<constant>0</constant>
+				<constant>0.0</constant>
 			</latitude>
 			<longitude unit="deg">
-				<constant>0</constant>
+				<constant>0.0</constant>
 			</longitude>
 			<orientation unit="deg">
-				<constant>0</constant>
+				<constant>0.0</constant>
 			</orientation>
 			<date unit="month">
 				<constant>1</constant>
 			</date>
 			<time unit="hour">
-				<constant>1</constant>
+				<constant>0</constant>
 			</time>
 		</coordinates>
 		<layers>
@@ -86,7 +83,7 @@
 						<constant>0.03</constant>
 					</thickness>
 				</geometry>
-				<material reference="polysterene" />
+				<material reference="polystyrene" />
 			</layer>
 		</layers>
 		<boundaries>
@@ -106,6 +103,12 @@
 				<heat_flux unit="W/m2">
 					<constant>0.0</constant>
 				</heat_flux>
+				<infrared_irradiance unit="W/m2">
+					<constant>0.0</constant>
+				</infrared_irradiance>
+				<solar_irradiance unit="W/m2">
+					<constant>0.0</constant>
+				</solar_irradiance>
 			</boundary>
 			<boundary name="external">
 				<temperature unit="K">
@@ -121,10 +124,10 @@
 					<constant>0.0</constant>
 				</heat_flux>
 				<infrared_irradiance unit="W/m2">
-					<constant>0</constant>
+					<constant>0.0</constant>
 				</infrared_irradiance>
 				<solar_irradiance unit="W/m2">
-					<constant>0</constant>
+					<constant>0.0</constant>
 				</solar_irradiance>
 			</boundary>
 		</boundaries>

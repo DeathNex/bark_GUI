@@ -190,7 +190,7 @@ namespace bark_GUI.XmlHandling
         #region Private Draw Methods
         private static void DrawAConstant(XmlNode inXmlNode, Item item)
         {
-            const string errorMsg = "XmlHandling - XmlParser - DrawAConstant:\n - ";
+            string errorMsg = "XmlHandling - XmlParser - DrawAConstant [" + inXmlNode.Name + "]:\n - ";
 
             // Check item.
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
@@ -226,7 +226,7 @@ namespace bark_GUI.XmlHandling
 
         private static void DrawAVariable(XmlNode inXmlNode, Item item)
         {
-            const string errorMsg = "XmlHandling - XmlParser - DrawAVariable:\n - ";
+            string errorMsg = "XmlHandling - XmlParser - DrawAVariable [" + inXmlNode.Name + "]:\n - ";
 
             // Check item.
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'constant' but is not of type ElementItem.");
@@ -280,7 +280,7 @@ namespace bark_GUI.XmlHandling
             // (THE ITEM PARAMETER MIGHT BE THE PARENT ITEM AND NOT THE CURRENT)
             // (Check RECURSIVE DRAWINFO CALL FOR HOW-TO-USE)
 
-            const string errorMsg = "XmlHandling - XmlParser - DrawAFunction:\n - ";
+            string errorMsg = "XmlHandling - XmlParser - DrawAFunction [" + inXmlNode.Name + "]:\n - ";
 
             var fvalue = xc.FirstChild.Name;
 
@@ -313,7 +313,7 @@ namespace bark_GUI.XmlHandling
         {
             var kvalue = inXmlNode.InnerText;
 
-            const string errorMsg = "XmlHandling - XmlParser - DrawAKeyword:\n - ";
+            string errorMsg = "XmlHandling - XmlParser - DrawAKeyword [" + inXmlNode.Name + "]:\n - ";
 
             // Check item.
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'keyword' but is not of type ElementItem.");
@@ -350,7 +350,7 @@ namespace bark_GUI.XmlHandling
 
             var rvalue = inXmlNode.Attributes["reference"].Value;
 
-            const string errorMsg = "XmlHandling - XmlParser - DrawAReference:\n - ";
+            string errorMsg = "XmlHandling - XmlParser - DrawAReference [" + inXmlNode.Name + "]:\n - ";
 
             // Check item.
             Debug.Assert(item.IsElementItem, errorMsg + "XmlItem is 'reference' but is not of type ElementItem.");

@@ -19,6 +19,10 @@
 #bark_GUI CHANGELOG#
 --------------------
 
+v0.23
+-----
++	Removed Functions from XSDValidatorComplexTypes and from all XML files.
+
 v0.22
 -----
 +	Made proper use of status messages for user feedback in case of slow machines or problems.

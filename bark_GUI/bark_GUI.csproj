@@ -256,6 +256,9 @@
     <None Include="Samples\wall_sun.brk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Samples\wall_sun2.brk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Samples\XSDValidator.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

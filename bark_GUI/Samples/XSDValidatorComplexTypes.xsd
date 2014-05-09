@@ -43,13 +43,6 @@
     <xs:choice>
       <xs:element name="constant" type="xs:decimal"/>
       <xs:element name="variable" type="decimal_list"/>
-      <xs:element name="function">
-        <xs:complexType>
-          <xs:choice>
-            <xs:element ref="sinusoidal"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
     </xs:choice>
     <xs:attribute name="x_unit" type="unit_time" default="s"/>
     <xs:attribute name="unit" type="unit_temperature" default="K"/>
@@ -96,13 +89,6 @@
     <xs:choice>
       <xs:element name="constant" type="xs:decimal" default="0.0"/>
       <xs:element name="variable" type="decimal_list"/>
-      <xs:element name="function">
-        <xs:complexType>
-          <xs:choice>
-            <xs:element ref="sinusoidal"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
     </xs:choice>
     <xs:attribute name="x_unit" type="unit_time" default="s"/>
     <xs:attribute name="unit" type="unit_velocity" default="m/s"/>
@@ -141,14 +127,6 @@
     <xs:choice>
       <xs:element name="constant" type="xs:decimal" default="0.0"/>
       <xs:element name="variable" type="decimal_list"/>
-      <xs:element name="function">
-        <xs:complexType>
-          <xs:choice>
-            <xs:element ref="sinusoidal"/>
-            <xs:element ref="ASHRAE_clear_day_model"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
     </xs:choice>
     <xs:attribute name="x_unit" type="unit_time" default="s"/>
     <xs:attribute name="unit" type="unit_heat_flux" default="W/m2"/>

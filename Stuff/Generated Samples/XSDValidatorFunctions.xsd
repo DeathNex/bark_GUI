@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="XSDValidatorSimpleTypes.xsd"/>
+  <xs:include schemaLocation="XSDValidatorComplexTypes.xsd"/>
+
+
+<!-- Controlled values: element_NAME> ELEMENT>NAME | TYPE -->
+
+
+  <xs:element name="sinusoidal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="temperature_max" type="initial_temperature"/>
+        <xs:element name="temperature_min" type="initial_temperature"/>
+        <xs:element name="time_cycle" type="time"/>
+        <xs:element name="time_offset" type="time"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ASHRAE_clear_day_model">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="side" type="wall_side"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+</xs:schema>

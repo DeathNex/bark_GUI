@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="XSDValidatorFunctions.xsd"/>
+  <xs:include schemaLocation="XSDValidatorUnits.xsd"/>
+
+
+  <!-- Controlled values: complexType_NAME>choice>element_name="CONSTANT"/"VARIABLE"/"FUNCTION"
+                          | element_TYPE="XS:DECIMAL" | attribute > NAME | TYPE | DEFAULT
+                          element_name="function">element_REF -->
+
+
+  
+		<!-- REFERENCE -->
+  
+  <xs:complexType name="reference">
+	<xs:attribute name="reference" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  		<!-- KEYWORDS -->
+  
+  <xs:complexType name="material_phase">
+	<xs:choice>
+	  <xs:element name="keyword" type="keyword_material_phase" default="solid"/>
+	</xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="wall_side">
+	<xs:choice>
+	  <xs:element name="keyword" type="keyword_wall_side" default="front"/>
+	</xs:choice>
+  </xs:complexType>
+  
+  		<!-- CONSTANT/VARIABLE/FUNCTION -->
+
+  <xs:complexType name="initial_temperature">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_temperature" default="K"/>
+  </xs:complexType>
+
+  <xs:complexType name="temperature">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+      <xs:element name="variable" type="decimal_list"/>
+    </xs:choice>
+    <xs:attribute name="x_unit" type="unit_time" default="s"/>
+    <xs:attribute name="unit" type="unit_temperature" default="K"/>
+  </xs:complexType>
+
+  <xs:complexType name="time">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_time" default="s"/>
+  </xs:complexType>
+
+  <xs:complexType name="time_positive">
+    <xs:choice>
+      <xs:element name="constant" type="decimal_positive"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_time" default="s"/>
+  </xs:complexType>
+
+  <xs:complexType name="dateTime">
+    <xs:choice>
+      <xs:element name="constant" type="time_hour" default="0"/>
+
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_time" default="hour"/>
+    <xs:attribute name="zone" type="time_zone" default="2"/>
+  </xs:complexType>
+
+  <xs:complexType name="dateMonth">
+    <xs:choice>
+      <xs:element name="constant" type="date_month" default="1"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_date" default="month"/>
+  </xs:complexType>
+
+  <xs:complexType name="space">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_space" default="m"/>
+  </xs:complexType>
+
+  <xs:complexType name="velocity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="0.0"/>
+      <xs:element name="variable" type="decimal_list"/>
+    </xs:choice>
+    <xs:attribute name="x_unit" type="unit_time" default="s"/>
+    <xs:attribute name="unit" type="unit_velocity" default="m/s"/>
+  </xs:complexType>
+
+  <xs:complexType name="angle">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="0.0"/>
+      <xs:element name="variable" type="decimal_list"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_angle" default="deg"/>
+  </xs:complexType>
+
+  <xs:complexType name="conductivity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_conductivity" default="W/mK"/>
+  </xs:complexType>
+
+  <xs:complexType name="heat_capacity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_heat_capacity" default="J/kgK"/>
+  </xs:complexType>
+
+  <xs:complexType name="heat_transfer_coefficient">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" />
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_heat_transfer_coefficient" default="W/m2K"/>
+  </xs:complexType>
+
+  <xs:complexType name="heat_flux">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="0.0"/>
+      <xs:element name="variable" type="decimal_list"/>
+    </xs:choice>
+    <xs:attribute name="x_unit" type="unit_time" default="s"/>
+    <xs:attribute name="unit" type="unit_heat_flux" default="W/m2"/>
+  </xs:complexType>
+
+  <xs:complexType name="density">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="unit_density" default="kg/m3"/>
+  </xs:complexType>
+
+  <xs:complexType name="emissivity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="1.0"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="none" default="-"/>
+  </xs:complexType>
+
+  <xs:complexType name="transmittance">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="0.0"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="none" default="-"/>
+  </xs:complexType>
+
+  <xs:complexType name="absorptivity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="1.0"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="none" default="-"/>
+  </xs:complexType>
+
+  <xs:complexType name="reflectivity">
+    <xs:choice>
+      <xs:element name="constant" type="xs:decimal" default="0.0"/>
+    </xs:choice>
+    <xs:attribute name="unit" type="none" default="-"/>
+  </xs:complexType>
+
+</xs:schema>

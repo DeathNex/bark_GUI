@@ -1,0 +1,12 @@
+Error 1:
+The required attribute 'name' is missing.
+
+Error 2:
+The identity constraint 'material_key' validation has failed. Either a key is missing or the existing key has an empty node.
+
+Error 3:
+The element 'boundaries' has incomplete content. List of possible elements expected: 'boundary'.
+
+Error 4:
+The key sequence 'polysterene' in 'material_key' Keyref fails to refer to some key.
+

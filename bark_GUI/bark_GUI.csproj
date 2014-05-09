@@ -64,8 +64,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="ZedGraph">
-      <HintPath>..\ZedGraph\ZedGraph.dll</HintPath>
+    <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ZedGraph\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -276,9 +277,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Materials\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>

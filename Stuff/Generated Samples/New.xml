@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<case xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="XSDValidator.xsd">
+  <simulation>
+    <initial_temperature unit="K">
+      <constant>1</constant>
+    </initial_temperature>
+    <space_step unit="m">
+      <constant>1</constant>
+    </space_step>
+    <time_step unit="s">
+      <constant>0</constant>
+    </time_step>
+    <end_time unit="s">
+      <constant>1</constant>
+    </end_time>
+    <start_time unit="s">
+      <constant>1</constant>
+    </start_time>
+  </simulation>
+  <setup>
+    <materials>
+      <material name="name1">
+        <solar_radiation>
+          <reference_thickness unit="m">
+            <constant>1</constant>
+          </reference_thickness>
+          <reflectivity unit="-">
+            <constant>0.0</constant>
+          </reflectivity>
+          <absorptivity unit="-">
+            <constant>1.0</constant>
+          </absorptivity>
+          <transmittance unit="-">
+            <constant>0.0</constant>
+          </transmittance>
+        </solar_radiation>
+        <emissivity unit="-">
+          <constant>1.0</constant>
+        </emissivity>
+        <density unit="kg/m3">
+          <constant>1</constant>
+        </density>
+        <heat_capacity unit="J/kgK">
+          <constant>1</constant>
+        </heat_capacity>
+        <conductivity unit="W/mK">
+          <constant>1</constant>
+        </conductivity>
+        <phase>
+          <keyword>solid</keyword>
+        </phase>
+      </material>
+    </materials>
+    <geometry>
+      <height unit="m">
+        <constant>1</constant>
+      </height>
+      <length unit="m">
+        <constant>1</constant>
+      </length>
+      <tilt unit="deg">
+        <constant>0.0</constant>
+      </tilt>
+    </geometry>
+    <coordinates>
+      <latitude unit="deg">
+        <constant>0.0</constant>
+      </latitude>
+      <longitude unit="deg">
+        <constant>0.0</constant>
+      </longitude>
+      <orientation unit="deg">
+        <constant>0.0</constant>
+      </orientation>
+      <date unit="month">
+        <constant>1</constant>
+      </date>
+      <time unit="hour" zone="2">
+        <constant>0</constant>
+      </time>
+    </coordinates>
+    <layers>
+      <layer name="name2">
+        <geometry>
+          <thickness unit="m">
+            <constant>1</constant>
+          </thickness>
+        </geometry>
+        <material reference="name1" />
+      </layer>
+    </layers>
+    <boundaries>
+      <boundary name="internal">
+        <temperature x_unit="s" unit="K">
+          <constant>1</constant>
+        </temperature>
+        <heat_transfer_coefficient unit="W/m2K">
+          <constant>1</constant>
+        </heat_transfer_coefficient>
+        <velocity x_unit="s" unit="m/s">
+          <constant>0.0</constant>
+        </velocity>
+        <heat_flux x_unit="s" unit="W/m2">
+          <constant>0.0</constant>
+        </heat_flux>
+        <infrared_irradiance x_unit="s" unit="W/m2">
+          <constant>0.0</constant>
+        </infrared_irradiance>
+        <solar_irradiance x_unit="s" unit="W/m2">
+          <constant>0.0</constant>
+        </solar_irradiance>
+      </boundary>
+      <boundary name="external">
+        <temperature x_unit="s" unit="K">
+          <constant>1</constant>
+        </temperature>
+        <heat_transfer_coefficient unit="W/m2K">
+          <constant>1</constant>
+        </heat_transfer_coefficient>
+        <velocity x_unit="s" unit="m/s">
+          <constant>1</constant>
+        </velocity>
+        <heat_flux x_unit="s" unit="W/m2">
+          <constant>1</constant>
+        </heat_flux>
+        <infrared_irradiance x_unit="s" unit="W/m2">
+          <constant>1</constant>
+        </infrared_irradiance>
+        <solar_irradiance x_unit="s" unit="W/m2">
+          <constant>1</constant>
+        </solar_irradiance>
+      </boundary>
+    </boundaries>
+  </setup>
+  <output>
+    <screen>
+      <time_step unit="s">
+        <constant>0</constant>
+      </time_step>
+    </screen>
+    <file>
+      <time_step unit="s">
+        <constant>0</constant>
+      </time_step>
+      <space_step unit="m">
+        <constant>1</constant>
+      </space_step>
+    </file>
+    <graph>
+      <filename name="name1" filename="filename1" />
+      <xvariable title="title1" />
+      <yvariable title="title1" />
+    </graph>
+  </output>
+</case>

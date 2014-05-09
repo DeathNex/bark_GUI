@@ -1,0 +1,3 @@
+Error 1:
+The element 'solar_irradiance' has invalid child element 'function'. List of possible elements expected: 'constant, variable'.
+

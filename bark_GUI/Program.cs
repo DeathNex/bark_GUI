@@ -18,7 +18,7 @@ namespace bark_GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            FormMain = args.Count() == 1 ? new ViewerForm(args[0]) : new ViewerForm(@"D:\Projects\bark_GUI\bark_GUI\Samples\polystyrene.brk");
+            FormMain = args.Count() == 1 ? new ViewerForm(args[0]) : new ViewerForm();
             Application.Run(FormMain);
         }
 

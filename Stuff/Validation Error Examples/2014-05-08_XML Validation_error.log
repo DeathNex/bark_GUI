@@ -1,0 +1,6 @@
+Error 1:
+The 'constant' element is invalid - The value 'sinusoidal' is invalid according to its datatype 'http://www.w3.org/2001/XMLSchema:decimal' - The string 'sinusoidal' is not a valid Decimal value.
+
+Error 2:
+The 'constant' element is invalid - The value 'sinusoidal' is invalid according to its datatype 'http://www.w3.org/2001/XMLSchema:decimal' - The string 'sinusoidal' is not a valid Decimal value.
+

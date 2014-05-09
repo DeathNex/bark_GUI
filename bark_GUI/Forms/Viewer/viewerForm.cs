@@ -68,11 +68,6 @@ namespace bark_GUI
             statusStripMain.Refresh();
         }
 
-        private void statusFileName_TextChanged(object sender, EventArgs e)
-        {
-            statusStripMain.Refresh();
-        }
-
         private void labelSelected_TextChanged(object sender, EventArgs e)
         {
             labelSelected.Invalidate();
@@ -80,7 +75,8 @@ namespace bark_GUI
 
         private void treeViewer_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            statusMain.Text = "Loading Items...";
+            // Change the action status label
+            statusMain.Text = "Updating Controls...";
             labelSelected.Text = e.Node.FullPath;
 
             _UpdateElementViewer();
@@ -90,7 +86,12 @@ namespace bark_GUI
 
         private void checkBoxTreeShowHidden_CheckedChanged(object sender, EventArgs e)
         {
+            // Change the action status label
+            statusMain.Text = "Updating Controls...";
+
             _UpdateElementViewer();
+
+            statusMain.Text = "Ready";
         }
 
         private void viewerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -266,21 +267,24 @@ namespace bark_GUI
             // Load file
             if (filepath != pathNewFile)
             {
-                //Set the new current file path
+                // Set the new current file path
                 Settings.Default.PathCurrentFile = filepath;
 
                 //Load the XML file
                 if (_xmlHandler.Load())
                 {
-                    //Load the viewers
+                    // Change the action status label
+                    statusMain.Text = "Updating Controls...";
+
+                    // Load the viewers
                     _InitializeTreeViewer();
                     _InitializeElementViewer();
 
-                    //Add to the recent files list
+                    // Add to the recent files list
                     _AddToRecent(filepath);
                     Settings.Default.Save();
 
-                    //Update Status label at the bottom of the window
+                    // Update Status label at the bottom of the window
                     Text = _getFileNameOf(Settings.Default.PathCurrentFile) + " - " + Title;
                     statusMain.Text = "Ready";
                 }
@@ -300,6 +304,9 @@ namespace bark_GUI
                 //Load the XML file
                 if (_xmlHandler.Load(pathNewFile))
                 {
+                    // Change the action status label
+                    statusMain.Text = "Updating Controls...";
+
                     //Load the viewers
                     _InitializeTreeViewer();
                     _InitializeElementViewer();
@@ -320,7 +327,7 @@ namespace bark_GUI
             statusMain.Text = "Closing...";
 
             //Handle any dirty files
-            if (_xmlHandler.HasDirtyFiles())
+            if (_xmlHandler.HasDirtyFiles() && !string.IsNullOrEmpty(Settings.Default.PathCurrentFile))
             {
                 //Save File? Yes/No/Cancel
                 var formSaveOnExit = new SaveOnExitForm();
@@ -793,8 +800,13 @@ namespace bark_GUI
 
         private void RefreshViewers()
         {
+            // Change the action status label
+            statusMain.Text = "Updating Controls...";
+
             _InitializeElementViewer();
             _UpdateElementViewer();
+
+            statusMain.Text = "Ready";
         }
 
         private void UpdateReferencesWithRename(Control parent, string oldName, string newName)

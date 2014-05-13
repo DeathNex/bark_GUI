@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bark_GUI", "bark_GUI\bark_GUI.csproj", "{157D12C7-0A70-4F7B-83D4-34E528B2A9E2}"
 EndProject
 Global

@@ -1,9 +1,0 @@
-Error 1:
-The 'constant' element is invalid - The value '' is invalid according to its datatype 'http://www.w3.org/2001/XMLSchema:decimal' - The string '' is not a valid Decimal value.
-
-Error 2:
-The element 'boundaries' has incomplete content. List of possible elements expected: 'boundary'.
-
-Error 3:
-The key sequence '' in 'material_key' Keyref fails to refer to some key.
-
